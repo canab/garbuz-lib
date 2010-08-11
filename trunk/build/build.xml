@@ -1,4 +1,4 @@
-﻿<project name="as3-common-lib" basedir="." default="build-debug">
+﻿<project name="as3-common-lib" basedir="." default="build">
 	
 	<property file="local.properties"/>
 	<property name="source.dir" value="../src"/>
@@ -15,8 +15,9 @@
 	</taskdef>
 	
 	<target name="clean">
-		<delete dir="${output.dir}"/>
-		<mkdir dir="${output.dir}"/>
+		<delete>
+			<fileset dir="${output.dir}" includes="*/*.swc"/>
+		</delete>
 	</target>
 	
 	<target name="svnUpdate">
