@@ -1,8 +1,8 @@
 ﻿package garbuz.flash.controls
 {
 	import garbuz.common.events.EventSender;
-	import common.utils.GraphUtil;
-	import common.utils.MathUtil;
+	import garbuz.common.utils.MathUtil;
+	import flash.display.InteractiveObject;
 	import flash.display.MovieClip;
 	import flash.display.SimpleButton;
 	import flash.display.Sprite;
@@ -44,8 +44,18 @@
 		
 		public function refresh():void
 		{
-			GraphUtil.setBtnEnabled(prevButon, frames.currentFrame > 1);
-			GraphUtil.setBtnEnabled(nextButon, frames.currentFrame < frames.totalFrames);
+			setBtnEnabled(prevButon, frames.currentFrame > 1);
+			setBtnEnabled(nextButon, frames.currentFrame < frames.totalFrames);
+		}
+		
+		private function setBtnEnabled(object:InteractiveObject, enabled:Boolean):void
+		{
+			object.mouseEnabled = enabled;
+			
+			if (object is Sprite)
+				Sprite(object).mouseChildren = enabled;
+				
+			object.alpha = (enabled) ? 1.0 : 0.5;
 		}
 		
 		public function get frameNum():int

@@ -1,4 +1,4 @@
-package common.utils 
+package garbuz.common.utils 
 {
 	import flash.system.ApplicationDomain;
 	import flash.utils.getDefinitionByName;
