@@ -17,6 +17,11 @@ package garbuz.engine.scene.renderers
 			super(_content);
 		}
 		
+		public function get sprite():Sprite
+		{
+			return _content as Sprite;
+		}
+		
 	}
 
 }
