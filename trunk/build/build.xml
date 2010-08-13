@@ -16,7 +16,7 @@
 	
 	<target name="clean">
 		<delete>
-			<fileset dir="${output.dir}" includes="*/*.swc"/>
+			<fileset dir="${output.dir}" includes="**/*.swc"/>
 		</delete>
 	</target>
 	
