@@ -1,35 +1,36 @@
 package garbuz.engine.components 
 {
+	import flash.display.InteractiveObject;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import garbuz.common.events.EventSender;
 	import garbuz.engine.core.Component;
-	import garbuz.engine.scene.renderers.SpriteRenderer;
 	/**
 	 * ...
 	 * @author canab
 	 */
 	public class ClickHandler extends Component
 	{
-		private var _renderer:SpriteRenderer;
+		private var _content:InteractiveObject;
 		private var _clickEvent:EventSender = new EventSender(this);
 		
-		public function ClickHandler(renderer:SpriteRenderer) 
+		public function ClickHandler(content:InteractiveObject) 
 		{
-			_renderer = renderer;
+			_content = content;
 		}
 		
 		override protected function onInitialize():void 
 		{
-			var content:Sprite = Sprite(_renderer.content);
-			content.buttonMode = true;
-			content.mouseEnabled = true;
-			content.addEventListener(MouseEvent.CLICK, onClick);
+			_content.mouseEnabled = true;
+			_content.addEventListener(MouseEvent.CLICK, onClick);
+			
+			if (_content is Sprite)
+				Sprite(_content).buttonMode = true;
 		}
 		
 		override protected function onDispose():void 
 		{
-			_renderer.content.removeEventListener(MouseEvent.CLICK, onClick);
+			_content.removeEventListener(MouseEvent.CLICK, onClick);
 		}
 		
 		private function onClick(e:MouseEvent):void 
