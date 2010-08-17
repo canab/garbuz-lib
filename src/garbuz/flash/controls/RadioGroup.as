@@ -12,18 +12,23 @@ package garbuz.flash.controls
 		
 		private var _clickEvent:EventSender = new EventSender(this);;
 		
-		public function RadioGroup(buttons:Array)
+		public function RadioGroup(items:Array = null)
 		{
-			_items = buttons;
-			initialize();
+			initialize(items || []);
 		}
 		
-		private function initialize():void
+		private function initialize(items:Array):void
 		{
-			for each (var item:CheckBox in _items)
+			for each (var item:CheckBox in items)
 			{
-				item.clickEvent.addListener(onButtonClick);
+				addItem(item);
 			}
+		}
+		
+		public function addItem(item:CheckBox):void 
+		{
+			_items.push(item);
+			item.clickEvent.addListener(onButtonClick);			
 		}
 		
 		private function onButtonClick(sender:CheckBox):void
@@ -49,7 +54,7 @@ package garbuz.flash.controls
 			}
 		}
 		
-		public function get buttons():Array { return _items; }
+		public function get items():Array { return _items; }
 		
 		public function get selectedItem():CheckBox { return _selectedItem; }
 		public function set selectedItem(value:CheckBox):void 
