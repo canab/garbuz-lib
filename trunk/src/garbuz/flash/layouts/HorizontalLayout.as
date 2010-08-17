@@ -11,7 +11,7 @@
 	{
 		private var _distance:int;
 		
-		public function HorizontalLayout(distance:Number)
+		public function HorizontalLayout(distance:Number = -1)
 		{
 			_distance = distance;
 		}
@@ -26,7 +26,7 @@
 			{
 				var child:DisplayObject = content.getChildAt(i);
 				child.x = x;
-				x += _distance;
+				x += (_distance > 0) ? _distance : child.width;
 			}
 		}
 		

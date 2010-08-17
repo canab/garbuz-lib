@@ -1,5 +1,6 @@
 package garbuz.flash.controls 
 {
+	import flash.display.Sprite;
 	import garbuz.common.events.EventSender;
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
@@ -22,7 +23,7 @@ package garbuz.flash.controls
 			refresh();
 		}
 		
-		private function initialize():void
+		protected function initialize():void
 		{
 			_content.addEventListener(MouseEvent.CLICK, onMouseClick);
 		}
@@ -33,7 +34,7 @@ package garbuz.flash.controls
 			_clickEvent.dispatch();
 		}
 		
-		private function refresh():void
+		protected function refresh():void
 		{
 			_content.mouseEnabled = _enabled;
 			_content.useHandCursor = _enabled;
@@ -67,7 +68,7 @@ package garbuz.flash.controls
 			}
 		}
 		
-		
+		public function get content():Sprite { return _content; }
 		
 	}
 

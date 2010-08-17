@@ -67,6 +67,20 @@ package garbuz.common.query
 			return result;			
 		}
 		
+		public function getUniqueItems():Array
+		{
+			var result:Array = [];
+			for each (var item:Object in _source)
+			{
+				if (result.indexOf(item) >= 0)
+					continue;
+					
+				if (_requirement == null || _requirement.accept(item))
+					result.push(item);
+			}
+			return result;			
+		}
+		
 		public function sum(field:String):Number
 		{
 			var sum:Number = 0;
