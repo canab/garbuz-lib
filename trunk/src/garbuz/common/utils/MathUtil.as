@@ -24,14 +24,6 @@
 			return dx*dx + dy*dy;
 		}
 		
-		public static function distance(p1:Point, p2:Point):Number
-		{
-			var dx:Number = p2.x - p1.x;
-			var dy:Number = p2.y - p1.y;
-			
-			return Math.sqrt(dx*dx + dy*dy);
-		}
-		
 		public static function claimRange(value:Number, min:Number, max:Number):Number
 		{
 			if (value < min)
@@ -47,18 +39,50 @@
 			return minValue + int(Math.random() * (maxValue - minValue + 1));
 		}
 		
+		/**
+		 * Normalize value to range [-PI...PI]
+		 * @param	angle
+		 * angle value in radians
+		 * @return
+		 * angle value in range [-PI...PI]
+		 */
+		public static function notmalizeAngle(angle:Number):Number
+		{
+			angle %= _2PI;
+			
+			if (angle > _PI)
+				angle -= _2PI
+			else if (angle < -_PI)
+				angle += _2PI;
+				
+			return angle;
+		}
+		
+		/**
+		 * Calcs angle difference
+		 * @param	angle
+		 * angle value in radians
+		 * @return
+		 * difference in range [-PI...PI]
+		 */
 		public static function angleDiff(angle1:Number, angle2:Number):Number
 		{
 			angle1 %= _2PI;
 			angle2 %= _2PI;
 			
-			if (angle1 < 0) angle1 += _2PI;
-			if (angle2 < 0) angle2 += _2PI;
+			if (angle1 < 0)
+				angle1 += _2PI;
+			
+			if (angle2 < 0)
+				angle2 += _2PI;
 			
 			var diff:Number = angle2 - angle1;
 			
-			if (diff < -_PI) diff += _2PI;
-			if (diff > _PI) diff -= _2PI;
+			if (diff < -_PI)
+				diff += _2PI;
+			
+			if (diff > _PI)
+				diff -= _2PI;
 			
 			return diff;
 		}
