@@ -40,6 +40,16 @@
 			_line.x = _lineStartX + value * (_lineEndX - _lineStartX);
 		}
 		
+		public function get visible():Boolean
+		{
+			return _content.visible;
+		}
+		
+		public function set visible(value:Boolean):void
+		{
+			_content.visible = value;
+		}
+		
 		public function get content():Sprite { return _content; }
 		
 	}
