@@ -12,7 +12,7 @@ package garbuz.common.events
 		public var listener:Function;
 		public var useCapture:Boolean;
 		
-		function NativeEventData(object:EventDispatcher, type:String, listener:Function, useCapture:Boolean):void
+		function NativeEventData(object:EventDispatcher, type:String, listener:Function, useCapture:Boolean)
 		{
 			this.object = object;
 			this.type = type;
