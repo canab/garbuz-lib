@@ -56,22 +56,14 @@ package garbuz.common.ui
 		
 		private function onKeyDown(e:KeyboardEvent):void
 		{
-			//trace("pressed", e.keyCode);
-			//if (!isKeyPressed(e.keyCode))
-			{
-				_pressedKeys[e.keyCode] = true;
-				_pressEvent.dispatch(e);
-			}
+			_pressedKeys[e.keyCode] = true;
+			_pressEvent.dispatch(e);
 		}
 
 		private function onKeyUp(e:KeyboardEvent):void
 		{
-			//trace("released", e.keyCode);
-			//if (isKeyPressed(e.keyCode))
-			{
-				delete _pressedKeys[e.keyCode];
-				_releaseEvent.dispatch(e);
-			}
+			delete _pressedKeys[e.keyCode];
+			_releaseEvent.dispatch(e);
 		}
 		
 		public function isKeyPressed(keyCode:int):Boolean
