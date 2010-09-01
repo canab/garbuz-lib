@@ -1,6 +1,8 @@
 package garbuz.flash 
 {
 	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
+	import flash.display.InteractiveObject;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.ui.Mouse;
@@ -15,7 +17,7 @@ package garbuz.flash
 		static private var _instance:MouseManager;
 		
 		private var _root:Sprite;
-		private var _pointer:Sprite; 
+		private var _pointer:DisplayObject; 
 		private var _targets:Dictionary = new Dictionary(true);
 		
 		public function MouseManager(param:PrivateConstructor) 
@@ -36,13 +38,28 @@ package garbuz.flash
 			_root = root;
 		}
 		
-		public function setPointer(pointer:Sprite, hideMouse:Boolean = true):void
+		/**
+		 * 
+		 * @param	pointer
+		 * DisplayObject or Class
+		 * @param	hideMouse
+		 */
+		public function setPointer(pointer:Object, hideMouse:Boolean = true):void
 		{
 			resetPointer();
 			
-			_pointer = pointer;
-			_pointer.mouseEnabled = false;
-			_pointer.mouseChildren = false;
+			if (pointer is DisplayObject)
+				_pointer = DisplayObject(pointer);
+			else if (_pointer is Class)
+				_pointer = new pointer();
+			else
+				throw new ArgumentError("Pointer should be Sprite or Class");
+				
+			if (_pointer is InteractiveObject)
+				InteractiveObject(_pointer).mouseEnabled = false;
+			
+			if (_pointer is DisplayObjectContainer)
+				DisplayObjectContainer(_pointer).mouseChildren = false;
 			
 			_root.addChild(_pointer);
 			_root.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
@@ -53,20 +70,15 @@ package garbuz.flash
 			updatePointer();
 		}
 		
-		public function setPointerClass(iconClass:Class, hideMouse:Boolean = true):void
+		public function registerObject(target:DisplayObject, pointer:Object, hideMouse:Boolean = true):void
 		{
-			setPointer(new iconClass(), hideMouse);
-		}
-		
-		public function registerObject(target:DisplayObject, pointerClass:Class, hideMouse:Boolean = true):void
-		{
-			var info:PointerInfo = new PointerInfo(pointerClass, hideMouse);
+			var info:PointerInfo = new PointerInfo(pointer, hideMouse);
 			
 			target.addEventListener(MouseEvent.MOUSE_OVER, onSpriteOver);
 			target.addEventListener(MouseEvent.MOUSE_OUT, onSpriteOut);
 			
 			if (target.hitTestPoint(_root.stage.mouseX, _root.stage.mouseY, true))
-				setPointerClass(info.pointerClass, info.hideMouse);
+				setPointer(info.pointer, info.hideMouse);
 			
 			_targets[target] = info;
 		}
@@ -82,7 +94,7 @@ package garbuz.flash
 		private function onSpriteOver(e:MouseEvent):void
 		{
 			var info:PointerInfo = _targets[e.currentTarget];
-			setPointerClass(info.pointerClass, info.hideMouse);
+			setPointer(info.pointer, info.hideMouse);
 		}
 		
 		private function onSpriteOut(e:MouseEvent):void
@@ -125,12 +137,12 @@ internal class PrivateConstructor { }
 
 internal class PointerInfo
 {
-	public var pointerClass:Class;
+	public var pointer:Object;
 	public var hideMouse:Boolean;
 	
-	public function PointerInfo(pointerClass:Class, hideMouse:Boolean)
+	public function PointerInfo(pointer:Object, hideMouse:Boolean)
 	{
-		this.pointerClass = pointerClass;
+		this.pointer = pointer;
 		this.hideMouse = hideMouse;
 	}
 }
