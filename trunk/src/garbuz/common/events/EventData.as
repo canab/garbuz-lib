@@ -9,7 +9,7 @@ package garbuz.common.events
 		public var event:EventSender;
 		public var handler:Function;
 		
-		public function EventData(event:EventSender, handler:Function):void
+		public function EventData(event:EventSender, handler:Function)
 		{
 			this.event = event;
 			this.handler = handler;

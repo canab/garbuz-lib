@@ -42,7 +42,7 @@ package garbuz.collections
 		public function clear():void 
 		{
 			var keys:Array = getKeys();
-			for each (var key:Object in key) 
+			for each (var key:Object in keys) 
 			{
 				delete _dictionary[key];
 			}
