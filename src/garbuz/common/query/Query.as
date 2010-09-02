@@ -5,6 +5,7 @@ package garbuz.common.query
 	import garbuz.common.comparing.NameRequirement;
 	import garbuz.common.comparing.PropertyRequirement;
 	import garbuz.common.comparing.TypeRequirement;
+	import garbuz.common.converting.ConstructorConverter;
 	import garbuz.common.converting.IConverter;
 	/**
 	 * ...
@@ -111,6 +112,11 @@ package garbuz.common.query
 					result.push(converter.convert(item));
 			}
 			return result;
+		}
+		
+		public function convertByConstructor(type:Class):Array
+		{
+			return convert(new ConstructorConverter(type));
 		}
 		
 		public function exists():Boolean
