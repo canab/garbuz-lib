@@ -7,6 +7,13 @@ package garbuz.common.utils
 	 */
 	public class ArrayUtil
 	{
+		static public function lastItem(source:Array):Object
+		{
+			return (source.length > 0)
+				? source[source.length - 1]
+				: null;
+		}
+		
 		static public function getKeys(object:Object):Array
 		{
 			var result:Array = [];
