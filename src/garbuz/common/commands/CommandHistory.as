@@ -1,6 +1,11 @@
 package garbuz.common.commands
 {
 	import garbuz.common.events.EventSender;
+	
+	/**
+	 * ...
+	 * @author canab
+	 */
 	public class CommandHistory
 	{
 		private var _maxUndo:int = 0;
@@ -28,16 +33,18 @@ package garbuz.common.commands
 		public function set maxUndo(value:int):void
 		{
 			_maxUndo = value;
-			checkMaxUndo();
+			if (checkMaxUndo())
+				_changeEvent.dispatch();
 		}
 		
-		private function checkMaxUndo():void
+		private function checkMaxUndo():Boolean
 		{
 			if (_maxUndo > 0 && _execList.length > maxUndo)
 			{
 				_execList.splice(0, _execList.length - _maxUndo);
-				_changeEvent.dispatch()
+				return true;
 			}
+			return false;
 		}
 		
 		public function execute(command:IUndoableCommand):void
@@ -45,8 +52,8 @@ package garbuz.common.commands
 			_execList.push(command);
 			_undoList = [];
 			command.execute();
-			_changeEvent.dispatch();
 			checkMaxUndo();
+			_changeEvent.dispatch();
 		}
 		
 		public function undo():void
@@ -66,6 +73,7 @@ package garbuz.common.commands
 		}
 		
 		public function get changeEvent():EventSender { return _changeEvent; }
+		
 		public function get maxUndo():int { return _maxUndo; }
 	}
 }
