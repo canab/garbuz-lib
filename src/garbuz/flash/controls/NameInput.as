@@ -1,7 +1,10 @@
 package garbuz.flash.controls 
 {
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.text.TextField;
+	import flash.ui.Keyboard;
+	import flash.ui.KeyLocation;
 	import garbuz.common.events.EventSender;
 	import garbuz.common.utils.StringUtil;
 	/**
@@ -13,15 +16,31 @@ package garbuz.flash.controls
 		private var _field:TextField;
 		private var _text:String;
 		private var _margins:int = 10;
+		private var _prevText:String;
+		private var _changeFlag:Boolean;
 		
 		private var _changeEvent:EventSender = new EventSender(this);
+		private var _wrongCharEvent:EventSender = new EventSender(this);
 		
 		public function NameInput(field:TextField) 
 		{
 			_field = field;
 			_field.multiline = false;
 			_field.wordWrap = false;
+			_field.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			_field.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			_field.addEventListener(Event.CHANGE, onTextChange);
+		}
+		
+		private function onKeyUp(e:KeyboardEvent):void 
+		{
+			if (!_changeFlag && e.charCode > 32 && e.charCode != 127)
+				_wrongCharEvent.dispatch();
+		}
+		
+		private function onKeyDown(e:KeyboardEvent):void 
+		{
+			_changeFlag = false;
 		}
 		
 		public function set cursorPosition(position:int):void
@@ -31,9 +50,10 @@ package garbuz.flash.controls
 		
 		private function onTextChange(e:Event):void 
 		{
-			var fieldText:String = _field.text;
+			var savedText:String = _field.text;
 			
 			_field.text = _field.text.replace(/\s/g, "_");
+			_changeFlag = true;
 			
 			if (_field.textWidth > _field.width - 2 * _margins)
 			{
@@ -41,8 +61,8 @@ package garbuz.flash.controls
 			}
 			else
 			{
-				_field.text = fieldText;
-				_text = fieldText;
+				_field.text = savedText;
+				_text = savedText;
 				_changeEvent.dispatch();
 			}
 		}
@@ -70,6 +90,8 @@ package garbuz.flash.controls
 		public function get changeEvent():EventSender { return _changeEvent; }
 		
 		public function get field():TextField { return _field; }
+		
+		public function get wrongCharEvent():EventSender { return _wrongCharEvent; }
 		
 	}
 
