@@ -131,6 +131,21 @@ package garbuz.common.utils
 			}
 			return result;
 		}
+		
+		static public function toObject(source:Array, keyProperty:String):Object
+		{
+			var result:Object = { };
+			
+			for each (var item:Object in source) 
+			{
+				if (item.hasOwnProperty(keyProperty))
+				{
+					result[item[keyProperty]] = item;
+				}
+			}
+			
+			return result;
+		}
 	}
 
 }
