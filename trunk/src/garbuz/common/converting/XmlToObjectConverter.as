@@ -22,18 +22,22 @@ package garbuz.common.converting
 			
 			for each (var attr:XML in xml.attributes())
 			{
-				var attrName:String = attr.name();
-				result[attrName] = attr;
-				
-				//trace(attrName, result[attrName]);
+				var attrName:String = String(attr.name());
+
+				if (result[attrName] is Boolean)
+					result[attrName] = attr == "true";
+				else
+					result[attrName] = attr;
 			}
 			
 			for each (var child:XML in xml.children())
 			{
-				var tagName:String = child.name();
-				result[tagName] = child;
-				
-				//trace(tagName, result[tagName]);
+				var tagName:String = String(child.name());
+
+				if (result[tagName] is Boolean)
+					result[tagName] = attr == "true";
+				else
+					result[tagName] = child;
 			}
 			
 			return result;
