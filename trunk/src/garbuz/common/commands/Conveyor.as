@@ -50,7 +50,7 @@ package garbuz.common.commands
 				}
 				else if (_currentItem is Function)
 				{
-					_currentItem();
+					Function(_currentItem)();
 					_currentItem = null;
 				}
 				else if (_currentItem is ICommand)

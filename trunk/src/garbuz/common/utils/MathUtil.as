@@ -1,4 +1,4 @@
-﻿package garbuz.common.utils
+package garbuz.common.utils
 {
 	import flash.geom.Point;
 	
@@ -51,7 +51,7 @@
 			angle %= _2PI;
 			
 			if (angle > _PI)
-				angle -= _2PI
+				angle -= _2PI;
 			else if (angle < -_PI)
 				angle += _2PI;
 				
@@ -60,7 +60,9 @@
 		
 		/**
 		 * Calcs angle difference
-		 * @param	angle
+		 * @param	angle1
+		 * angle value in radians
+		 * @param	angle2
 		 * angle value in radians
 		 * @return
 		 * difference in range [-PI...PI]

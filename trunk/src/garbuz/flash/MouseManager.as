@@ -28,7 +28,7 @@ package garbuz.flash
 		static public function get instance():MouseManager
 		{
 			if (!_instance)
-				_instance = new MouseManager(new PrivateConstructor)
+				_instance = new MouseManager(new PrivateConstructor);
 			
 			return _instance;
 		}
@@ -51,7 +51,7 @@ package garbuz.flash
 			if (pointer is DisplayObject)
 				_pointer = DisplayObject(pointer);
 			else if (_pointer is Class)
-				_pointer = new pointer();
+				_pointer = new (pointer as Class)();
 			else
 				throw new ArgumentError("Pointer should be Sprite or Class");
 				

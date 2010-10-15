@@ -84,16 +84,17 @@ package garbuz.engine.core
 		 * time in milliseconds
 		 * @param	command
 		 */
-		
-		 public function addDelayedCall(time:int, command:ICommand):void
+		public function addDelayedCall(time:int, command:ICommand):void
 		{
 			_processManager.addDelayedCall(time, command);
 		}
+
 		/**
 		 * Call function after given time
 		 * @param	time
 		 * time in milliseconds
-		 * @param	command
+		 * @param	func
+		 * @param	args
 		 */
 		public function callAfter(time:int, func:Function, args:Array = null):void
 		{
