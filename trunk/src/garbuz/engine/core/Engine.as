@@ -20,14 +20,9 @@ package garbuz.engine.core
 		
 		public function Engine(root:Sprite)
 		{
-			if (!root.stage)
-				throw new Error("Root should be on the stage at this moment");
-			
 			_root = root;
 			_processManager = new ProcessManager(this);
 			_entities = new Vector.<Entity>();
-			
-			trace("Engine created");
 		}
 		
 		public function dispose():void 
@@ -157,6 +152,9 @@ package garbuz.engine.core
 				
 				if (_started)
 				{
+					if (!_root.stage)
+						throw new Error("Root should be on the stage at this moment");
+
 					_processManager.start();
 					trace("Engine started");
 				}
