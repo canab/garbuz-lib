@@ -15,7 +15,7 @@ package garbuz.common.ui
 		static public function get instance():KeyboardManager
 		{
 			if (!_instance)
-				_instance = new KeyboardManager(new PrivateConstructor())
+				_instance = new KeyboardManager(new PrivateConstructor());
 				
 			return _instance;
 		}

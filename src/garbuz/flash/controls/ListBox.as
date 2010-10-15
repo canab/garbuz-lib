@@ -41,7 +41,7 @@ package garbuz.flash.controls
 			
 			if (_content[SCROLL_BAR])
 			{
-				_scrollBar = new VerticalScrollBar(_content[SCROLL_BAR])
+				_scrollBar = new VerticalScrollBar(_content[SCROLL_BAR]);
 				_scrollBar.changeEvent.addListener(onScroll);
 			}
 			

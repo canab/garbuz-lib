@@ -154,8 +154,8 @@ package garbuz.engine
 		 **/
 		private function getPathPoint(point:Point):PathPoint
 		{
-			var i:int = MathUtil.claimRange(point.y / _vGridSize, 0, _n - 1)
-			var j:int = MathUtil.claimRange(point.x / _hGridSize, 0, _m - 1)
+			var i:int = MathUtil.claimRange(point.y / _vGridSize, 0, _n - 1);
+			var j:int = MathUtil.claimRange(point.x / _hGridSize, 0, _m - 1);
 			
 			var pathPoint:PathPoint = _points[i][j];
 			var d:int = 0;
@@ -267,7 +267,7 @@ package garbuz.engine
 		
 		private function doDefaultSearch():Boolean
 		{
-			_currentStep = 0
+			_currentStep = 0;
 			_startPoint.stepNum = 0;
 			_outerPoints = [_startPoint];
 			_usedList = [];
@@ -308,7 +308,7 @@ package garbuz.engine
 					if (!p || p.stepNum != point.stepNum - 1)
 						continue;
 						
-					var d2:int = distance2(p, point)
+					var d2:int = distance2(p, point);
 					if (!nextPoint || d2 < minDistance)
 					{
 						minDistance = d2;
@@ -393,7 +393,7 @@ package garbuz.engine
 			{
 				_ground.graphics.lineStyle(0.5, 0x0000FF);
 				_ground.graphics.moveTo(_path[i].x, _path[i].y);
-				_ground.graphics.lineTo(_path[i + 1].x, _path[i + 1].y)
+				_ground.graphics.lineTo(_path[i + 1].x, _path[i + 1].y);
 				_debug_draw_point(_path[i + 1], 0x0000FF);
 			}
 		}
