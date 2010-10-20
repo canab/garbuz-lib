@@ -1,13 +1,12 @@
 package garbuz.engine
 {
 	import flash.display.BitmapData;
-	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+
 	import garbuz.common.utils.MathUtil;
-	
-	
+
 	public class PathBuilder
 	{
 		public var debugMode:Boolean = false;
@@ -15,6 +14,7 @@ package garbuz.engine
 		private var _path:Vector.<Point>;
 		
 		private var _ground:Sprite;
+		private var _debugSprite:Sprite;
 		private var _points:Array;
 		private var _n:int;
 		private var _m:int;
@@ -359,7 +359,6 @@ package garbuz.engine
 			//-- points for next iteration
 			var nextOuters:Array = [];
 			
-			mainLoop:
 			for each (var point:PathPoint in _outerPoints)
 			{
 				for each (var linkPoint:PathPoint in point.links)
@@ -391,13 +390,13 @@ package garbuz.engine
 			
 			for (var i:int = 0; i < _path.length - 1; i++)
 			{
-				_ground.graphics.lineStyle(0.5, 0x0000FF);
-				_ground.graphics.moveTo(_path[i].x, _path[i].y);
-				_ground.graphics.lineTo(_path[i + 1].x, _path[i + 1].y);
+				_debugSprite.graphics.lineStyle(0.5, 0x0000FF);
+				_debugSprite.graphics.moveTo(_path[i].x, _path[i].y);
+				_debugSprite.graphics.lineTo(_path[i + 1].x, _path[i + 1].y);
 				_debug_draw_point(_path[i + 1], 0x0000FF);
 			}
 		}
-		
+
 		private function _debug_draw_path_point(point:PathPoint):void
 		{
 			var color:int;
@@ -411,24 +410,25 @@ package garbuz.engine
 		
 		private function _debug_draw_point(coords:Point, color:int):void 
 		{
-			var shape:Shape = new Shape();
-			shape.graphics.lineStyle(0, color);
-			shape.graphics.drawCircle(0, 0, 4);
-			shape.x = coords.x;
-			shape.y = coords.y;
-			_ground.addChild(shape);
+			_debugSprite.graphics.lineStyle(0, color);
+			_debugSprite.graphics.drawCircle(coords.x, coords.y, 4);
 		}
 		
 		private function _debug_clear():void
 		{
-			_ground.graphics.clear();
+			if (!_debugSprite)
+			{
+				_debugSprite = new Sprite();
+				_ground.addChild(_debugSprite);
+			}
+
+			_debugSprite.graphics.clear();
 		}
 		
 	}
 }
-	
-	import flash.geom.Point;
-	
+
+import flash.geom.Point;
 
 internal class PathPoint
 {
