@@ -1,6 +1,10 @@
 package garbuz.engine.scene.renderers 
 {
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
+
+	import garbuz.common.events.EventSender;
+
 	/**
 	 * ...
 	 * @author canab
@@ -8,6 +12,7 @@ package garbuz.engine.scene.renderers
 	public class SpriteRenderer extends DisplayObjectRenderer
 	{
 		private var _content:Sprite;
+		private var _clickEvent:EventSender;
 		
 		public function SpriteRenderer(content:Sprite) 
 		{
@@ -21,7 +26,23 @@ package garbuz.engine.scene.renderers
 		{
 			return _content as Sprite;
 		}
-		
+
+		public function get clickEvent():EventSender
+		{
+			if (!_clickEvent)
+			{
+				_clickEvent = new EventSender(this);
+				_content.mouseEnabled = true;
+				_content.addEventListener(MouseEvent.CLICK, onClick);
+			}
+
+			return _clickEvent;
+		}
+
+		private function onClick(event:MouseEvent):void
+		{
+			_clickEvent.dispatch();
+		}
 	}
 
 }
