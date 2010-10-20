@@ -1,6 +1,7 @@
 package garbuz.engine.scene.renderers 
 {
 	import flash.display.DisplayObject;
+
 	import garbuz.common.errors.NullPointerError;
 	import garbuz.engine.components.Position;
 	import garbuz.engine.components.Rotation;
@@ -8,7 +9,7 @@ package garbuz.engine.scene.renderers
 	import garbuz.engine.core.Component;
 	import garbuz.engine.scene.IVectorRenderer;
 	import garbuz.engine.scene.VectorLayer;
-	
+
 	/**
 	 * ...
 	 * @author canab
@@ -21,6 +22,7 @@ package garbuz.engine.scene.renderers
 		private var _position:Position;
 		private var _size:Size;
 		private var _rotation:Rotation;
+		private var _renderOnFrame:Boolean = false;
 		
 		public function DisplayObjectRenderer(content:DisplayObject) 
 		{
@@ -49,7 +51,7 @@ package garbuz.engine.scene.renderers
 			if (_size)
 				setSize();
 		}
-		
+
 		protected function setSize():void
 		{
 			_content.width = _size.width;
@@ -106,6 +108,34 @@ package garbuz.engine.scene.renderers
 		}
 		
 		public function get content():DisplayObject { return _content; }
+
+		public function get renderOnFrame():Boolean
+		{
+			return _renderOnFrame;
+		}
+
+		public function set renderOnFrame(value:Boolean):void
+		{
+			if (_renderOnFrame != value)
+			{
+				_renderOnFrame = value;
+
+				if (_renderOnFrame)
+				{
+					engine.addFrameListener(this);
+					onEnterFrame();
+				}
+				else
+				{
+					engine.removeFrameListener(this);
+				}
+			}
+		}
+
+		override public function onEnterFrame():void
+		{
+			render();
+		}
 	}
 
 }
