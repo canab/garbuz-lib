@@ -6,7 +6,10 @@ package garbuz.common.query
 	import garbuz.common.comparing.PropertyRequirement;
 	import garbuz.common.comparing.TypeRequirement;
 	import garbuz.common.converting.ConstructorConverter;
+	import garbuz.common.converting.FunctionConverter;
 	import garbuz.common.converting.IConverter;
+	import garbuz.common.converting.ToPropertyConverter;
+
 	/**
 	 * ...
 	 * @author canab
@@ -117,6 +120,16 @@ package garbuz.common.query
 		public function convertByConstructor(type:Class):Array
 		{
 			return convert(new ConstructorConverter(type));
+		}
+
+		public function selectProperty(property:String):Array
+		{
+			return convert(new ToPropertyConverter(property));
+		}
+
+		public function select(selector:Function):Array
+		{
+			return convert(new FunctionConverter(selector));
 		}
 		
 		public function exists():Boolean
