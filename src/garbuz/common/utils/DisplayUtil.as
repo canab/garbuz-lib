@@ -2,9 +2,14 @@ package garbuz.common.utils
 {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+
+	import garbuz.common.comparing.AnimationRequirement;
+	import garbuz.common.query.fromDisplay;
+
 	/**
 	 * ...
 	 * @author canab
@@ -135,7 +140,37 @@ package garbuz.common.utils
 			
 			return rect;
 		}
-		
+
+
+		public static function stopChildren(content:Sprite, recursive:Boolean = false):void
+		{
+			var clips:Array = fromDisplay(content)
+				.byRequirement(new AnimationRequirement())
+				.findAll(recursive);
+
+			if (content is MovieClip)
+				clips.push(content);
+
+			for each (var clip:MovieClip in clips)
+			{
+				clip.stop();
+			}
+		}
+
+		public static function playChildren(content:Sprite, recursive:Boolean = false):void
+		{
+			var clips:Array = fromDisplay(content)
+				.byRequirement(new AnimationRequirement())
+				.findAll(recursive);
+
+			if (content is MovieClip)
+				clips.push(content);
+
+			for each (var clip:MovieClip in clips)
+			{
+				clip.play();
+			}
+		}
 	}
 
 }
