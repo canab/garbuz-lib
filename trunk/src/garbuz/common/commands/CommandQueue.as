@@ -1,4 +1,4 @@
-﻿package garbuz.common.commands
+package garbuz.common.commands
 {
 	import garbuz.common.events.EventSender;
 	
