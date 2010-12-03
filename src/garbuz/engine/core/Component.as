@@ -40,6 +40,11 @@ package garbuz.engine.core
 				
 			onDispose();
 		}
+
+		public function get isInitialized():Boolean
+		{
+			return initialized;
+		}
 		
 		protected function onInitialize():void 
 		{

@@ -90,7 +90,18 @@ package garbuz.engine.scene
 		public function get enableOrdering():Boolean { return _enableOrdering; }
 		public function set enableOrdering(value:Boolean):void 
 		{
-			_enableOrdering = value;
+			if (_enableOrdering != value)
+			{
+				_enableOrdering = value;
+
+				if (isInitialized)
+				{
+					if (_enableOrdering)
+						engine.addFrameListener(this);
+					else
+						engine.removeFrameListener(this);
+				}
+			}
 		}
 		
 	}

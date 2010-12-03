@@ -1,4 +1,4 @@
-﻿package garbuz.common.commands
+package garbuz.common.commands
 {
 	import flash.utils.Dictionary;
 	import garbuz.common.events.EventSender;
@@ -11,7 +11,7 @@
 	{
 		private var _completeEvent:EventSender = new EventSender(this);
 		private var _commands:Dictionary = new Dictionary();
-		
+
 		public function AsincMacroCommand(completeHandler:Function = null)
 		{
 			if (completeHandler != null)
@@ -25,6 +25,9 @@
 		
 		public function execute():void
 		{
+			if (isEmpty)
+				add(new CallLaterCommand());
+
 			for (var command:Object in _commands)
 			{
 				IAsincCommand(command).completeEvent.addListener(onCommandComplete);
@@ -60,7 +63,17 @@
 		
 		public function get completeEvent():EventSender { return _completeEvent; }
 		
+		// DEPRECATED
 		public function get commands():Dictionary { return _commands; }
-		
+
+		public function get isEmpty():Boolean
+		{
+			for (var command:Object in _commands)
+			{
+				return false;
+			}
+
+			return true;
+		}
 	}
 }
