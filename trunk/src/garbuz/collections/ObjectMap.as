@@ -14,7 +14,7 @@ package garbuz.collections
 			_dictionary = new Dictionary(weakKeys);
 		}
 		
-		public function put(key:Object, value:Object):void 
+		public function put(key:Object, value:Object):void
 		{
 			_dictionary[key] = value;
 		}
@@ -87,7 +87,16 @@ package garbuz.collections
 			}
 			return result;
 		}
-		
+
+
+		public function isEmpty():Boolean
+		{
+			for each (var item:Object in _dictionary)
+			{
+				return false;
+			}
+			return true;
+		}
 	}
 
 }
