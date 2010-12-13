@@ -102,7 +102,20 @@ package garbuz.common.utils
 			
 			return new Rectangle(minX, minY, maxX - minX, maxY - minY);
 		}
+
+		static public function fitToBounds(object:DisplayObject, bounds:Rectangle):void
+		{
+			adjustScale(object, bounds.width, bounds.height);
+			claimBounds(object, bounds);
+		}
 		
+		static public function adjustScale(object:DisplayObject, maxWidth:Number, maxHeight:Number):void
+		{
+			var scale:Number = Math.min(maxWidth / object.width, maxHeight / object.height);
+			object.height *= scale;
+			object.width *= scale;
+		}
+
 		public static function claimBounds(object:DisplayObject, bounds:Rectangle):void
 		{
 			var rect:Rectangle = object.getBounds(object.parent);
