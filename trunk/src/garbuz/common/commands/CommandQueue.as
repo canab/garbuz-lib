@@ -43,7 +43,7 @@ package garbuz.common.commands
 			_currentCommand.execute();
 		}
 		
-		private function onCommandComplete(sender:IAsincCommand):void 
+		private function onCommandComplete():void
 		{
 			clearCurrentCommand();
 			if (_commands.length > 0)

@@ -32,7 +32,7 @@
 			_dragController.dragEvent.addListener(onDrag);
 		}
 		
-		private function onDrag(sender:DragController):void
+		private function onDrag():void
 		{
 			updatePosition();
 			_changeEvent.dispatch();

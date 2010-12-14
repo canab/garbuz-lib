@@ -63,7 +63,6 @@ package garbuz.common.commands
 		
 		public function get completeEvent():EventSender { return _completeEvent; }
 		
-		// DEPRECATED
 		public function get commands():Dictionary { return _commands; }
 
 		public function get isEmpty():Boolean
