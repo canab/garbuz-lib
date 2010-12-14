@@ -8,8 +8,7 @@ package garbuz.common.events
 	{
 		private var _sender:Object;
 		private var _listeners:Vector.<Function>;
-		private var _listenersCopy:Vector.<Function>;
-		
+
 		public function EventSender(sender:Object)
 		{
 			_sender = sender;

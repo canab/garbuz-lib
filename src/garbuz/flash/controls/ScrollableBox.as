@@ -17,8 +17,6 @@
 		static private const VSCROLL_NAME:String = 'mcVScrollBar';
 		static private const HSCROLL_NAME:String = 'mcHScrollBar';
 		
-		private const SCROLL_BAR_SPACING:int = 4;
-		
 		protected var _content:Sprite;
 		protected var _container:Sprite;
 		protected var _mask:Sprite;
@@ -72,7 +70,7 @@
 			}
 		}
 		
-		private function onScroll(sender:ScrollBar):void
+		private function onScroll():void
 		{
 			updateScrollRect();
 		}

@@ -38,6 +38,7 @@ package garbuz.engine.components
 		
 		public function setFromCoords(xDiff:Number, yDiff:Number):void
 		{
+			//noinspection JSSuspiciousNameCombinationInspection
 			var angle:Number = (Math.atan2(yDiff, xDiff)) / Math.PI * 180 + 90;
 			
 			if (angle < 0)

@@ -10,7 +10,7 @@ package garbuz.flash.controls
 		private var _items:Array = [];
 		private var _selectedItem:CheckBox = null;
 		
-		private var _clickEvent:EventSender = new EventSender(this);;
+		private var _clickEvent:EventSender = new EventSender(this);
 		
 		public function RadioGroup(items:Array = null)
 		{

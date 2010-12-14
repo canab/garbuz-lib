@@ -3,10 +3,10 @@ package garbuz.flash.controls
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.text.TextField;
-	import flash.ui.Keyboard;
-	import flash.ui.KeyLocation;
+
 	import garbuz.common.events.EventSender;
 	import garbuz.common.utils.StringUtil;
+
 	/**
 	 * ...
 	 * @author canab
@@ -16,7 +16,6 @@ package garbuz.flash.controls
 		private var _field:TextField;
 		private var _text:String;
 		private var _margins:int = 10;
-		private var _prevText:String;
 		private var _changeFlag:Boolean;
 		
 		private var _changeEvent:EventSender = new EventSender(this);
