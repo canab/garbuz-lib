@@ -85,13 +85,16 @@ package garbuz.common.query
 			return result;			
 		}
 		
-		public function sum(field:String):Number
+		public function sum(field:String = null):Number
 		{
 			var sum:Number = 0;
 			for each (var item:Object in _source)
 			{
 				if (_requirement == null || _requirement.accept(item))
-					sum += item[field]
+				{
+					sum += (field) ? item[field] : item;
+				}
+
 			}
 			return sum;
 		}
