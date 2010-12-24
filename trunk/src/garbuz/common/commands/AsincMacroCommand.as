@@ -1,6 +1,8 @@
 package garbuz.common.commands
 {
 	import flash.utils.Dictionary;
+
+	import garbuz.common.errors.NullPointerError;
 	import garbuz.common.events.EventSender;
 	
 	/**
@@ -20,6 +22,9 @@ package garbuz.common.commands
 		
 		public function add(command:IAsincCommand):void
 		{
+			if (!command)
+				throw new NullPointerError();
+
 			_commands[command] = false;
 		}
 		
