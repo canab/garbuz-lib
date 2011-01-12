@@ -16,7 +16,7 @@ package garbuz.common.commands
 		{
 			super(null, delay);
 
-			if (onComplete)
+			if (onComplete != null)
 				completeEvent.addListener(onComplete);
 		}
 	}
