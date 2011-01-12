@@ -12,9 +12,12 @@ package garbuz.common.commands
 		 * @param	delay
 		 * time to delay, milliseconds
 		 */
-		public function DelayCommand(delay:int) 
+		public function DelayCommand(delay:int, onComplete:Function = null)
 		{
 			super(null, delay);
+
+			if (onComplete)
+				completeEvent.addListener(onComplete);
 		}
 	}
 
