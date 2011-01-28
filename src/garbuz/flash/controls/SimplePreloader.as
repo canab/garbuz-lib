@@ -5,7 +5,9 @@
 	import flash.events.Event;
 	import flash.events.ProgressEvent;
 	import flash.text.TextField;
+
 	import garbuz.common.events.EventSender;
+
 	/**
 	 * ...
 	 * @author canab
@@ -28,10 +30,10 @@
 		{
 			_root = root;
 			_content = content;
-			initialzie();
+			initialize();
 		}
 		
-		private function initialzie():void
+		private function initialize():void
 		{
 			_startBytes = _root.loaderInfo.bytesLoaded;
 			
