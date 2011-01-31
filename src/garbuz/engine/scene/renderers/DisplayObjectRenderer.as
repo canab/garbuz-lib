@@ -1,6 +1,8 @@
-package garbuz.engine.scene.renderers 
+package garbuz.engine.scene.renderers
 {
 	import flash.display.DisplayObject;
+	import flash.display.Sprite;
+	import flash.geom.Rectangle;
 
 	import garbuz.common.errors.NullPointerError;
 	import garbuz.engine.components.Position;
@@ -112,6 +114,11 @@ package garbuz.engine.scene.renderers
 		public function get renderOnFrame():Boolean
 		{
 			return _renderOnFrame;
+		}
+
+		public function getBounds(targetContainer:Sprite = null):Rectangle
+		{
+			return content.getBounds(targetContainer || content.parent);
 		}
 
 		public function set renderOnFrame(value:Boolean):void
