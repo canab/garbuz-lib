@@ -184,6 +184,15 @@ package garbuz.common.utils
 				clip.play();
 			}
 		}
+
+		public static function hasAnimation(content:Sprite):Boolean
+		{
+			var requirement:AnimationRequirement = new AnimationRequirement();
+
+			return requirement.accept(content)
+				? true
+				: fromDisplay(content).byRequirement(requirement).exists(true);
+		}
 		
 	}
 
