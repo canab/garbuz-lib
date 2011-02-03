@@ -10,7 +10,9 @@ package garbuz.common.utils
 	{
 		public static function convertToBitmap(content:Sprite, bounds:Rectangle = null, transparent:Boolean = true):Bitmap
 		{
-			return new Bitmap(getBitmapData(content, bounds, transparent));
+			var bitmap:Bitmap = new Bitmap(getBitmapData(content, bounds, transparent));
+			bitmap.smoothing = true;
+			return bitmap;
 		}
 
 		public static function getBitmapData(content:Sprite, bounds:Rectangle = null, transparent:Boolean = true):BitmapData
@@ -21,7 +23,7 @@ package garbuz.common.utils
 			matrix.translate(-bounds.left, -bounds.top);
 
 			var bitmapData:BitmapData = new BitmapData(bounds.width, bounds.height, transparent, 0x00000000);
-			bitmapData.draw(content, matrix, null, null, null, false);
+			bitmapData.draw(content, matrix, null, null, null, true);
 			return bitmapData;
 		}
 
