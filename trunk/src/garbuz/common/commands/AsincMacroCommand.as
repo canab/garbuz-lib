@@ -32,6 +32,14 @@ package garbuz.common.commands
 			_commands[command] = false;
 		}
 
+		public function addAll(commands:/*iterable*/Object):void
+		{
+			for each (var command:IAsincCommand in commands)
+			{
+				add(command);
+			}
+		}
+
 		public function execute():void
 		{
 			if (_started)
