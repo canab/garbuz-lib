@@ -111,14 +111,14 @@ package garbuz.engine.scene.renderers
 		
 		public function get content():DisplayObject { return _content; }
 
-		public function get renderOnFrame():Boolean
-		{
-			return _renderOnFrame;
-		}
-
 		public function getBounds(targetContainer:Sprite = null):Rectangle
 		{
 			return content.getBounds(targetContainer || content.parent);
+		}
+
+		public function get renderOnFrame():Boolean
+		{
+			return _renderOnFrame;
 		}
 
 		public function set renderOnFrame(value:Boolean):void

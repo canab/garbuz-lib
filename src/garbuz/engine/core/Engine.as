@@ -1,10 +1,12 @@
 package garbuz.engine.core 
 {
 	import flash.display.Sprite;
+
 	import garbuz.common.commands.CallFunctionCommand;
 	import garbuz.common.commands.ICommand;
 	import garbuz.common.errors.ItemNotFoundError;
 	import garbuz.common.events.EventSender;
+
 	/**
 	 * ...
 	 * @author canab
@@ -68,14 +70,14 @@ package garbuz.engine.core
 			started = false;
 		}
 		
-		public function addFrameListener(component:Component):void 
+		public function addFrameListener(component:Component, method:Function = null):void
 		{
-			_processManager.addFrameListener(component);
+			_processManager.addFrameListener(component, method || component.onEnterFrame);
 		}
 		
-		public function removeFrameListener(component:Component):void 
+		public function removeFrameListener(component:Component, method:Function = null):void
 		{
-			_processManager.removeFrameListener(component);
+			_processManager.removeFrameListener(component, method || component.onEnterFrame);
 		}
 		
 		/**
