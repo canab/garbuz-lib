@@ -18,10 +18,13 @@ package garbuz.common.commands
 		private var _canceled:Boolean = false;
 		private var _completed:Boolean = false;
 
-		public function AsincMacroCommand(completeHandler:Function = null)
+		public function AsincMacroCommand(completeHandler:Function = null, commands:Array = null)
 		{
 			if (completeHandler != null)
 				_completeEvent.addListener(completeHandler);
+
+			if (commands)
+				addAll(commands);
 		}
 
 		public function add(command:IAsincCommand):void
