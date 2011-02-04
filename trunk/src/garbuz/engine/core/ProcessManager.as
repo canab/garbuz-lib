@@ -1,9 +1,11 @@
 package garbuz.engine.core 
 {
 	import flash.events.Event;
+
 	import garbuz.common.commands.CallFunctionCommand;
 	import garbuz.common.commands.ICommand;
 	import garbuz.common.errors.ItemNotFoundError;
+
 	/**
 	 * ...
 	 * @author canab
@@ -11,7 +13,7 @@ package garbuz.engine.core
 	internal class ProcessManager
 	{
 		private var _engine:Engine;
-		private var _frameListeners:Vector.<Component>		= new Vector.<Component>();
+		private var _frameListeners:Vector.<FrameCall>		= new Vector.<FrameCall>();
 		private var _afterCalls:Vector.<ICommand>           = new Vector.<ICommand>();
 		private var _delayedCalls:Vector.<DelayedCall>      = new Vector.<DelayedCall>();
 		private var _isProcessing:Boolean = false;
@@ -38,28 +40,34 @@ package garbuz.engine.core
 			_disposed = true;
 		}
 		
-		internal function addFrameListener(component:Component):void
+		internal function addFrameListener(component:Component, method:Function):void
 		{
 			if (_isProcessing)
-				_afterCalls.push(new CallFunctionCommand(addFrameListener, [component]));
+				_afterCalls.push(new CallFunctionCommand(addFrameListener, [component, method]));
 			else
-				_frameListeners.push(component);
+				_frameListeners.push(new FrameCall(component, method));
 		}
 		
-		internal function removeFrameListener(component:Component):void
+		internal function removeFrameListener(component:Component, method:Function):void
 		{
 			if (_isProcessing)
 			{
-				_afterCalls.push(new CallFunctionCommand(removeFrameListener, [component]));
+				_afterCalls.push(new CallFunctionCommand(removeFrameListener, [component, method]));
+				return;
 			}
-			else
+
+			for (var i:int = 0; i < _frameListeners.length; i++)
 			{
-				var index:int = _frameListeners.indexOf(component);
-				if (index == -1)
-					throw new ItemNotFoundError();
-				else
-					_frameListeners.splice(index, 1);
+				var frameCall:FrameCall = _frameListeners[i];
+
+				if (frameCall.target == component && frameCall.method == method)
+				{
+					_frameListeners.splice(i, 1);
+					return;
+				}
 			}
+
+			throw new ItemNotFoundError();
 		}
 		
 		internal function addDelayedCall(time:int, command:ICommand):void
@@ -80,16 +88,15 @@ package garbuz.engine.core
 			if (_isProcessing)
 			{
 				_afterCalls.push(new CallFunctionCommand(removeDelayedCall, [command]));
+				return;
 			}
-			else
+
+			for (var i:int = 0; i < _delayedCalls.length; i++)
 			{
-				for (var i:int = 0; i < _delayedCalls.length; i++) 
+				if (_delayedCalls[i].command == command)
 				{
-					if (_delayedCalls[i].command == command)
-					{
-						_delayedCalls.splice(i, 1);
-						return;
-					}
+					_delayedCalls.splice(i, 1);
+					return;
 				}
 			}
 		}
@@ -111,15 +118,15 @@ package garbuz.engine.core
 		
 		private function processFrameListeners():void
 		{
-			for each (var component:Component in _frameListeners) 
+			for each (var frameCall:FrameCall in _frameListeners)
 			{
 				if (_disposed)
 					break;
 				
-				if (component.disposed)
-					removeFrameListener(component);
+				if (frameCall.target.disposed)
+					removeFrameListener(frameCall.target, frameCall.method);
 				else
-					component.onEnterFrame();
+					frameCall.method();
 			}
 		}
 		
