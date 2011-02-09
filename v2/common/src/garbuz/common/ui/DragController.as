@@ -1,4 +1,4 @@
-﻿package garbuz.flash
+﻿package garbuz.common.ui
 {
 	import flash.display.Sprite;
 	import flash.events.Event;

@@ -1,4 +1,4 @@
-package garbuz.flash 
+package garbuz.common.ui
 {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;

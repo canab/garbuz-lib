@@ -1,4 +1,4 @@
-package garbuz.flash
+package garbuz.common.ui
 {
 	/**
 	 * ...

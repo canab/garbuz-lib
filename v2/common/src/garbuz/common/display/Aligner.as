@@ -1,4 +1,4 @@
-package garbuz.flash 
+package garbuz.common.display
 {
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;

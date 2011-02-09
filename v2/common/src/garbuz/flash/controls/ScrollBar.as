@@ -3,7 +3,7 @@
 	import garbuz.common.events.EventSender;
 	import flash.display.InteractiveObject;
 	import flash.display.Sprite;
-	import garbuz.flash.DragController;
+	import garbuz.common.ui.DragController;
 	
 	/**
 	 * ...
