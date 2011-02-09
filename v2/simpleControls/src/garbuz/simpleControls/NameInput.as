@@ -1,4 +1,4 @@
-package garbuz.flash.controls 
+package garbuz.simpleControls
 {
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;

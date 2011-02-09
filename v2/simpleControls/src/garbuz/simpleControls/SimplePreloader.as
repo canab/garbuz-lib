@@ -1,4 +1,4 @@
-﻿package garbuz.flash.controls
+﻿package garbuz.simpleControls
 {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
