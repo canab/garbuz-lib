@@ -8,17 +8,18 @@ package garbuz.motion
 
 	use namespace motion_internal;
 
-	public class Tween
+	public class Tweener
 	{
-		motion_internal var prev:Tween;
-		motion_internal var next:Tween;
+		motion_internal var prev:Tweener;
+		motion_internal var next:Tweener;
+		motion_internal var chain:Tweener;
 
 		motion_internal var completed:Boolean = false;
 		motion_internal var removed:Boolean = false;
-		motion_internal var chainTween:Tween = null;
 
-		private var _easeFunction:Function;
 		private var _duration:Number;
+		private var _parameters:Object;
+		private var _easeFunction:Function;
 		private var _completeHandler:Function;
 		private var _completeParams:Array;
 		private var _updateHandler:Function;
@@ -31,7 +32,7 @@ package garbuz.motion
 		private var _startTime:Number;
 		private var _endTime:Number;
 
-		public function Tween(manager:TweenManager, target:Object, duration:Number)
+		public function Tweener(manager:TweenManager, target:Object, duration:Number)
 		{
 			_manager = manager;
 			_target = target;
@@ -53,7 +54,7 @@ package garbuz.motion
 		//
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		public function easing(value:Function):Tween
+		public function easing(value:Function):Tweener
 		{
 			if (value == null)
 				throw new InvalidValueError("value", value);
@@ -63,33 +64,33 @@ package garbuz.motion
 			return this;
 		}
 
-		public function to(properties:Object):Tween
+		public function to(parameters:Object):Tweener
 		{
-			if (!properties)
-				throw new InvalidValueError("properties", properties);
+			if (!parameters)
+				throw new InvalidValueError("properties", parameters);
 
-			initProperties(properties);
+			_parameters = parameters;
 
 			return this;
 		}
 
-		public function onUpdate(handler:Function, ...args):Tween
+		public function onUpdate(handler:Function, ...args):Tweener
 		{
 			_updateHandler = handler;
 			_updateParams = args;
 			return this;
 		}
 
-		public function onComplete(handler:Function, ...args):Tween
+		public function onComplete(handler:Function, ...args):Tweener
 		{
 			_completeHandler = handler;
 			_completeParams = args;
 			return this;
 		}
 
-		public function chain(duration:Number = -1):Tween
+		public function tween(duration:Number = -1):Tweener
 		{
-			return chainTween = new Tween(_manager, _target, duration);
+			return chain = new Tweener(_manager, _target, duration);
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -106,17 +107,20 @@ package garbuz.motion
 			if (_easeFunction == null)
 				_easeFunction = _manager.defaultEasing;
 
+			initProperties();
+
 			_startTime = getTimer();
 			_endTime = _startTime + _duration;
 
 			_initialized = true;
 		}
 
-		private function initProperties(props:Object):void
+		private function initProperties():void
 		{
-			for (var propName:String in props)
+			for (var propName:String in _parameters)
 			{
-				var property:ITweenProperty = new DefaultProperty(_target, propName, props[propName]);
+				var propValue:Number = _parameters[propName];
+				var property:ITweenProperty = new DefaultProperty(_target, propName, propValue);
 				_properties.push(property);
 			}
 		}
@@ -124,8 +128,15 @@ package garbuz.motion
 		motion_internal function dispose():void
 		{
 			_target = null;
+			
+			_completeHandler = null;
+			_completeParams = null;
+			_updateHandler = null;
+			_updateParams = null;
+
 			next = null;
 			prev = null;
+			chain = null;
 		}
 
 		motion_internal function doStep():void
@@ -156,6 +167,12 @@ package garbuz.motion
 				_completeHandler.apply(null, _completeParams);
 		}
 
+		motion_internal function addTime(time:Number):void
+		{
+			_startTime += time;
+			_endTime += time;
+		}
+
 		private function applyComplete():void
 		{
 			completed = true;
@@ -165,6 +182,5 @@ package garbuz.motion
 				property.applyComplete();
 			}
 		}
-
 	}
 }

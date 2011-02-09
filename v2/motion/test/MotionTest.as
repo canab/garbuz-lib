@@ -2,7 +2,10 @@ package
 {
 	import flash.display.Sprite;
 
-	import garbuz.motion.motion;
+	import flash.events.MouseEvent;
+
+	import garbuz.motion.TweenManager;
+	import garbuz.motion.tween;
 
 	[SWF(width="640", height="480", frameRate="30")]
 	public class MotionTest extends Sprite
@@ -12,26 +15,38 @@ package
 			var sprite:Sprite = createSprite();
 			addChild(sprite);
 			move(sprite);
+
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+			stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+		}
+
+		private function onMouseDown(event:MouseEvent):void
+		{
+			TweenManager.pause();
+		}
+
+		private function onMouseUp(event:MouseEvent):void
+		{
+			TweenManager.resume();
 		}
 
 		private function move(target:Sprite):void
 		{
-			motion(target, 2)
+			tween(target, 2)
 				.to({x: 500, y:50})
+				.tween()
+				.tween()
+				.to({y: 100})
+				.tween(0.5)
+				.to({y: 250})
 				.onComplete(moveBack, target);
 		}
 
 		private function moveBack(target:Sprite):void
 		{
-			motion(target)
+			tween(target)
 				.to({x: 0, y:0})
-				.onUpdate(update, target)
 				.onComplete(move, target);
-		}
-
-		private function update(target:Sprite):void
-		{
-			target.alpha = Math.random();
 		}
 
 		private function createSprite():Sprite

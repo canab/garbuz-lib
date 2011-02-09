@@ -1,6 +1,6 @@
 package garbuz.motion
 {
-	public function motion(target:Object, duration:Number = -1):Tween
+	public function tween(target:Object, duration:Number = -1):Tweener
 	{
 		return TweenManager.tween(target);
 	}

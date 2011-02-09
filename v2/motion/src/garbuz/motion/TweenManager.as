@@ -28,7 +28,7 @@ package garbuz.motion
 		//
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		public static function tween(target:Object):Tween
+		public static function tween(target:Object):Tweener
 		{
 			return instance.tween(target);
 		}
@@ -70,27 +70,29 @@ package garbuz.motion
 		//
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		private var _head:Tween = null;
+		private var _head:Tweener = null;
 		private var _dispatcher:Shape = new Shape();
 		private var _paused:Boolean = false;
 		private var _isDispatcherActive:Boolean = false;
+		private var _pauseTime:Number;
 
 		private var _defaultDuration:Number = 1.0;
 		private var _defaultEasing:Function = Quad.easeOut;
 
-		public function tween(target:Object, duration:Number = -1):Tween
+		public function tween(target:Object, duration:Number = -1):Tweener
 		{
-			var tween:Tween = new Tween(this, target, duration);
-			insertTween(tween);
+			var tweener:Tweener = new Tweener(this, target, duration);
+			insertTween(tweener);
 			updateDispatcher();
-			return tween;
+			return tweener;
 		}
 
 		public function pause():void
 		{
 			if (!_paused)
 			{
-				_paused = false;
+				_paused = true;
+				_pauseTime = getTimer();
 				updateDispatcher();
 			}
 		}
@@ -100,10 +102,10 @@ package garbuz.motion
 			if (_paused)
 			{
 				_paused = false;
+				addTime(getTimer() - _pauseTime);
 				updateDispatcher();
 			}
 		}
-
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		//
@@ -111,76 +113,87 @@ package garbuz.motion
 		//
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		private function insertTween(tween:Tween):void
+		private function insertTween(tweener:Tweener):void
 		{
-			tween.next = _head;
-			tween.prev = null;
+			tweener.next = _head;
+			tweener.prev = null;
 
 			if (_head)
-				_head.prev = tween;
+				_head.prev = tweener;
 			
-			_head = tween;
+			_head = tweener;
 		}
 
-		private function deleteTween(tween:Tween):void
+		private function deleteTween(tweener:Tweener):void
 		{
-			var prev:Tween = tween.prev;
-			var next:Tween = tween.next;
+			var prevTweener:Tweener = tweener.prev;
+			var nextTweener:Tweener = tweener.next;
 
-			if (prev)
-				prev.next = next;
+			if (prevTweener)
+				prevTweener.next = nextTweener;
 
-			if (next)
-				next.prev = prev;
+			if (nextTweener)
+				nextTweener.prev = prevTweener;
 
-			if (tween == _head)
-				_head = next;
+			if (tweener == _head)
+				_head = nextTweener;
 
-			tween.dispose();
+			tweener.dispose();
 		}
 
 		private function processTweens(event:Event):void
 		{
 			currentTime = getTimer();
 			
-			var tween:Tween = _head;
+			var tweener:Tweener = _head;
 
-			while (tween)
+			while (tweener)
 			{
-				var nextTween:Tween = tween.next;
+				var nextTweener:Tweener = tweener.next;
 
-				if (tween.removed)
+				if (tweener.removed)
 				{
-					deleteTween(tween);
+					deleteTween(tweener);
 				}
 				else
 				{
-					tween.doStep();
-					if (tween.completed)
-						finishTween(tween);
+					tweener.doStep();
+					if (tweener.completed)
+						finishTween(tweener);
 				}
 
-				tween = nextTween;
+				tweener = nextTweener;
 			}
 
 			updateDispatcher();
 		}
 
-		private function finishTween(tween:Tween):void
+		private function finishTween(tweener:Tweener):void
 		{
-			deleteTween(tween);
+			if (tweener.chain)
+				insertTween(tweener.chain);
+
+			deleteTween(tweener);
+		}
+
+		private function addTime(time:Number):void
+		{
+			for (var tweener:Tweener = _head; tweener; tweener = tweener.next)
+			{
+				tweener.addTime(time);
+			}
 		}
 
 		private function updateDispatcher():void
 		{
-			if (_isDispatcherActive && _paused)
+			if (_isDispatcherActive && (_paused || !_head))
 			{
 				_isDispatcherActive = false;
 				_dispatcher.removeEventListener(Event.ENTER_FRAME, processTweens);
 			}
 			else if (!_isDispatcherActive && !_paused && _head)
 			{
-				_isDispatcherActive = false;
+				_isDispatcherActive = true;
 				_dispatcher.addEventListener(Event.ENTER_FRAME, processTweens);
 			}
 		}
