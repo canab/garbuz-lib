@@ -1,0 +1,44 @@
+﻿<project name="as3-common-lib" basedir="." default="build">
+	
+	<property file="local.properties"/>
+	<property name="source.dir" value="../src"/>
+	<property name="output.dir" value=".."/>
+	<property name="swc.name" value="garbuz"/>
+	
+	<taskdef name="svn" classname="org.tigris.subversion.svnant.SvnTask">
+		<classpath>
+			<pathelement location="lib/svnant.jar"/>
+			<pathelement location="lib/svnClientAdapter.jar"/>
+			<pathelement location="lib/svnjavahl.jar"/>
+			<pathelement location="lib/svnkit.jar"/>
+		</classpath>
+	</taskdef>
+	
+	<target name="clean">
+		<delete>
+			<fileset dir="${output.dir}" includes="**/*.swc"/>
+		</delete>
+	</target>
+	
+	<target name="svnUpdate">
+		<svn username="${svn.username}" password="${svn.password}">
+			<update dir="${source.dir}"/>
+		</svn>
+	</target>
+	
+	<target name="buildNumber">
+		<svn>
+			<status path="${source.dir}" revisionProperty="build.number"/>
+		</svn>
+		<echo>revision #${build.number}</echo>
+	</target>
+	
+	<target name="build" depends="clean, svnUpdate, buildNumber">
+		<exec executable="${flex.sdk.dir}/bin/${flex.compiler}" failonerror="true">
+			<arg line="-debug=true"/>
+			<arg line="-source-path+=${source.dir}"/>
+			<arg line="-include-sources+=${source.dir}"/>
+			<arg line="-output=${output.dir}/${swc.name}-r${build.number}.swc"/>
+		</exec>
+	</target>
+</project>
