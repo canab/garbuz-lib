@@ -28,9 +28,9 @@ package garbuz.motion
 		//
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		public static function tween(target:Object):Tweener
+		public static function tween(target:Object, duration:Number):Tweener
 		{
-			return instance.tween(target);
+			return instance.tween(target, duration);
 		}
 
 		public static function pause():void

@@ -57,9 +57,9 @@ package garbuz.common.utils
 			}
 		}
 		
-		static public function detachFromDisplay(displyObject:DisplayObject):void
+		static public function detachFromDisplay(displayObject:DisplayObject):void
 		{
-			displyObject.parent.removeChild(displyObject);
+			displayObject.parent.removeChild(displayObject);
 		}
 		
 		static public function getChildrenBounds(container:DisplayObjectContainer):Rectangle

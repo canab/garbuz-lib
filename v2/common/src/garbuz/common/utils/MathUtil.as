@@ -46,7 +46,7 @@ package garbuz.common.utils
 		 * @return
 		 * angle value in range [-PI...PI]
 		 */
-		public static function notmalizeAngle(angle:Number):Number
+		public static function normalizeAngle(angle:Number):Number
 		{
 			angle %= _2PI;
 			
@@ -59,7 +59,7 @@ package garbuz.common.utils
 		}
 		
 		/**
-		 * Calcs angle difference
+		 * Calculates angle difference
 		 * @param	angle1
 		 * angle value in radians
 		 * @param	angle2

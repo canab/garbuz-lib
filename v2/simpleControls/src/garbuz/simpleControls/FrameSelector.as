@@ -26,8 +26,8 @@
 		
 		private function initialize():void
 		{
-			prevButon.addEventListener(MouseEvent.CLICK, onPrevClick);
-			nextButon.addEventListener(MouseEvent.CLICK, onNextClick);
+			prevButton.addEventListener(MouseEvent.CLICK, onPrevClick);
+			nextButton.addEventListener(MouseEvent.CLICK, onNextClick);
 		}
 		
 		private function onPrevClick(e:MouseEvent):void
@@ -44,8 +44,8 @@
 		
 		public function refresh():void
 		{
-			setBtnEnabled(prevButon, frames.currentFrame > 1);
-			setBtnEnabled(nextButon, frames.currentFrame < frames.totalFrames);
+			setBtnEnabled(prevButton, frames.currentFrame > 1);
+			setBtnEnabled(nextButton, frames.currentFrame < frames.totalFrames);
 		}
 		
 		private function setBtnEnabled(object:InteractiveObject, enabled:Boolean):void
@@ -70,12 +70,12 @@
 			refresh();
 		}
 		
-		public function get nextButon():SimpleButton
+		public function get nextButton():SimpleButton
 		{
 			return _content[NEXT_NAME];
 		}
 		
-		public function get prevButon():SimpleButton
+		public function get prevButton():SimpleButton
 		{
 			return _content[PREV_NAME];
 		}

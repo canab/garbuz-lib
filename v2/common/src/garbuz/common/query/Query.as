@@ -92,7 +92,9 @@ package garbuz.common.query
 			{
 				if (_requirement == null || _requirement.accept(item))
 				{
-					sum += (field) ? item[field] : item;
+					sum += (field)
+							? Number(item[field])
+							: Number(item);
 				}
 
 			}

@@ -46,7 +46,7 @@ package garbuz.engine
 		}
 		
 		/**
-		 * create points 2-dimension array of poinds
+		 * create points 2-dimension array of points
 		 **/
 		private function createPoints():void
 		{
@@ -135,12 +135,12 @@ package garbuz.engine
 			if (doSimpleSearch())
 			{
 				if (debugMode)
-					trace('PethBuilder: simple');
+					trace('PathBuilder: simple');
 			}
 			else if (doDefaultSearch())
 			{
 				if (debugMode)
-					trace('PethBuilder: simple');
+					trace('PathBuilder: simple');
 			}
 
 			if (debugMode)
@@ -184,24 +184,24 @@ package garbuz.engine
 			var i2:int = _finishPoint.i;
 			var j2:int = _finishPoint.j;
 			
-			var di:int = i2 - i0;
-			var dj:int = j2 - j0;
+			var iDiff:int = i2 - i0;
+			var jDiff:int = j2 - j0;
 			
-			var absdi:int = Math.abs(di);
-			var absdj:int = Math.abs(dj);
+			var absIDiff:int = Math.abs(iDiff);
+			var absJDiff:int = Math.abs(jDiff);
 			
 			//-- indexes for middle point
 			
 			//-- horizontal direction
-			if (absdj > absdi)
+			if (absJDiff > absIDiff)
 			{
 				i1 = i0;
 				//-- to left
-				if (dj > 0) 
-					j1 = j2 - absdi;
+				if (jDiff > 0)
+					j1 = j2 - absIDiff;
 				//-- to right
 				else
-					j1 = j2 + absdi;
+					j1 = j2 + absIDiff;
 			}
 			//-- vertical
 			else
@@ -209,11 +209,11 @@ package garbuz.engine
 				j1 = j0;
 				
 				//-- down
-				if (di > 0)
-					i1 = i2 - absdj;
+				if (iDiff > 0)
+					i1 = i2 - absJDiff;
 				//-- up
 				else
-					i1 = i2 + absdj;
+					i1 = i2 + absJDiff;
 			}
 			
 			var middlePoint:PathPoint = _points[i1][j1];
@@ -291,7 +291,7 @@ package garbuz.engine
 		private function buildPath():void
 		{
 			var point:PathPoint = _finishPoint; 
-			var tpath:Array = [_finishPoint];
+			var tempPath:Array = [_finishPoint];
 			_finishPoint.direction = -1;
 			
 			//-- build array of path points from _finishPoint to _startPoint
@@ -317,7 +317,7 @@ package garbuz.engine
 					}
 				}
 				
-				tpath.push(nextPoint);
+				tempPath.push(nextPoint);
 				point = nextPoint;
 			}
 			
@@ -325,10 +325,10 @@ package garbuz.engine
 			_path = new Vector.<Point>();
 			_path.push(_startPoint.toPoint());
 				
-			for (var i:int = tpath.length - 2; i >= 0; i--)
+			for (var i:int = tempPath.length - 2; i >= 0; i--)
 			{
-				if (tpath[i].direction != tpath[i+1].direction)
-					_path.push(tpath[i].toPoint());
+				if (tempPath[i].direction != tempPath[i+1].direction)
+					_path.push(tempPath[i].toPoint());
 			}
 		}
 		

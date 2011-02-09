@@ -19,8 +19,9 @@ package garbuz.common.ui
 		private var _root:Sprite;
 		private var _pointer:DisplayObject; 
 		private var _targets:Dictionary = new Dictionary(true);
-		
-		public function MouseManager(param:PrivateConstructor) 
+
+		//noinspection JSUnusedLocalSymbols
+		public function MouseManager(param:PrivateConstructor)
 		{
 			super();
 		}

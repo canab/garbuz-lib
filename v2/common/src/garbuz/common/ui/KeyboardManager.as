@@ -24,7 +24,8 @@ package garbuz.common.ui
 		private var _releaseEvent:EventSender = new EventSender(this);
 		private var _pressedKeys:Dictionary = new Dictionary();
 		private var _root:Sprite;
-		
+
+		//noinspection JSUnusedLocalSymbols
 		public function KeyboardManager(param:PrivateConstructor)
 		{
 			super();

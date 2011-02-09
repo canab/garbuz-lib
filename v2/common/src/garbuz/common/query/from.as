@@ -6,7 +6,7 @@ package garbuz.common.query
 	 */
 	
 	/**
-	 * Querry objects from collection
+	 * Query objects from collection
 	 * @param	source
 	 * object that supports (for each...) iteration
 	 * @return
