@@ -9,7 +9,9 @@ package
 		public function MotionTest()
 		{
 			var sprite:Sprite = createSprite();
-			motion(sprite);
+			addChild(sprite);
+			motion(sprite)
+					.to({x: 500, y:200});
 		}
 
 		private function createSprite():Sprite

@@ -1,6 +1,5 @@
 package garbuz.motion
 {
-	import flash.display.Shader;
 	import flash.display.Shape;
 	import flash.events.Event;
 
@@ -10,7 +9,7 @@ package garbuz.motion
 	{
 		private static var _instance:TweenManager;
 
-		public static function get instance():TweenManager
+		motion_internal static function get instance():TweenManager
 		{
 			if (!_instance)
 				_instance = new TweenManager();
@@ -43,11 +42,13 @@ package garbuz.motion
 		private var _dispatcher:Shape = new Shape();
 		private var _paused:Boolean = false;
 		private var _isDispatcherActive:Boolean = false;
+		private var _defaultDuration:Number = 1.0;
 
 		public function tween(target:Object):MotionTween
 		{
-			var tween:MotionTween = new MotionTween(target);
-			addTween(tween);
+			var tween:MotionTween = createTween(target);
+			insertTween(tween);
+			updateDispatcher();
 			return tween;
 		}
 
@@ -76,16 +77,11 @@ package garbuz.motion
 		//
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		private function addTween(tween:MotionTween):void
+		private function createTween(target:Object):MotionTween
 		{
-			insertTween(tween);
-			updateDispatcher();
-		}
-
-		private function removeTween(tween:MotionTween):void
-		{
-			deleteTween(tween);
-			updateDispatcher();
+			var tween:MotionTween = new MotionTween(target);
+			tween.setDuration(_defaultDuration);
+			return tween;
 		}
 
 		private function insertTween(tween:MotionTween):void
@@ -113,6 +109,36 @@ package garbuz.motion
 			tween.dispose();
 		}
 
+		private function processTweens(event:Event):void
+		{
+			var tween:MotionTween = _head;
+
+			while (tween)
+			{
+				var nextTween:MotionTween = tween.next;
+
+				if (tween.removed)
+				{
+					deleteTween(tween);
+				}
+				else
+				{
+					tween.doStep();
+					if (tween.finished)
+						finishTween(tween)
+				}
+
+				tween = nextTween;
+			}
+
+			updateDispatcher();
+		}
+
+		private function finishTween(tween:MotionTween):void
+		{
+			deleteTween(tween);
+		}
+
 		private function updateDispatcher():void
 		{
 			if (_isDispatcherActive && _paused)
@@ -124,16 +150,6 @@ package garbuz.motion
 			{
 				_isDispatcherActive = false;
 				_dispatcher.addEventListener(Event.ENTER_FRAME, processTweens);
-			}
-		}
-
-		private function processTweens(event:Event):void
-		{
-			var tween:MotionTween = _head;
-
-			while (tween)
-			{
-				tween = tween.next;
 			}
 		}
 
@@ -153,5 +169,14 @@ package garbuz.motion
 			updateDispatcher();
 		}
 
+		public function get defaultDuration():Number
+		{
+			return _defaultDuration;
+		}
+
+		public function set defaultDuration(value:Number):void
+		{
+			_defaultDuration = value;
+		}
 	}
 }
