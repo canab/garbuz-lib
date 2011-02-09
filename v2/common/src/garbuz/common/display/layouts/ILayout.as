@@ -1,4 +1,4 @@
-﻿package garbuz.flash.layouts 
+﻿package garbuz.common.display.layouts
 {
 	import flash.display.DisplayObjectContainer;
 	
