@@ -16,8 +16,7 @@ package
 
 		private function move(target:Sprite):void
 		{
-			motion(target)
-				.duration(2)
+			motion(target, 2)
 				.to({x: 500, y:50})
 				.onComplete(moveBack, target);
 		}

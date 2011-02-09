@@ -8,17 +8,14 @@ package garbuz.motion
 
 	use namespace motion_internal;
 
-	public class Tweening
+	public class Tween
 	{
-		motion_internal var target:Object;
-
-		motion_internal var prev:Tweening;
-		motion_internal var next:Tweening;
+		motion_internal var prev:Tween;
+		motion_internal var next:Tween;
 
 		motion_internal var completed:Boolean = false;
 		motion_internal var removed:Boolean = false;
-
-		private var _initialized:Boolean = false;
+		motion_internal var chainTween:Tween = null;
 
 		private var _easeFunction:Function;
 		private var _duration:Number;
@@ -27,21 +24,36 @@ package garbuz.motion
 		private var _updateHandler:Function;
 		private var _updateParams:Array;
 
+		private var _manager:TweenManager;
+		private var _target:Object;
+		private var _initialized:Boolean = false;
 		private var _properties:Array = [];
 		private var _startTime:Number;
 		private var _endTime:Number;
 
-		public function Tweening(target:Object)
+		public function Tween(manager:TweenManager, target:Object, duration:Number)
 		{
-			this.target = target;
+			_manager = manager;
+			_target = target;
+
+			_duration = (duration == -1)
+					? _manager.defaultDuration
+					: duration;
+
+			if (_duration <= 0)
+				throw new InvalidValueError("duration", duration);
+
+			_duration *= 1000;
 		}
+
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		//
 		// public
 		//
 		/////////////////////////////////////////////////////////////////////////////////////
-		public function easing(value:Function):Tweening
+
+		public function easing(value:Function):Tween
 		{
 			if (value == null)
 				throw new InvalidValueError("value", value);
@@ -51,17 +63,7 @@ package garbuz.motion
 			return this;
 		}
 
-		public function duration(value:Number):Tweening
-		{
-			if (value <= 0)
-				throw new InvalidValueError("duration", value);
-
-			_duration = value * 1000;
-
-			return this;
-		}
-
-		public function to(properties:Object):Tweening
+		public function to(properties:Object):Tween
 		{
 			if (!properties)
 				throw new InvalidValueError("properties", properties);
@@ -71,18 +73,23 @@ package garbuz.motion
 			return this;
 		}
 
-		public function onUpdate(handler:Function, ...args):Tweening
+		public function onUpdate(handler:Function, ...args):Tween
 		{
 			_updateHandler = handler;
 			_updateParams = args;
 			return this;
 		}
 
-		public function onComplete(handler:Function, ...args):Tweening
+		public function onComplete(handler:Function, ...args):Tween
 		{
 			_completeHandler = handler;
 			_completeParams = args;
 			return this;
+		}
+
+		public function chain(duration:Number = -1):Tween
+		{
+			return chainTween = new Tween(_manager, _target, duration);
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -93,6 +100,12 @@ package garbuz.motion
 
 		private function initialize():void
 		{
+			if (_duration == 0)
+				_duration = _manager.defaultDuration;
+
+			if (_easeFunction == null)
+				_easeFunction = _manager.defaultEasing;
+
 			_startTime = getTimer();
 			_endTime = _startTime + _duration;
 
@@ -103,14 +116,14 @@ package garbuz.motion
 		{
 			for (var propName:String in props)
 			{
-				var property:ITweenProperty = new DefaultProperty(target, propName, props[propName]);
+				var property:ITweenProperty = new DefaultProperty(_target, propName, props[propName]);
 				_properties.push(property);
 			}
 		}
 
 		motion_internal function dispose():void
 		{
-			target = null;
+			_target = null;
 			next = null;
 			prev = null;
 		}
