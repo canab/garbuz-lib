@@ -28,7 +28,7 @@ package garbuz.motion
 		//
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		public static function tween(target:Object):MotionTween
+		public static function tween(target:Object):Tweening
 		{
 			return instance.tween(target);
 		}
@@ -70,7 +70,7 @@ package garbuz.motion
 		//
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		private var _head:MotionTween = null;
+		private var _head:Tweening = null;
 		private var _dispatcher:Shape = new Shape();
 		private var _paused:Boolean = false;
 		private var _isDispatcherActive:Boolean = false;
@@ -78,9 +78,9 @@ package garbuz.motion
 		private var _defaultDuration:Number = 1.0;
 		private var _defaultEasing:Function = Quad.easeOut;
 
-		public function tween(target:Object):MotionTween
+		public function tween(target:Object):Tweening
 		{
-			var tween:MotionTween = createTween(target);
+			var tween:Tweening = createTween(target);
 			insertTween(tween);
 			updateDispatcher();
 			return tween;
@@ -111,15 +111,15 @@ package garbuz.motion
 		//
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		private function createTween(target:Object):MotionTween
+		private function createTween(target:Object):Tweening
 		{
-			var tween:MotionTween = new MotionTween(target);
+			var tween:Tweening = new Tweening(target);
 			tween.duration(_defaultDuration);
 			tween.easing(_defaultEasing);
 			return tween;
 		}
 
-		private function insertTween(tween:MotionTween):void
+		private function insertTween(tween:Tweening):void
 		{
 			tween.next = _head;
 			tween.prev = null;
@@ -130,10 +130,10 @@ package garbuz.motion
 			_head = tween;
 		}
 
-		private function deleteTween(tween:MotionTween):void
+		private function deleteTween(tween:Tweening):void
 		{
-			var prev:MotionTween = tween.prev;
-			var next:MotionTween = tween.next;
+			var prev:Tweening = tween.prev;
+			var next:Tweening = tween.next;
 
 			if (prev)
 				prev.next = next;
@@ -151,11 +151,11 @@ package garbuz.motion
 		{
 			currentTime = getTimer();
 			
-			var tween:MotionTween = _head;
+			var tween:Tweening = _head;
 
 			while (tween)
 			{
-				var nextTween:MotionTween = tween.next;
+				var nextTween:Tweening = tween.next;
 
 				if (tween.removed)
 				{
@@ -174,7 +174,7 @@ package garbuz.motion
 			updateDispatcher();
 		}
 
-		private function finishTween(tween:MotionTween):void
+		private function finishTween(tween:Tweening):void
 		{
 			deleteTween(tween);
 		}
