@@ -43,7 +43,7 @@ package garbuz.motion
 		/////////////////////////////////////////////////////////////////////////////////////
 		public function easing(value:Function):MotionTween
 		{
-			if (!value)
+			if (value == null)
 				throw new InvalidValueError("value", value);
 
 			_easeFunction = value;
