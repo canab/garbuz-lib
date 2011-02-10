@@ -2,12 +2,12 @@ package garbuz.motion.properties
 {
 	public class DefaultProperty implements ITweenProperty
 	{
-		private var _target:Object;
-		private var _propName:String;
-		private var _startValue:Number;
-		private var _endValue:Number;
+		protected var _target:Object;
+		protected var _propName:String;
+		protected var _startValue:Number;
+		protected var _endValue:Number;
 
-		public function DefaultProperty(target:Object, propertyName:String)
+		public function setObject(target:Object, propertyName:String):void
 		{
 			_target = target;
 			_propName = propertyName;
@@ -31,6 +31,11 @@ package garbuz.motion.properties
 		public function applyEndValue():void
 		{
 			_target[_propName] = _endValue;
+		}
+
+		public function getValueFromTarget():Object
+		{
+			return _target[_propName];
 		}
 	}
 }

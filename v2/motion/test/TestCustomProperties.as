@@ -10,17 +10,20 @@ package
 
 		override protected function onInitialize():void
 		{
+			_sprite = createSprite();
+			createTween();
 		}
 
 		private function createTween():void
 		{
-			tween(createSprite(), 3)
-				.from({alpha: 0})
+			tween(_sprite)
+				.from({scale: 0.1, alpha: 1})
+				.to({scale: 1.5, alpha: 0.5})
 				.updateNow()
-				.tween(2)
-				.to({alpha: 0, y:20})
-				.autoDetach()
-				.onComplete(createTween);
+				.tween()
+				.delay(0.5)
+				.to({scale: 0.1})
+				.onComplete(createTween)
 		}
 
 	}

@@ -6,6 +6,8 @@ package garbuz.motion
 	import flash.utils.getTimer;
 
 	import garbuz.motion.easing.Quad;
+	import garbuz.motion.properties.ITweenProperty;
+	import garbuz.motion.properties.ScaleProperty;
 
 	use namespace motion_internal;
 
@@ -27,6 +29,8 @@ package garbuz.motion
 	{
 		private static var _instance:TweenManager;
 
+		motion_internal static var specialProperties:Object = {};
+
 		motion_internal static function get instance():TweenManager
 		{
 			if (!_instance)
@@ -35,11 +39,24 @@ package garbuz.motion
 			return _instance;
 		}
 
+		registerSpecialProperty("scale", ScaleProperty);
+
 		/////////////////////////////////////////////////////////////////////////////////////
 		//
 		// public interface
 		//
 		/////////////////////////////////////////////////////////////////////////////////////
+
+		/**
+		 * Add custom behaviour for some property name
+		 * @param name property name
+		 * @param propertyClass class, should implement ITweenProperty and have no constructor without parameters.
+		 * @see package garbuz.motion.properties
+		 */
+		public static function registerSpecialProperty(name:String, propertyClass:Class):void
+		{
+			specialProperties[name] = propertyClass;
+		}
 
 		/**
 		 * Create new tween
@@ -126,6 +143,12 @@ package garbuz.motion
 		private var _defaultDuration:Number = 1.0;
 		private var _defaultEasing:Function = Quad.easeOut;
 		private var _tweenCount:int = 0;
+		private var _customProperties:Object = {};
+
+		public function TweenManager()
+		{
+			super();
+		}
 
 		/**
 		 * Create new tween

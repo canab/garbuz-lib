@@ -19,8 +19,9 @@ package
 			addEventListener(Event.ENTER_FRAME, refreshDebugInfo);
 
 //			new TestBasicTween().initialize(this);
-			new TestOverride().initialize(this);
+//			new TestOverride().initialize(this);
 //			new TestFromTo().initialize(this);
+			new TestCustomProperties().initialize(this);
 		}
 
 		private function refreshDebugInfo(event:Event):void

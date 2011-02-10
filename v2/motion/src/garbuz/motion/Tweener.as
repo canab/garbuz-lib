@@ -257,9 +257,9 @@ package garbuz.motion
 			for (propName in _fromParams)
 			{
 				_fromExists = true;
-				property = properties[propName] = new DefaultProperty(target, propName);
+				property = properties[propName] = getProperty(target, propName);
 				property.setStartValue(_fromParams[propName]);
-				property.setEndValue(target[propName]);
+				property.setEndValue(property.getValueFromTarget());
 			}
 
 			for (propName in _toParams)
@@ -268,12 +268,32 @@ package garbuz.motion
 				
 				if (!property)
 				{
-					property = properties[propName] = new DefaultProperty(target, propName);
-					property.setStartValue(target[propName]);
+					property = properties[propName] = getProperty(target, propName);
+					property.setStartValue(property.getValueFromTarget());
 				}
 
 				property.setEndValue(_toParams[propName]);
 			}
+		}
+
+		private function getProperty(target:Object, propName:String):ITweenProperty
+		{
+			var property:ITweenProperty;
+
+			if (propName in TweenManager.specialProperties
+					&& !target.hasOwnProperty(propName)
+					&& !(propName in target))
+			{
+				property = new (TweenManager.specialProperties[propName])();
+			}
+			else
+			{
+				property = new DefaultProperty();
+			}
+
+			property.setObject(target, propName);
+
+			return property
 		}
 
 		motion_internal function doStep(currentTime:Number):void
