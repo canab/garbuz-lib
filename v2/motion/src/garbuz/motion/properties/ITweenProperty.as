@@ -4,6 +4,6 @@ package garbuz.motion.properties
 	{
 		function applyPosition(relativeTime:Number):void;
 
-		function applyComplete():void;
+		function applyEndValue():void;
 	}
 }

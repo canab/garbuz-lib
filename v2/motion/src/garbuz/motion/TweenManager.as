@@ -2,12 +2,23 @@ package garbuz.motion
 {
 	import flash.display.Shape;
 	import flash.events.Event;
+	import flash.utils.Dictionary;
 	import flash.utils.getTimer;
 
 	import garbuz.motion.easing.Quad;
 
 	use namespace motion_internal;
 
+	/**
+	 * Class provides tween animation.
+	 * Can be used by static interface as
+	 * <code>TweenManager.tween(...)</code>
+	 * or as several instances of TweenManager
+	 * @example
+	 * <code>var manager:TweenManager = new TweenManager()
+	 * manager.tween(...)</code>
+	 * @see garbuz.motion.tween()
+	 */
 	public class TweenManager
 	{
 		private static var _instance:TweenManager;
@@ -22,25 +33,44 @@ package garbuz.motion
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		//
-		// static interface
+		// public interface
 		//
 		/////////////////////////////////////////////////////////////////////////////////////
 
+		/**
+		 * Create new tween
+		 * @param target
+		 * target object
+		 * @param duration
+		 * Tween time in seconds. If omitted defaultDuration value will be used.
+		 * @see garbuz.motion.TweenManager.defaultDuration()
+		 */
 		public static function tween(target:Object, duration:Number):Tweener
 		{
 			return instance.tween(target, duration);
 		}
 
+		/**
+		 * Pause all tweens
+		 * @see garbuz.motion.TweenManager.resume()
+		 */
 		public static function pause():void
 		{
 			instance.pause();
 		}
 
+		/**
+		 * Resume all tweens
+		 * @see garbuz.motion.TweenManager.pause()
+		 */
 		public static function resume():void
 		{
 			instance.resume();
 		}
 
+		/**
+		 * Default duration in seconds
+		 */
 		public static function get defaultDuration():Number
 		{
 			return instance.defaultDuration;
@@ -51,6 +81,10 @@ package garbuz.motion
 			instance.defaultDuration = value;
 		}
 
+		/**
+		 * Default ease function
+		 * @see garbuz.motion.easing
+		 */
 		public static function get defaultEasing():Function
 		{
 			return instance.defaultEasing;
@@ -61,6 +95,13 @@ package garbuz.motion
 			instance.defaultEasing = value;
 		}
 
+		/**
+		 * Total count of tweens
+		 */
+		public static function get tweenCount():int
+		{
+			return instance.tweenCount;
+		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		//
@@ -68,25 +109,39 @@ package garbuz.motion
 		//
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		motion_internal var currentTime:Number;
 
 		private var _head:Tweener = null;
 		private var _dispatcher:Shape = new Shape();
 		private var _paused:Boolean = false;
 		private var _isDispatcherActive:Boolean = false;
 		private var _pauseTime:Number;
+		private var _targetsTweenMap:Dictionary = new Dictionary();
 
+		private var _currentTime:Number;
 		private var _defaultDuration:Number = 1.0;
 		private var _defaultEasing:Function = Quad.easeOut;
+		private var _tweenCount:int = 0;
 
+		/**
+		 * Create new tween
+		 * @param target
+		 * target object
+		 * @param duration
+		 * Tween time in seconds. If omitted defaultDuration value will be used.
+		 * @see garbuz.motion.TweenManager.defaultDuration()
+		 */
 		public function tween(target:Object, duration:Number = -1):Tweener
 		{
 			var tweener:Tweener = new Tweener(this, target, duration);
-			insertTween(tweener);
+			addTween(tweener);
 			updateDispatcher();
 			return tweener;
 		}
 
+		/**
+		 * Pause all tweens
+		 * @see garbuz.motion.TweenManager.resume()
+		 */
 		public function pause():void
 		{
 			if (!_paused)
@@ -97,6 +152,10 @@ package garbuz.motion
 			}
 		}
 
+		/**
+		 * Resume all tweens
+		 * @see garbuz.motion.TweenManager.pause()
+		 */
 		public function resume():void
 		{
 			if (_paused)
@@ -107,24 +166,86 @@ package garbuz.motion
 			}
 		}
 
+		/**
+		 * Default duration in seconds
+		 */
+		public function get defaultDuration():Number
+		{
+			return _defaultDuration;
+		}
+
+		public function set defaultDuration(value:Number):void
+		{
+			_defaultDuration = value;
+		}
+
+		/**
+		 * Default ease function
+		 * @see garbuz.motion.easing
+		 */
+		public function get defaultEasing():Function
+		{
+			return _defaultEasing;
+		}
+
+		public function set defaultEasing(value:Function):void
+		{
+			_defaultEasing = value;
+		}
+
+		/**
+		 * Total count of tweens
+		 */
+		public function get tweenCount():int
+		{
+			return _tweenCount;
+		}
+
 		/////////////////////////////////////////////////////////////////////////////////////
 		//
 		// private
 		//
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		private function insertTween(tweener:Tweener):void
+		private function addTween(tweener:Tweener):void
+		{
+			_tweenCount++;
+			insertIntoList(tweener);
+			addToMap(tweener);
+		}
+
+		private function insertIntoList(tweener:Tweener):void
 		{
 			tweener.next = _head;
 			tweener.prev = null;
 
 			if (_head)
 				_head.prev = tweener;
-			
+
 			_head = tweener;
 		}
 
-		private function deleteTween(tweener:Tweener):void
+		private function addToMap(tweener:Tweener):void
+		{
+			var tweens:Array = _targetsTweenMap[tweener.target];
+
+			if (!tweens)
+				tweens = _targetsTweenMap[tweener.target] = [];
+
+			tweens.push(tweener);
+		}
+
+		private function removeTween(tweener:Tweener):void
+		{
+			_tweenCount--;
+
+			deleteFromList(tweener);
+			removeFromMap(tweener);
+
+			tweener.dispose();
+		}
+
+		private function deleteFromList(tweener:Tweener):void
 		{
 			var prevTweener:Tweener = tweener.prev;
 			var nextTweener:Tweener = tweener.next;
@@ -137,13 +258,22 @@ package garbuz.motion
 
 			if (tweener == _head)
 				_head = nextTweener;
+		}
 
-			tweener.dispose();
+		private function removeFromMap(tweener:Tweener):void
+		{
+			var tweens:Array = _targetsTweenMap[tweener.target];
+			var index:int = tweens.indexOf(tweener);
+			if (index >= 0)
+				tweens.splice(index, 1);
+
+			if (tweens.length == 0)
+				delete _targetsTweenMap[tweener.target];
 		}
 
 		private function processTweens(event:Event):void
 		{
-			currentTime = getTimer();
+			_currentTime = getTimer();
 			
 			var tweener:Tweener = _head;
 
@@ -153,11 +283,18 @@ package garbuz.motion
 
 				if (tweener.removed)
 				{
-					deleteTween(tweener);
+					removeTween(tweener);
 				}
 				else
 				{
-					tweener.doStep();
+					if (!tweener.initialized)
+					{
+						tweener.initialize(_currentTime);
+						overrideProperties(tweener);
+					}
+
+					tweener.doStep(_currentTime);
+
 					if (tweener.completed)
 						finishTween(tweener);
 				}
@@ -168,12 +305,30 @@ package garbuz.motion
 			updateDispatcher();
 		}
 
+		private function overrideProperties(sourceTweener:Tweener):void
+		{
+			var targetTweeners:Array = _targetsTweenMap[sourceTweener.target];
+			var sourceProps:Object = sourceTweener.properties;
+
+			for each (var targetTweener:Tweener in targetTweeners)
+			{
+				if (targetTweener == sourceTweener)
+					continue;
+
+				var targetProps:Object = targetTweener.properties;
+				for (var propName:String in sourceProps)
+				{
+					delete targetProps[propName];
+				}
+			}
+		}
+
 		private function finishTween(tweener:Tweener):void
 		{
 			if (tweener.chain)
-				insertTween(tweener.chain);
+				addTween(tweener.chain);
 
-			deleteTween(tweener);
+			removeTween(tweener);
 		}
 
 		private function addTime(time:Number):void
@@ -196,32 +351,6 @@ package garbuz.motion
 				_isDispatcherActive = true;
 				_dispatcher.addEventListener(Event.ENTER_FRAME, processTweens);
 			}
-		}
-
-		/////////////////////////////////////////////////////////////////////////////////////
-		//
-		// get/set
-		//
-		/////////////////////////////////////////////////////////////////////////////////////
-
-		public function get defaultDuration():Number
-		{
-			return _defaultDuration;
-		}
-
-		public function set defaultDuration(value:Number):void
-		{
-			_defaultDuration = value;
-		}
-
-		public function get defaultEasing():Function
-		{
-			return _defaultEasing;
-		}
-
-		public function set defaultEasing(value:Function):void
-		{
-			_defaultEasing = value;
 		}
 	}
 }

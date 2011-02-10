@@ -12,8 +12,11 @@ package garbuz.motion
 		motion_internal var next:Tweener;
 		motion_internal var chain:Tweener;
 
+		motion_internal var initialized:Boolean = false;
 		motion_internal var completed:Boolean = false;
 		motion_internal var removed:Boolean = false;
+		motion_internal var target:Object;
+		motion_internal var properties:Object = {};
 
 		private var _duration:Number;
 		private var _parameters:Object;
@@ -24,16 +27,14 @@ package garbuz.motion
 		private var _updateParams:Array;
 
 		private var _manager:TweenManager;
-		private var _target:Object;
-		private var _initialized:Boolean = false;
-		private var _properties:Object = {};
 		private var _startTime:Number;
 		private var _delay:Number = 0;
 
 		public function Tweener(manager:TweenManager, target:Object, duration:Number)
 		{
 			_manager = manager;
-			_target = target;
+
+			this.target = target;
 
 			_duration = (duration < 0)
 					? _manager.defaultDuration * 1000
@@ -95,7 +96,7 @@ package garbuz.motion
 
 		public function tween(duration:Number = -1):Tweener
 		{
-			return chain = new Tweener(_manager, _target, duration);
+			return chain = new Tweener(_manager, target, duration);
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -104,16 +105,16 @@ package garbuz.motion
 		//
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		private function initialize():void
+		motion_internal function initialize(currentTime:Number):void
 		{
 			if (_easeFunction == null)
 				_easeFunction = _manager.defaultEasing;
 
 			initProperties();
 
-			_startTime = _manager.currentTime + _delay;
+			_startTime = currentTime + _delay;
 
-			_initialized = true;
+			initialized = true;
 		}
 
 		private function initProperties():void
@@ -121,20 +122,17 @@ package garbuz.motion
 			for (var propName:String in _parameters)
 			{
 				var propValue:Number = _parameters[propName];
-				var property:ITweenProperty = new DefaultProperty(_target, propName, propValue);
-				_properties[propName] = property;
+				var property:ITweenProperty = new DefaultProperty(target, propName, propValue);
+				properties[propName] = property;
 			}
 		}
 
-		motion_internal function doStep():void
+		motion_internal function doStep(currentTime:Number):void
 		{
-			if (!_initialized)
-				initialize();
-
-			if (_manager.currentTime < _startTime)
+			if (currentTime < _startTime)
 				return;
 
-			var timePosition:Number = (_manager.currentTime - _startTime) / _duration;
+			var timePosition:Number = (currentTime - _startTime) / _duration;
 			var needDispatchComplete:Boolean = false;
 
 			if (timePosition < 1)
@@ -142,7 +140,7 @@ package garbuz.motion
 				var easingPosition:Number = _easeFunction(timePosition);
 				completed = true;
 
-				for each (var property:ITweenProperty in _properties)
+				for each (var property:ITweenProperty in properties)
 				{
 					property.applyPosition(easingPosition);
 					completed = false;
@@ -167,17 +165,9 @@ package garbuz.motion
 			_startTime += time;
 		}
 
-		private function applyEndValues():void
-		{
-			for each (var property:ITweenProperty in _properties)
-			{
-				property.applyComplete();
-			}
-		}
-
 		motion_internal function dispose():void
 		{
-			_target = null;
+			target = null;
 
 			_completeHandler = null;
 			_completeParams = null;
@@ -187,6 +177,14 @@ package garbuz.motion
 			next = null;
 			prev = null;
 			chain = null;
+		}
+
+		private function applyEndValues():void
+		{
+			for each (var property:ITweenProperty in properties)
+			{
+				property.applyEndValue();
+			}
 		}
 	}
 }

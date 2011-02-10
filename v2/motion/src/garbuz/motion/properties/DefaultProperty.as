@@ -21,7 +21,7 @@ package garbuz.motion.properties
 			_target[_propName] = _startValue + position * (_endValue - _startValue)
 		}
 
-		public function applyComplete():void
+		public function applyEndValue():void
 		{
 			_target[_propName] = _endValue;
 		}

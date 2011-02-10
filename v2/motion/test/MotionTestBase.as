@@ -17,7 +17,9 @@ package
 			_root = root;
 			_root.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			_root.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
-			_root.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+			_root.addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
+			_root.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
+			_root.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 
 			onInitialize();
 		}
@@ -53,6 +55,17 @@ package
 		{
 			// virtual
 		}
+
+		protected function onMouseOut(event:MouseEvent):void
+		{
+			// virtual
+		}
+
+		protected function onMouseOver(event:MouseEvent):void
+		{
+			// virtual
+		}
+
 
 	}
 }
