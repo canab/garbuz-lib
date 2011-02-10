@@ -12,8 +12,6 @@ package garbuz.motion
 	{
 		private static var _instance:TweenManager;
 
-		motion_internal static var currentTime:Number;
-
 		motion_internal static function get instance():TweenManager
 		{
 			if (!_instance)
@@ -69,6 +67,8 @@ package garbuz.motion
 		// instance
 		//
 		/////////////////////////////////////////////////////////////////////////////////////
+
+		motion_internal var currentTime:Number;
 
 		private var _head:Tweener = null;
 		private var _dispatcher:Shape = new Shape();

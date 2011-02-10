@@ -1,7 +1,5 @@
 package garbuz.motion
 {
-	import flash.utils.getTimer;
-
 	import garbuz.motion.errors.InvalidValueError;
 	import garbuz.motion.properties.DefaultProperty;
 	import garbuz.motion.properties.ITweenProperty;
@@ -28,23 +26,18 @@ package garbuz.motion
 		private var _manager:TweenManager;
 		private var _target:Object;
 		private var _initialized:Boolean = false;
-		private var _properties:Array = [];
+		private var _properties:Object = {};
 		private var _startTime:Number;
-		private var _endTime:Number;
+		private var _delay:Number = 0;
 
 		public function Tweener(manager:TweenManager, target:Object, duration:Number)
 		{
 			_manager = manager;
 			_target = target;
 
-			_duration = (duration == -1)
-					? _manager.defaultDuration
-					: duration;
-
-			if (_duration <= 0)
-				throw new InvalidValueError("duration", duration);
-
-			_duration *= 1000;
+			_duration = (duration < 0)
+					? _manager.defaultDuration * 1000
+					: duration * 1000;
 		}
 
 
@@ -57,7 +50,7 @@ package garbuz.motion
 		public function easing(value:Function):Tweener
 		{
 			if (value == null)
-				throw new InvalidValueError("value", value);
+				throw new InvalidValueError("easing", value);
 
 			_easeFunction = value;
 
@@ -74,10 +67,21 @@ package garbuz.motion
 			return this;
 		}
 
+		public function delay(value:Number):Tweener
+		{
+			if (value <= 0)
+				throw new InvalidValueError("delay", value);
+
+			_delay = value * 1000;
+
+			return this;
+		}
+
 		public function onUpdate(handler:Function, ...args):Tweener
 		{
 			_updateHandler = handler;
 			_updateParams = args;
+
 			return this;
 		}
 
@@ -85,6 +89,7 @@ package garbuz.motion
 		{
 			_completeHandler = handler;
 			_completeParams = args;
+			
 			return this;
 		}
 
@@ -101,16 +106,12 @@ package garbuz.motion
 
 		private function initialize():void
 		{
-			if (_duration == 0)
-				_duration = _manager.defaultDuration;
-
 			if (_easeFunction == null)
 				_easeFunction = _manager.defaultEasing;
 
 			initProperties();
 
-			_startTime = getTimer();
-			_endTime = _startTime + _duration;
+			_startTime = _manager.currentTime + _delay;
 
 			_initialized = true;
 		}
@@ -121,14 +122,63 @@ package garbuz.motion
 			{
 				var propValue:Number = _parameters[propName];
 				var property:ITweenProperty = new DefaultProperty(_target, propName, propValue);
-				_properties.push(property);
+				_properties[propName] = property;
+			}
+		}
+
+		motion_internal function doStep():void
+		{
+			if (!_initialized)
+				initialize();
+
+			if (_manager.currentTime < _startTime)
+				return;
+
+			var timePosition:Number = (_manager.currentTime - _startTime) / _duration;
+			var needDispatchComplete:Boolean = false;
+
+			if (timePosition < 1)
+			{
+				var easingPosition:Number = _easeFunction(timePosition);
+				completed = true;
+
+				for each (var property:ITweenProperty in _properties)
+				{
+					property.applyPosition(easingPosition);
+					completed = false;
+				}
+			}
+			else
+			{
+				completed = true;
+				needDispatchComplete = true;
+				applyEndValues();
+			}
+
+			if (_updateHandler != null)
+				_updateHandler.apply(null, _updateParams);
+
+			if (needDispatchComplete && _completeHandler != null)
+				_completeHandler.apply(null, _completeParams);
+		}
+
+		motion_internal function addTime(time:Number):void
+		{
+			_startTime += time;
+		}
+
+		private function applyEndValues():void
+		{
+			for each (var property:ITweenProperty in _properties)
+			{
+				property.applyComplete();
 			}
 		}
 
 		motion_internal function dispose():void
 		{
 			_target = null;
-			
+
 			_completeHandler = null;
 			_completeParams = null;
 			_updateHandler = null;
@@ -137,50 +187,6 @@ package garbuz.motion
 			next = null;
 			prev = null;
 			chain = null;
-		}
-
-		motion_internal function doStep():void
-		{
-			if (!_initialized)
-				initialize();
-
-			var timePosition:Number = (TweenManager.currentTime - _startTime) / _duration;
-
-			if (timePosition < 1)
-			{
-				var easingPosition:Number = _easeFunction(timePosition);
-
-				for each (var property:ITweenProperty in _properties)
-				{
-					property.applyPosition(easingPosition);
-				}
-			}
-			else
-			{
-				applyComplete();
-			}
-
-			if (_updateHandler != null)
-				_updateHandler.apply(null, _updateParams);
-
-			if (completed && _completeHandler != null)
-				_completeHandler.apply(null, _completeParams);
-		}
-
-		motion_internal function addTime(time:Number):void
-		{
-			_startTime += time;
-			_endTime += time;
-		}
-
-		private function applyComplete():void
-		{
-			completed = true;
-
-			for each (var property:ITweenProperty in _properties)
-			{
-				property.applyComplete();
-			}
 		}
 	}
 }
