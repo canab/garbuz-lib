@@ -15,11 +15,12 @@ package
 		public function initialize(root:Sprite):void
 		{
 			_root = root;
-			_root.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-			_root.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+			_root.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+			_root.stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+			_root.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+
 			_root.addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
 			_root.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
-			_root.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 
 			onInitialize();
 		}

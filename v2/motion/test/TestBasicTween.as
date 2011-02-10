@@ -2,6 +2,9 @@ package
 {
 	import flash.display.Sprite;
 
+	import flash.events.MouseEvent;
+
+	import garbuz.motion.TweenManager;
 	import garbuz.motion.tween;
 
 	public class TestBasicTween extends MotionTestBase
@@ -9,6 +12,16 @@ package
 		override protected function onInitialize():void
 		{
 			move(createSprite());
+		}
+
+		override protected function onMouseDown(event:MouseEvent):void
+		{
+			TweenManager.pause();
+		}
+
+		override protected function onMouseUp(event:MouseEvent):void
+		{
+			TweenManager.resume();
 		}
 
 		private function move(target:Sprite):void

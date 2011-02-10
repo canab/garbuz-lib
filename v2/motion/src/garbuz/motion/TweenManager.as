@@ -352,5 +352,41 @@ package garbuz.motion
 				_dispatcher.addEventListener(Event.ENTER_FRAME, processTweens);
 			}
 		}
+
+		/**
+		 * Performance!
+		 * @return multiline text
+		 */
+		public static function getDebugText():String
+		{
+            return instance.getDebugText();
+		}
+
+		/**
+		 * Performance!
+		 * @return multiline text
+		 */
+		public function getDebugText():String
+		{
+			var dictSize:int = 0;
+			for each (var item in _targetsTweenMap)
+			{
+				dictSize++;
+			}
+
+			var listSize:int = 0;
+			for (var tweener:Tweener = _head; tweener; tweener = tweener.next)
+			{
+				listSize++;
+			}
+
+			var text:String = ""
+		        + "tweeners: " + TweenManager.tweenCount + "\n"
+				+ "dictSize: " + dictSize + "\n"
+				+ "listSize: " + listSize + "\n"
+				+ "active  : " + _isDispatcherActive;
+
+			return text;
+		}
 	}
 }

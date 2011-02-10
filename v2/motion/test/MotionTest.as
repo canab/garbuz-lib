@@ -18,13 +18,14 @@ package
 			createDebugInfo();
 			addEventListener(Event.ENTER_FRAME, refreshDebugInfo);
 
-			// new TestBasicTween().initialize(this);
+//			new TestBasicTween().initialize(this);
 			new TestOverride().initialize(this);
 		}
 
 		private function refreshDebugInfo(event:Event):void
 		{
-			_field.text = "total: " + TweenManager.tweenCount + "\n";
+			_field.text = TweenManager.getDebugText();
+			_field.height = _field.textHeight + 10;
 		}
 
 		private function createDebugInfo():void
@@ -35,7 +36,6 @@ package
 			_field.border = true;
 			_field.multiline = true;
 			_field.width = 150;
-			_field.height = 40;
 			_field.x = 200;
 
 			addChild(_field);
