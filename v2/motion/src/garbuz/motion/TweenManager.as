@@ -6,7 +6,6 @@ package garbuz.motion
 	import flash.utils.getTimer;
 
 	import garbuz.motion.easing.Quad;
-	import garbuz.motion.properties.ITweenProperty;
 	import garbuz.motion.properties.ScaleProperty;
 
 	use namespace motion_internal;
@@ -143,7 +142,6 @@ package garbuz.motion
 		private var _defaultDuration:Number = 1.0;
 		private var _defaultEasing:Function = Quad.easeOut;
 		private var _tweenCount:int = 0;
-		private var _customProperties:Object = {};
 
 		public function TweenManager()
 		{
@@ -398,6 +396,7 @@ package garbuz.motion
 		public function getDebugInfo():String
 		{
 			var dictSize:int = 0;
+			//noinspection JSUnusedLocalSymbols
 			for each (var item:Object in _targetsTweenMap)
 			{
 				dictSize++;
