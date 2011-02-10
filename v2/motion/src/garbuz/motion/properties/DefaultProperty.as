@@ -7,13 +7,20 @@ package garbuz.motion.properties
 		private var _startValue:Number;
 		private var _endValue:Number;
 
-		public function DefaultProperty(target:Object, propertyName:String, endValue:Number)
+		public function DefaultProperty(target:Object, propertyName:String)
 		{
 			_target = target;
 			_propName = propertyName;
-			_endValue = endValue;
+		}
 
-			_startValue = target[propertyName];
+		public function setStartValue(value:Object):void
+		{
+			_startValue = Number(value);
+		}
+
+		public function setEndValue(value:Object):void
+		{
+			_endValue = Number(value);
 		}
 
 		public function applyPosition(position:Number):void

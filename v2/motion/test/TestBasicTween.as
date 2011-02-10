@@ -5,6 +5,7 @@ package
 	import flash.events.MouseEvent;
 
 	import garbuz.motion.TweenManager;
+	import garbuz.motion.easing.Elastic;
 	import garbuz.motion.tween;
 
 	public class TestBasicTween extends MotionTestBase
@@ -28,6 +29,7 @@ package
 		{
 			tween(target)
 				.to({x: 500, y:50})
+				.easing(Elastic.easeOut)
 				.tween()
 				.to({y: 100})
 				.tween(0.5)

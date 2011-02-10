@@ -11,12 +11,16 @@ package garbuz.motion
 
 	/**
 	 * Class provides tween animation.
-	 * Can be used by static interface as
+	 * Can be used by static interface
+	 *
+	 * @example
 	 * <code>TweenManager.tween(...)</code>
 	 * or as several instances of TweenManager
+	 *
 	 * @example
 	 * <code>var manager:TweenManager = new TweenManager()
 	 * manager.tween(...)</code>
+	 * 
 	 * @see garbuz.motion.tween()
 	 */
 	public class TweenManager
@@ -43,7 +47,8 @@ package garbuz.motion
 		 * target object
 		 * @param duration
 		 * Tween time in seconds. If omitted defaultDuration value will be used.
-		 * @see garbuz.motion.TweenManager.defaultDuration()
+		 * 
+		 * @see #defaultDuration
 		 */
 		public static function tween(target:Object, duration:Number):Tweener
 		{
@@ -52,7 +57,7 @@ package garbuz.motion
 
 		/**
 		 * Pause all tweens
-		 * @see garbuz.motion.TweenManager.resume()
+		 * @see #resume()
 		 */
 		public static function pause():void
 		{
@@ -61,7 +66,7 @@ package garbuz.motion
 
 		/**
 		 * Resume all tweens
-		 * @see garbuz.motion.TweenManager.pause()
+		 * @see #pause()
 		 */
 		public static function resume():void
 		{
@@ -128,7 +133,8 @@ package garbuz.motion
 		 * target object
 		 * @param duration
 		 * Tween time in seconds. If omitted defaultDuration value will be used.
-		 * @see garbuz.motion.TweenManager.defaultDuration()
+		 *
+		 * @see #defaultDuration
 		 */
 		public function tween(target:Object, duration:Number = -1):Tweener
 		{
@@ -140,7 +146,7 @@ package garbuz.motion
 
 		/**
 		 * Pause all tweens
-		 * @see garbuz.motion.TweenManager.resume()
+		 * @see #resume()
 		 */
 		public function pause():void
 		{
@@ -154,7 +160,7 @@ package garbuz.motion
 
 		/**
 		 * Resume all tweens
-		 * @see garbuz.motion.TweenManager.pause()
+		 * @see #pause()
 		 */
 		public function resume():void
 		{
@@ -354,22 +360,22 @@ package garbuz.motion
 		}
 
 		/**
-		 * Performance!
+		 * Low performance!
 		 * @return multiline text
 		 */
-		public static function getDebugText():String
+		public static function getDebugInfo():String
 		{
-            return instance.getDebugText();
+            return instance.getDebugInfo();
 		}
 
 		/**
-		 * Performance!
+		 * Low performance!
 		 * @return multiline text
 		 */
-		public function getDebugText():String
+		public function getDebugInfo():String
 		{
 			var dictSize:int = 0;
-			for each (var item in _targetsTweenMap)
+			for each (var item:Object in _targetsTweenMap)
 			{
 				dictSize++;
 			}

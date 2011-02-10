@@ -9,22 +9,23 @@ package
 	import garbuz.motion.TweenManager;
 
 	[SWF(width="640", height="480", frameRate="30")]
-	public class MotionTest extends Sprite
+	public class MotionTestMain extends Sprite
 	{
 		private var _field:TextField;
 
-		public function MotionTest()
+		public function MotionTestMain()
 		{
 			createDebugInfo();
 			addEventListener(Event.ENTER_FRAME, refreshDebugInfo);
 
-//			new TestBasicTween().initialize(this);
-			new TestOverride().initialize(this);
+			new TestBasicTween().initialize(this);
+//			new TestOverride().initialize(this);
+//			new TestFromTo().initialize(this);
 		}
 
 		private function refreshDebugInfo(event:Event):void
 		{
-			_field.text = TweenManager.getDebugText();
+			_field.text = TweenManager.getDebugInfo();
 			_field.height = _field.textHeight + 10;
 		}
 
