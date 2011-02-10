@@ -25,12 +25,14 @@ package
 			onInitialize();
 		}
 
-		protected function createSprite():Sprite
+		protected function createSprite(x:Number = 300, y:Number = 150):Sprite
 		{
 			var sprite:Sprite = new Sprite();
 			sprite.graphics.beginFill(0x0000FF);
 			sprite.graphics.drawRect(0, 0, 50, 50);
 			sprite.graphics.endFill();
+			sprite.x = x;
+			sprite.y = y;
 
 			_root.addChild(sprite);
 

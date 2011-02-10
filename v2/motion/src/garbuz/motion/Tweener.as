@@ -1,8 +1,7 @@
 package garbuz.motion
 {
 	import flash.display.DisplayObject;
-
-	import flash.display.DisplayObjectContainer;
+	import flash.utils.getTimer;
 
 	import garbuz.motion.properties.DefaultProperty;
 	import garbuz.motion.properties.ITweenProperty;
@@ -20,6 +19,7 @@ package garbuz.motion
 		motion_internal var removed:Boolean = false;
 		motion_internal var target:Object;
 		motion_internal var properties:Object = {};
+		motion_internal var isInChain:Boolean = false;
 
 		private var _duration:Number;
 		private var _delay:Number = 0;
@@ -66,6 +66,9 @@ package garbuz.motion
 		 */
 		public function easing(value:Function):Tweener
 		{
+			if (initialized)
+				throw new Error(Errors.ALREADY_INITIALIZED);
+
 			if (!(value is Function))
 				throw new ArgumentError(Errors.NOT_A_FUNCTION);
 
@@ -77,16 +80,22 @@ package garbuz.motion
 		/**
 		 * Sets initial key-value object.
 		 * Both from(...) and to(...) functions can be used together.
+		 * Properties will be applied on next frame.
+		 * To apply immediately call <code>updateNow()</code>
 		 *
 		 * @example
 		 * <code>from({alpha: 0})</code>
 		 * 
 		 * @example
 		 * <code>from({alpha: 0}).to({alpha: 0.5})</code>
+		 * @see #updateNow()
 		 * @see #to()
 		 */
 		public function from(parameters:Object):Tweener
 		{
+			if (initialized)
+				throw new Error(Errors.ALREADY_INITIALIZED);
+
 			if (!parameters)
 				throw new ArgumentError(Errors.NULL_POINTER);
 
@@ -109,6 +118,9 @@ package garbuz.motion
 		 */
 		public function to(parameters:Object):Tweener
 		{
+			if (initialized)
+				throw new Error(Errors.ALREADY_INITIALIZED);
+
 			if (!parameters)
 				throw new ArgumentError(Errors.NULL_POINTER);
 
@@ -123,6 +135,9 @@ package garbuz.motion
 		 */
 		public function delay(value:Number):Tweener
 		{
+			if (initialized)
+				throw new Error(Errors.ALREADY_INITIALIZED);
+
 			if (value <= 0)
 				throw new ArgumentError("Value should be >= 0");
 
@@ -170,7 +185,9 @@ package garbuz.motion
 		 */
 		public function tween(duration:Number = -1):Tweener
 		{
-			return chain = new Tweener(_manager, target, duration);
+			chain = new Tweener(_manager, target, duration);
+			chain.isInChain = true;
+			return chain;
 		}
 
 		/**
@@ -179,10 +196,37 @@ package garbuz.motion
 		 */
 		public function autoDetach():Tweener
 		{
+			if (initialized)
+				throw new Error(Errors.ALREADY_INITIALIZED);
+
 			if (!(target is DisplayObject))
 				throw new ArgumentError(Errors.NOT_A_DISPLAY_OBJECT);
 
 			_autoDetach = true;
+
+			return this;
+		}
+
+		/**
+		 * Applies initial properties immediately.
+		 * Useful after call from(...) method.
+		 * It is not allowed to configure some other properties after this method has been invoked
+		 * (except tween() method to create a chain)
+		 * It not make effect in a chained tween.
+		 * @see #tween()
+		 * @see #from()
+		 */
+		public function updateNow():Tweener
+		{
+			if (initialized)
+				throw new Error(Errors.ALREADY_INITIALIZED);
+
+			if (!isInChain)
+			{
+				var currentTime:Number = getTimer();
+				initialize(currentTime);
+				doStep(currentTime);
+			}
 
 			return this;
 		}

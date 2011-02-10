@@ -28,7 +28,7 @@ package
 		private function move(target:Sprite):void
 		{
 			tween(target)
-				.to({x: 500, y:50})
+				.to({x: 400, y:100})
 				.easing(Elastic.easeOut)
 				.tween()
 				.to({y: 100})
@@ -47,7 +47,7 @@ package
 		private function moveBack(target:Sprite):void
 		{
 			tween(target)
-				.to({x: 0, y:50})
+				.to({x: 300, y:100})
 				.onComplete(move, target);
 		}
 

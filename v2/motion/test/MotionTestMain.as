@@ -18,8 +18,8 @@ package
 			createDebugInfo();
 			addEventListener(Event.ENTER_FRAME, refreshDebugInfo);
 
-			new TestBasicTween().initialize(this);
-//			new TestOverride().initialize(this);
+//			new TestBasicTween().initialize(this);
+			new TestOverride().initialize(this);
 //			new TestFromTo().initialize(this);
 		}
 
@@ -36,8 +36,7 @@ package
 			_field.background = true;
 			_field.border = true;
 			_field.multiline = true;
-			_field.width = 150;
-			_field.x = 200;
+			_field.width = 200;
 
 			addChild(_field);
 		}

@@ -1,12 +1,15 @@
 package
 {
+	import flash.display.Sprite;
+
 	import garbuz.motion.tween;
 
-	public class TestFromTo extends MotionTestBase
+	public class TestCustomProperties extends MotionTestBase
 	{
+		private var _sprite:Sprite;
+
 		override protected function onInitialize():void
 		{
-			createTween();
 		}
 
 		private function createTween():void

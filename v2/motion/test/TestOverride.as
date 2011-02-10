@@ -1,10 +1,8 @@
 package
 {
 	import flash.display.Sprite;
-
 	import flash.events.MouseEvent;
 
-	import garbuz.motion.TweenManager;
 	import garbuz.motion.tween;
 
 	public class TestOverride extends MotionTestBase
