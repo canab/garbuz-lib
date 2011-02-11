@@ -1,10 +1,13 @@
 package
 {
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
+
+	import flash.filters.DropShadowFilter;
 
 	import garbuz.motion.tween;
 
-	public class TestCustomProperties extends MotionTestBase
+	public class TestFilter extends MotionTestBase
 	{
 		private var _sprite:Sprite;
 
@@ -17,14 +20,7 @@ package
 		private function createTween():void
 		{
 			tween(_sprite)
-				.from({$scale: 0.1, alpha: 1})
-				.to({$scale: 1.5, alpha: 0.5})
-				.updateNow()
-				.tween()
-				.delay(0.5)
-				.to({$scale: 0.1})
-				.onComplete(createTween)
+				.to({ $filter: {name: DropShadowFilter, blurX: 100, blurY: 100} });
 		}
-
 	}
 }

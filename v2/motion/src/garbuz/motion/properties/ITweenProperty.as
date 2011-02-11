@@ -2,16 +2,10 @@ package garbuz.motion.properties
 {
 	public interface ITweenProperty
 	{
-		function setObject(target:Object, propertyName:String):void
+		function initialize(target:Object, startValue:Object, endValue:Object):void
 
-		function setStartValue(value:Object):void;
+		function applyTween(relativeTime:Number):void;
 
-		function setEndValue(value:Object):void;
-
-		function applyPosition(relativeTime:Number):void;
-
-		function applyEndValue():void;
-
-		function getValueFromTarget():Object;
+		function applyComplete():void;
 	}
 }

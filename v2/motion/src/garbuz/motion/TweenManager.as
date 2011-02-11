@@ -6,6 +6,7 @@ package garbuz.motion
 	import flash.utils.getTimer;
 
 	import garbuz.motion.easing.Quad;
+	import garbuz.motion.properties.FilterProperty;
 	import garbuz.motion.properties.ScaleProperty;
 
 	use namespace motion_internal;
@@ -38,7 +39,8 @@ package garbuz.motion
 			return _instance;
 		}
 
-		registerSpecialProperty("scale", ScaleProperty);
+		registerSpecialProperty("$scale", ScaleProperty);
+		registerSpecialProperty("$filter", FilterProperty);
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		//
@@ -124,12 +126,12 @@ package garbuz.motion
 			return instance.tweenCount;
 		}
 
+
 		/////////////////////////////////////////////////////////////////////////////////////
 		//
 		// instance
 		//
 		/////////////////////////////////////////////////////////////////////////////////////
-
 
 		private var _head:Tweener = null;
 		private var _dispatcher:Shape = new Shape();
@@ -290,6 +292,7 @@ package garbuz.motion
 		private function removeFromMap(tweener:Tweener):void
 		{
 			var tweens:Array = _targetsTweenMap[tweener.target];
+
 			var index:int = tweens.indexOf(tweener);
 			if (index >= 0)
 				tweens.splice(index, 1);

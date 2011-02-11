@@ -21,7 +21,8 @@ package
 //			new TestBasicTween().initialize(this);
 //			new TestOverride().initialize(this);
 //			new TestFromTo().initialize(this);
-			new TestCustomProperties().initialize(this);
+//			new TestCustomProperties().initialize(this);
+			new TestFilter().initialize(this);
 		}
 
 		private function refreshDebugInfo(event:Event):void

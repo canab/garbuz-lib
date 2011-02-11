@@ -7,35 +7,26 @@ package garbuz.motion.properties
 		protected var _startValue:Number;
 		protected var _endValue:Number;
 
-		public function setObject(target:Object, propertyName:String):void
+		public function DefaultProperty(propName:String)
+		{
+			_propName = propName;
+		}
+
+		public function initialize(target:Object, startValue:Object, endValue:Object):void
 		{
 			_target = target;
-			_propName = propertyName;
+			_startValue = (startValue is Number) ? Number(startValue) : _target[_propName];
+			_endValue = (endValue is Number) ? Number(endValue) : _target[_propName];
 		}
 
-		public function setStartValue(value:Object):void
-		{
-			_startValue = Number(value);
-		}
-
-		public function setEndValue(value:Object):void
-		{
-			_endValue = Number(value);
-		}
-
-		public function applyPosition(position:Number):void
+		public function applyTween(position:Number):void
 		{
 			_target[_propName] = _startValue + position * (_endValue - _startValue)
 		}
 
-		public function applyEndValue():void
+		public function applyComplete():void
 		{
 			_target[_propName] = _endValue;
-		}
-
-		public function getValueFromTarget():Object
-		{
-			return _target[_propName];
 		}
 	}
 }

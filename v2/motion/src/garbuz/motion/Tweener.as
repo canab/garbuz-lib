@@ -33,7 +33,6 @@ package garbuz.motion
 
 		private var _manager:TweenManager;
 		private var _startTime:Number;
-		private var _fromExists:Boolean = false;
 		private var _autoDetach:Boolean = false;
 
 		public function Tweener(manager:TweenManager, target:Object, duration:Number)
@@ -212,7 +211,7 @@ package garbuz.motion
 		 * Useful after call from(...) method.
 		 * It is not allowed to configure some other properties after this method has been invoked
 		 * (except tween() method to create a chain)
-		 * It not make effect in a chained tween.
+		 * It is ignored in a chained tween.
 		 * @see #tween()
 		 * @see #from()
 		 */
@@ -253,47 +252,33 @@ package garbuz.motion
 		{
 			var propName:String;
 			var property:ITweenProperty;
+			var startValue:Object;
+			var endValue:Object;
 
 			for (propName in _fromParams)
 			{
-				_fromExists = true;
-				property = properties[propName] = getProperty(target, propName);
-				property.setStartValue(_fromParams[propName]);
-				property.setEndValue(property.getValueFromTarget());
+				property = properties[propName] = createProperty(propName);
+				startValue = _fromParams[propName];
+				endValue = _toParams[propName];
+
+				if (endValue)
+					delete _toParams[propName];
+
+				property.initialize(target, startValue, endValue);
 			}
 
 			for (propName in _toParams)
 			{
-				property = properties[propName];
-				
-				if (!property)
-				{
-					property = properties[propName] = getProperty(target, propName);
-					property.setStartValue(property.getValueFromTarget());
-				}
-
-				property.setEndValue(_toParams[propName]);
+				property = properties[propName] = createProperty(propName);
+				property.initialize(target, null, _toParams[propName]);
 			}
 		}
 
-		private function getProperty(target:Object, propName:String):ITweenProperty
+		private function createProperty(propName:String):ITweenProperty
 		{
-			var property:ITweenProperty;
-
-			if (propName in TweenManager.specialProperties
-					&& !target.hasOwnProperty(propName)
-					&& !(propName in target))
-			{
-				property = new (TweenManager.specialProperties[propName])();
-			}
-			else
-			{
-				property = new DefaultProperty();
-			}
-
-			property.setObject(target, propName);
-
-			return property
+			return (propName in TweenManager.specialProperties)
+					? new (TweenManager.specialProperties[propName])()
+					: new DefaultProperty(propName);
 		}
 
 		motion_internal function doStep(currentTime:Number):void
@@ -311,7 +296,7 @@ package garbuz.motion
 
 				for each (var property:ITweenProperty in properties)
 				{
-					property.applyPosition(easingPosition);
+					property.applyTween(easingPosition);
 					completed = false;
 				}
 			}
@@ -319,7 +304,7 @@ package garbuz.motion
 			{
 				completed = true;
 				needDispatchComplete = true;
-				applyEndValues();
+				applyComplete();
 			}
 
 			if (_updateHandler != null)
@@ -348,18 +333,16 @@ package garbuz.motion
 			chain = null;
 		}
 
-		private function applyEndValues():void
+		private function applyComplete():void
 		{
 			for each (var property:ITweenProperty in properties)
 			{
-				property.applyEndValue();
+				property.applyComplete();
 			}
-
-			var displayObject:DisplayObject;
 
 			if (_autoDetach)
 			{
-				displayObject = DisplayObject(target);
+				var displayObject:DisplayObject = DisplayObject(target);
 				displayObject.parent.removeChild(displayObject);
 			}
 		}
