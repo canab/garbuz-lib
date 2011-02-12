@@ -73,27 +73,16 @@ package garbuz.motion
 			return instance.tween(target, duration);
 		}
 
-		/**
-		 * Pause all tweens
-		 * @see #resume()
-		 */
-		public static function pause():void
+		public static function pauseAll():void
 		{
-			instance.pause();
+			instance.pauseAll();
 		}
 
-		/**
-		 * Resume all tweens
-		 * @see #pause()
-		 */
-		public static function resume():void
+		public static function resumeAll():void
 		{
-			instance.resume();
+			instance.resumeAll();
 		}
 
-		/**
-		 * Default duration in seconds
-		 */
 		public static function get defaultDuration():Number
 		{
 			return instance.defaultDuration;
@@ -104,10 +93,6 @@ package garbuz.motion
 			instance.defaultDuration = value;
 		}
 
-		/**
-		 * Default ease function
-		 * @see garbuz.motion.easing
-		 */
 		public static function get defaultEasing():Function
 		{
 			return instance.defaultEasing;
@@ -118,12 +103,9 @@ package garbuz.motion
 			instance.defaultEasing = value;
 		}
 
-		/**
-		 * Total count of tweens
-		 */
-		public static function get tweenCount():int
+		public static function get tweensCount():int
 		{
-			return instance.tweenCount;
+			return instance.tweensCount;
 		}
 
 
@@ -143,7 +125,7 @@ package garbuz.motion
 		private var _currentTime:Number;
 		private var _defaultDuration:Number = 1.0;
 		private var _defaultEasing:Function = Quad.easeOut;
-		private var _tweenCount:int = 0;
+		private var _tweensCount:int = 0;
 
 		public function TweenManager()
 		{
@@ -167,11 +149,7 @@ package garbuz.motion
 			return tweener;
 		}
 
-		/**
-		 * Pause all tweens
-		 * @see #resume()
-		 */
-		public function pause():void
+		public function pauseAll():void
 		{
 			if (!_paused)
 			{
@@ -181,11 +159,7 @@ package garbuz.motion
 			}
 		}
 
-		/**
-		 * Resume all tweens
-		 * @see #pause()
-		 */
-		public function resume():void
+		public function resumeAll():void
 		{
 			if (_paused)
 			{
@@ -195,9 +169,6 @@ package garbuz.motion
 			}
 		}
 
-		/**
-		 * Default duration in seconds
-		 */
 		public function get defaultDuration():Number
 		{
 			return _defaultDuration;
@@ -208,10 +179,6 @@ package garbuz.motion
 			_defaultDuration = value;
 		}
 
-		/**
-		 * Default ease function
-		 * @see garbuz.motion.easing
-		 */
 		public function get defaultEasing():Function
 		{
 			return _defaultEasing;
@@ -222,12 +189,9 @@ package garbuz.motion
 			_defaultEasing = value;
 		}
 
-		/**
-		 * Total count of tweens
-		 */
-		public function get tweenCount():int
+		public function get tweensCount():int
 		{
-			return _tweenCount;
+			return _tweensCount;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -238,7 +202,7 @@ package garbuz.motion
 
 		private function addTween(tweener:Tweener):void
 		{
-			_tweenCount++;
+			_tweensCount++;
 			insertIntoList(tweener);
 			addToMap(tweener);
 		}
@@ -266,7 +230,7 @@ package garbuz.motion
 
 		private function removeTween(tweener:Tweener):void
 		{
-			_tweenCount--;
+			_tweensCount--;
 
 			deleteFromList(tweener);
 			removeFromMap(tweener);
@@ -412,7 +376,7 @@ package garbuz.motion
 			}
 
 			var text:String = ""
-		        + "tweeners: " + TweenManager.tweenCount + "\n"
+		        + "tweeners: " + TweenManager.tweensCount + "\n"
 				+ "dictSize: " + dictSize + "\n"
 				+ "listSize: " + listSize + "\n"
 				+ "active  : " + _isDispatcherActive;
