@@ -41,7 +41,7 @@ package garbuz.engine.scene.renderers
 
 			var children:Array = fromDisplay(_content)
 					.byRequirement(new AnimationRequirement())
-					.findAll(true);
+					.findAllRecursive();
 
 			for each (var child:MovieClip in children)
 			{

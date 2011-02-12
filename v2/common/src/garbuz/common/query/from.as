@@ -13,9 +13,6 @@ package garbuz.common.query
 	 */
 	public function from(source:Object):Query
 	{
-		if (source is Object)
-			return new Query(source);
-		else
-			throw new ArgumentError();
+		return new Query(source);
 	}
 }

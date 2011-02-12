@@ -1,14 +1,17 @@
 package garbuz.common.query 
 {
 	import flash.display.DisplayObject;
-	import flash.display.DisplayObjectContainer;
 	import flash.display.SimpleButton;
 	import flash.display.Sprite;
+
 	import garbuz.common.comparing.FilterRequirement;
 	import garbuz.common.comparing.IRequirement;
 	import garbuz.common.comparing.NameRequirement;
+	import garbuz.common.comparing.PrefixRequirement;
 	import garbuz.common.comparing.PropertyRequirement;
 	import garbuz.common.comparing.TypeRequirement;
+	import garbuz.common.errors.NullPointerError;
+
 	/**
 	 * ...
 	 * @author canab
@@ -20,8 +23,10 @@ package garbuz.common.query
 		
 		public function ButtonQuery(source:SimpleButton) 
 		{
+			if (!source)
+				throw new NullPointerError();
+
 			_source = source;
-			_requirement = null;
 		}
 		
 		public function byProperty(property:String, value:Object):ButtonQuery
@@ -30,12 +35,18 @@ package garbuz.common.query
 			return this;
 		}
 		
-		public function byName(name:String, isPrefix:Boolean = false):ButtonQuery
+		public function byName(name:String):ButtonQuery
 		{
-			_requirement = new NameRequirement(name, isPrefix);
+			_requirement = new NameRequirement(name);
 			return this;
 		}
 		
+		public function byPrefix(prefix:String):ButtonQuery
+		{
+			_requirement = new PrefixRequirement(prefix);
+			return this;
+		}
+
 		public function byType(type:Class):ButtonQuery
 		{
 			_requirement = new TypeRequirement(type);
@@ -72,7 +83,7 @@ package garbuz.common.query
 				{
 					result = result.concat(fromDisplay(Sprite(state))
 						.byRequirement(_requirement)
-						.findAll(true));
+						.findAllRecursive());
 				}
 			}
 			return result;

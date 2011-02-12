@@ -5,13 +5,13 @@
 	 * ...
 	 * @author Canab
 	 */
-	public class NameRequirement implements IRequirement
+	public class PrefixRequirement implements IRequirement
 	{
 		private static const NAME:String = 'name';
 
 		private var _value:String;
-
-		public function NameRequirement(name:String)
+		
+		public function PrefixRequirement(name:String)
 		{
 			_value = name;
 		}
@@ -20,7 +20,7 @@
 		{
 			return object
 				&& object.hasOwnProperty(NAME)
-				&& object[NAME] == _value;
+				&& String(object[NAME]).indexOf(_value) == 0;
 		}
 		
 	}

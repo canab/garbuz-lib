@@ -8,6 +8,7 @@ package garbuz.common.utils
 	import flash.geom.Rectangle;
 
 	import garbuz.common.comparing.AnimationRequirement;
+	import garbuz.common.comparing.IRequirement;
 	import garbuz.common.query.fromDisplay;
 
 	/**
@@ -155,11 +156,11 @@ package garbuz.common.utils
 		}
 
 
-		public static function stopChildren(content:Sprite, recursive:Boolean = false):void
+		public static function stopAllClips(content:DisplayObjectContainer):void
 		{
 			var clips:Array = fromDisplay(content)
 				.byRequirement(new AnimationRequirement())
-				.findAll(recursive);
+				.findAllRecursive();
 
 			if (content is MovieClip)
 				clips.push(content);
@@ -170,11 +171,11 @@ package garbuz.common.utils
 			}
 		}
 
-		public static function playChildren(content:Sprite, recursive:Boolean = false):void
+		public static function playAllClips(content:DisplayObjectContainer):void
 		{
 			var clips:Array = fromDisplay(content)
 				.byRequirement(new AnimationRequirement())
-				.findAll(recursive);
+				.findAllRecursive();
 
 			if (content is MovieClip)
 				clips.push(content);
@@ -185,13 +186,13 @@ package garbuz.common.utils
 			}
 		}
 
-		public static function hasAnimation(content:Sprite):Boolean
+		public static function hasAnimation(content:DisplayObjectContainer):Boolean
 		{
-			var requirement:AnimationRequirement = new AnimationRequirement();
+			var requirement:IRequirement = new AnimationRequirement();
 
 			return requirement.accept(content)
 				? true
-				: fromDisplay(content).byRequirement(requirement).exists(true);
+				: fromDisplay(content).byRequirement(requirement).existsRecursive();
 		}
 		
 	}

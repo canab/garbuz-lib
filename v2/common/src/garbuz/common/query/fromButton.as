@@ -1,6 +1,7 @@
 package garbuz.common.query
 {
 	import flash.display.SimpleButton;
+
 	/**
 	 * ...
 	 * @author canab
@@ -8,9 +9,6 @@ package garbuz.common.query
 	
 	public function fromButton(source:SimpleButton):ButtonQuery
 	{
-		if (source is SimpleButton)
-			return new ButtonQuery(source);
-		else
-			throw new ArgumentError();
+		return new ButtonQuery(source);
 	}
 }

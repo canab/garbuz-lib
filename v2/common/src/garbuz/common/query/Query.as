@@ -3,12 +3,14 @@ package garbuz.common.query
 	import garbuz.common.comparing.FilterRequirement;
 	import garbuz.common.comparing.IRequirement;
 	import garbuz.common.comparing.NameRequirement;
+	import garbuz.common.comparing.PrefixRequirement;
 	import garbuz.common.comparing.PropertyRequirement;
 	import garbuz.common.comparing.TypeRequirement;
 	import garbuz.common.converting.ConstructorConverter;
 	import garbuz.common.converting.FunctionConverter;
 	import garbuz.common.converting.IConverter;
 	import garbuz.common.converting.ToPropertyConverter;
+	import garbuz.common.errors.NullPointerError;
 
 	/**
 	 * ...
@@ -21,8 +23,10 @@ package garbuz.common.query
 		
 		public function Query(source:Object) 
 		{
+			if (!source)
+				throw new NullPointerError();
+
 			_source = source;
-			_requirement = null;
 		}
 		
 		public function byProperty(property:String, value:Object):Query
@@ -31,12 +35,18 @@ package garbuz.common.query
 			return this;
 		}
 		
-		public function byName(name:String, isPrefix:Boolean = false):Query
+		public function byName(name:String):Query
 		{
-			_requirement = new NameRequirement(name, isPrefix);
+			_requirement = new NameRequirement(name);
 			return this;
 		}
 		
+		public function byPrefix(prefix:String):Query
+		{
+			_requirement = new PrefixRequirement(prefix);
+			return this;
+		}
+
 		public function byType(type:Class):Query
 		{
 			_requirement = new TypeRequirement(type);

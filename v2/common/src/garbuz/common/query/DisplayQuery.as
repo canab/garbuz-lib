@@ -2,25 +2,29 @@ package garbuz.common.query
 {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
-	import flash.display.Sprite;
 	import garbuz.common.comparing.FilterRequirement;
 	import garbuz.common.comparing.IRequirement;
 	import garbuz.common.comparing.NameRequirement;
+	import garbuz.common.comparing.PrefixRequirement;
 	import garbuz.common.comparing.PropertyRequirement;
 	import garbuz.common.comparing.TypeRequirement;
+	import garbuz.common.errors.NullPointerError;
+
 	/**
 	 * ...
 	 * @author canab
 	 */
 	public class DisplayQuery
 	{
-		private var _source:Sprite;
+		private var _source:DisplayObjectContainer;
 		private var _requirement:IRequirement;
 		
-		public function DisplayQuery(source:Sprite) 
+		public function DisplayQuery(source:DisplayObjectContainer)
 		{
+			if (!source)
+				throw new NullPointerError();
+
 			_source = source;
-			_requirement = null;
 		}
 		
 		public function byProperty(property:String, value:Object):DisplayQuery
@@ -37,7 +41,7 @@ package garbuz.common.query
 		
 		public function byPrefix(prefix:String):DisplayQuery
 		{
-			_requirement = new NameRequirement(prefix, true);
+			_requirement = new PrefixRequirement(prefix);
 			return this;
 		}
 		
@@ -64,25 +68,36 @@ package garbuz.common.query
 			return this;
 		}
 		
-		public function findAll(recursive:Boolean = false):Array
+		public function findAll():Array
 		{
-			return (recursive)
-				? getChildrenRecursive(DisplayObjectContainer(_source), _requirement)
-				: getChildren(DisplayObjectContainer(_source), _requirement);
+			return getChildren(DisplayObjectContainer(_source), _requirement);
 		}
 		
-		public function findFirst(recursive:Boolean = false):DisplayObject
+		public function findAllRecursive():Array
 		{
-			return (recursive)
-				? getChildrenRecursive(DisplayObjectContainer(_source), _requirement)[0]
-				: getChildren(DisplayObjectContainer(_source), _requirement)[0];
+			return getChildrenRecursive(DisplayObjectContainer(_source), _requirement);
+		}
+
+		public function findFirst():DisplayObject
+		{
+			return getChildren(DisplayObjectContainer(_source), _requirement)[0];
 		}
 		
-		public function exists(recursive:Boolean = false):Boolean
+		public function findFirstRecursive():DisplayObject
 		{
-			return Boolean(findFirst(recursive));
+			return getChildrenRecursive(DisplayObjectContainer(_source), _requirement)[0];
+		}
+
+		public function exists():Boolean
+		{
+			return Boolean(findFirst());
 		}
 		
+		public function existsRecursive():Boolean
+		{
+			return Boolean(findFirstRecursive());
+		}
+
 		private function getChildren(object:DisplayObjectContainer, requirement:IRequirement = null):Array
 		{
 			var result:Array = [];

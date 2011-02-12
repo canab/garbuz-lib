@@ -1,16 +1,14 @@
 package garbuz.common.query
 {
-	import flash.display.Sprite;
+	import flash.display.DisplayObjectContainer;
+
 	/**
 	 * ...
 	 * @author canab
 	 */
 	
-	public function fromDisplay(source:Sprite):DisplayQuery
+	public function fromDisplay(source:DisplayObjectContainer):DisplayQuery
 	{
-		if (source is Sprite)
-			return new DisplayQuery(source);
-		else
-			throw new ArgumentError();
+		return new DisplayQuery(source);
 	}
 }
