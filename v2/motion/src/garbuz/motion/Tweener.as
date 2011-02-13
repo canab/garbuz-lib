@@ -205,7 +205,6 @@ package garbuz.motion
 				return;
 
 			var timePosition:Number = (currentTime - _startTime) / _duration;
-			var needDispatchComplete:Boolean = false;
 
 			if (timePosition < 1)
 			{
@@ -221,14 +220,13 @@ package garbuz.motion
 			else
 			{
 				completed = true;
-				needDispatchComplete = true;
 				applyComplete();
 			}
 
 			if (_updateHandler != null)
 				_updateHandler.apply(null, _updateParams);
 
-			if (needDispatchComplete && _completeHandler != null)
+			if (completed && _completeHandler != null)
 				_completeHandler.apply(null, _completeParams);
 		}
 

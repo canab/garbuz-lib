@@ -1,8 +1,9 @@
 package
 {
 	import flash.display.Sprite;
+	import flash.filters.BevelFilter;
 	import flash.filters.BlurFilter;
-	import flash.filters.DropShadowFilter;
+	import flash.filters.GlowFilter;
 
 	import garbuz.motion.filter.FilterTween;
 	import garbuz.motion.tween;
@@ -14,22 +15,60 @@ package
 		override protected function onInitialize():void
 		{
 			createSprites();
-			createSingleFilter(_sprites[0]);
+			testSingleFilter(_sprites[0]);
+			testInstanceFilter(_sprites[1]);
+			testMultipleFilters(_sprites[2]);
 		}
 
-		private function createSingleFilter(sprite:Sprite):void
+		private function testMultipleFilters(sprite:Sprite):void
 		{
-			sprite.filters = [new BlurFilter(0, 0)];
+			sprite.filters = [
+					new GlowFilter(),
+					new BevelFilter()
+			];
+
+			var filterTween1:FilterTween = FilterTween
+					.byClass(GlowFilter)
+					.to({blurX:20, blurY:20});
+			var filterTween2:FilterTween = FilterTween
+					.byClass(BevelFilter)
+					.to({distance: 20});
 
 			tween(sprite)
-				.to({
-			        $filter: FilterTween.byNum(0).to({blurX:15, blurY:15})
-			    })
+				.to({$filter: [filterTween1, filterTween2]})
+				.onComplete(testMultipleFilters, sprite);
+		}
+
+		private function testInstanceFilter(sprite:Sprite):void
+		{
+			sprite.filters = [];
+
+			var filterTween1:FilterTween = FilterTween
+				.byInstance(new GlowFilter(0, 1, 20, 20, 2))
+				.to({color:0x00FF00, strength:10});
+
+			var filterTween2:FilterTween = FilterTween
+				.byClass(GlowFilter)
+				.to({blurX:30, blurY:30})
+				.autoRemove();
+
+			tween(sprite).to({$filter: filterTween1})
+				.tween().to({$filter: filterTween2})
+				.tween().delay(1)
+				.onComplete(testInstanceFilter, sprite);
+		}
+
+		private function testSingleFilter(sprite:Sprite):void
+		{
+			sprite.filters = [new BlurFilter(0, 0)];
+			var filterOn:FilterTween = FilterTween.to({blurX:15, blurY:15});
+			var filterOff:FilterTween = FilterTween.to({blurX:0, blurY:0});
+
+			tween(sprite)
+				.to({$filter: filterOn})
 				.tween()
-				.to({
-					$filter: FilterTween.byNum(0).to({blurX:0, blurY:0})
-			    })
-				.onComplete(createSingleFilter, sprite);
+				.to({$filter: filterOff})
+				.onComplete(testSingleFilter, sprite);
 		}
 
 		private function createSprites():void

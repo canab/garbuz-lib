@@ -11,6 +11,8 @@ package garbuz.motion.filter
 	public class FilterProperty implements ITweenProperty
 	{
 		private static const INVALID_PARAMETER:String = "Parameter's type should be either of FilterTween or Array of FilterTween";
+		private static const FILTER_NOT_SPECIFIED:String = "Filter is not specified";
+		private static const INVALID_INDEX:String = "Cannot get filter by provided index";
 
 		private var _target:DisplayObject;
 		private var _filters:Array;
@@ -39,13 +41,47 @@ package garbuz.motion.filter
 
 		private function initTween(tween:FilterTween):void
 		{
-			tween.initialize(_target);
+			var filter:BitmapFilter = getFilter(tween.filterId);
+			
+			if (_filters.indexOf(filter) == -1)
+				_filters.push(filter);
 
-			if (_filters.indexOf(tween.filter) == -1)
-				_filters.push(tween.filter);
+			tween.initialize(filter);
 
 			_tweens.push(tween);
 		}
+
+		private function getFilter(filterId:Object):BitmapFilter
+		{
+			if (filterId is int)
+				return getFilterByIndex(int(filterId));
+			else if (filterId is Class)
+				return getFilterByClass(Class(filterId));
+			else if (filterId is BitmapFilter)
+				return BitmapFilter(filterId);
+			else
+				throw new ArgumentError(FILTER_NOT_SPECIFIED);
+		}
+
+		private function getFilterByIndex(index:int):BitmapFilter
+		{
+			if (index < _filters.length)
+				return _filters[index];
+			else
+				throw new ArgumentError(INVALID_INDEX);
+		}
+
+		private function getFilterByClass(classRef:Class):BitmapFilter
+		{
+			for each (var filter:BitmapFilter in _filters)
+			{
+				if (filter is classRef)
+					return filter;
+			}
+
+			return new classRef();
+		}
+
 
 		public function applyTween(relativeTime:Number):void
 		{
