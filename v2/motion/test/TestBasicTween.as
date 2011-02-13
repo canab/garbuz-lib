@@ -17,12 +17,12 @@ package
 
 		override protected function onMouseDown(event:MouseEvent):void
 		{
-			TweenManager.pause();
+			TweenManager.pauseAll();
 		}
 
 		override protected function onMouseUp(event:MouseEvent):void
 		{
-			TweenManager.resume();
+			TweenManager.resumeAll();
 		}
 
 		private function move(target:Sprite):void

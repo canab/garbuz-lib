@@ -6,11 +6,11 @@ package garbuz.motion.properties
 		protected var _startValue:Number;
 		protected var _endValue:Number;
 
-		public function initialize(target:Object, startValue:Object, endValue:Object):void
+		public function initialize(target:Object, endValue:Object):void
 		{
 			_target = target;
-			_startValue = (startValue is Number) ? Number(startValue) : currentScale;
-			_endValue = (endValue is Number) ? Number(endValue) : currentScale;
+			_startValue = currentScale;
+			_endValue = Number(endValue);
 		}
 
 		public function applyTween(position:Number):void

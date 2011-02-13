@@ -1,22 +1,22 @@
 package garbuz.motion.properties
 {
-	public class DefaultProperty implements ITweenProperty
+	public class NumberProperty implements ITweenProperty
 	{
 		protected var _target:Object;
 		protected var _propName:String;
 		protected var _startValue:Number;
 		protected var _endValue:Number;
 
-		public function DefaultProperty(propName:String)
+		public function NumberProperty(propName:String)
 		{
 			_propName = propName;
 		}
 
-		public function initialize(target:Object, startValue:Object, endValue:Object):void
+		public function initialize(target:Object, endValue:Object):void
 		{
 			_target = target;
-			_startValue = (startValue is Number) ? Number(startValue) : _target[_propName];
-			_endValue = (endValue is Number) ? Number(endValue) : _target[_propName];
+			_startValue = _target[_propName];
+			_endValue = Number(endValue);
 		}
 
 		public function applyTween(position:Number):void

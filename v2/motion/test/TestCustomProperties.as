@@ -16,14 +16,14 @@ package
 
 		private function createTween():void
 		{
+			_sprite.scaleX = _sprite.scaleY = 0.1;
+			
 			tween(_sprite)
-				.from({$scale: 0.1, alpha: 1})
-				.to({$scale: 1.5, alpha: 0.5})
-				.updateNow()
+				.to({$scale: 1.5, alpha: 0.2})
 				.tween()
 				.delay(0.5)
-				.to({$scale: 0.1})
-				.onComplete(createTween)
+				.to({$scale: 0.1, alpha: 1.0})
+				.onComplete(createTween);
 		}
 
 	}

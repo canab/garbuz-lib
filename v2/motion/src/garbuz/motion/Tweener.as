@@ -1,9 +1,8 @@
 package garbuz.motion
 {
 	import flash.display.DisplayObject;
-	import flash.utils.getTimer;
 
-	import garbuz.motion.properties.DefaultProperty;
+	import garbuz.motion.properties.NumberProperty;
 	import garbuz.motion.properties.ITweenProperty;
 
 	use namespace motion_internal;
@@ -23,8 +22,7 @@ package garbuz.motion
 
 		private var _duration:Number;
 		private var _delay:Number = 0;
-		private var _fromParams:Object = {};
-		private var _toParams:Object = {};
+		private var _params:Object = {};
 		private var _easeFunction:Function;
 		private var _completeHandler:Function;
 		private var _completeParams:Array;
@@ -65,9 +63,6 @@ package garbuz.motion
 		 */
 		public function easing(value:Function):Tweener
 		{
-			if (initialized)
-				throw new Error(Errors.ALREADY_INITIALIZED);
-
 			if (!(value is Function))
 				throw new ArgumentError(Errors.NOT_A_FUNCTION);
 
@@ -77,34 +72,7 @@ package garbuz.motion
 		}
 
 		/**
-		 * Sets initial key-value object.
-		 * Both from(...) and to(...) functions can be used together.
-		 * Properties will be applied on next frame.
-		 * To apply immediately call <code>updateNow()</code>
-		 *
-		 * @example
-		 * <code>from({alpha: 0})</code>
-		 * 
-		 * @example
-		 * <code>from({alpha: 0}).to({alpha: 0.5})</code>
-		 * @see #updateNow()
-		 * @see #to()
-		 */
-		public function from(parameters:Object):Tweener
-		{
-			if (initialized)
-				throw new Error(Errors.ALREADY_INITIALIZED);
-
-			if (!parameters)
-				throw new ArgumentError(Errors.NULL_POINTER);
-
-			_fromParams = parameters;
-
-			return this;
-		}
-
-		/**
-		 * Sets initial key-value object.
+		 * Sets key-value object.
 		 * Both from(...) and to(...) functions can be used together.
 		 *
 		 * @example
@@ -112,18 +80,13 @@ package garbuz.motion
 		 *
 		 * @example
 		 * <code>from({x:0, y:0}).to({x:50, y:100})</code>
-		 *
-		 * @see #from()
 		 */
 		public function to(parameters:Object):Tweener
 		{
-			if (initialized)
-				throw new Error(Errors.ALREADY_INITIALIZED);
-
 			if (!parameters)
 				throw new ArgumentError(Errors.NULL_POINTER);
 
-			_toParams = parameters;
+			_params = parameters;
 
 			return this;
 		}
@@ -134,9 +97,6 @@ package garbuz.motion
 		 */
 		public function delay(value:Number):Tweener
 		{
-			if (initialized)
-				throw new Error(Errors.ALREADY_INITIALIZED);
-
 			if (value <= 0)
 				throw new ArgumentError("Value should be >= 0");
 
@@ -195,9 +155,6 @@ package garbuz.motion
 		 */
 		public function autoDetach():Tweener
 		{
-			if (initialized)
-				throw new Error(Errors.ALREADY_INITIALIZED);
-
 			if (!(target is DisplayObject))
 				throw new ArgumentError(Errors.NOT_A_DISPLAY_OBJECT);
 
@@ -206,29 +163,6 @@ package garbuz.motion
 			return this;
 		}
 
-		/**
-		 * Applies initial properties immediately.
-		 * Useful after call from(...) method.
-		 * It is not allowed to configure some other properties after this method has been invoked
-		 * (except tween() method to create a chain)
-		 * It is ignored in a chained tween.
-		 * @see #tween()
-		 * @see #from()
-		 */
-		public function updateNow():Tweener
-		{
-			if (initialized)
-				throw new Error(Errors.ALREADY_INITIALIZED);
-
-			if (!isInChain)
-			{
-				var currentTime:Number = getTimer();
-				initialize(currentTime);
-				doStep(currentTime);
-			}
-
-			return this;
-		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		//
@@ -250,27 +184,11 @@ package garbuz.motion
 
 		private function initProperties():void
 		{
-			var propName:String;
-			var property:ITweenProperty;
-			var startValue:Object;
-			var endValue:Object;
-
-			for (propName in _fromParams)
+			for (var propName:String in _params)
 			{
-				property = properties[propName] = createProperty(propName);
-				startValue = _fromParams[propName];
-				endValue = _toParams[propName];
-
-				if (endValue)
-					delete _toParams[propName];
-
-				property.initialize(target, startValue, endValue);
-			}
-
-			for (propName in _toParams)
-			{
-				property = properties[propName] = createProperty(propName);
-				property.initialize(target, null, _toParams[propName]);
+				var property:ITweenProperty = createProperty(propName);
+				properties[propName] = property;
+				property.initialize(target, _params[propName]);
 			}
 		}
 
@@ -278,7 +196,7 @@ package garbuz.motion
 		{
 			return (propName in TweenManager.specialProperties)
 					? new (TweenManager.specialProperties[propName])()
-					: new DefaultProperty(propName);
+					: new NumberProperty(propName);
 		}
 
 		motion_internal function doStep(currentTime:Number):void

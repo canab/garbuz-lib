@@ -6,7 +6,6 @@ package garbuz.motion
 	import flash.utils.getTimer;
 
 	import garbuz.motion.easing.Quad;
-	import garbuz.motion.properties.FilterProperty;
 	import garbuz.motion.properties.ScaleProperty;
 
 	use namespace motion_internal;
@@ -40,7 +39,6 @@ package garbuz.motion
 		}
 
 		registerSpecialProperty("$scale", ScaleProperty);
-		registerSpecialProperty("$filter", FilterProperty);
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		//
