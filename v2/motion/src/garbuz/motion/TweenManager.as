@@ -83,6 +83,16 @@ package garbuz.motion
 			instance.resumeAll();
 		}
 
+		public static function removeAll():void
+		{
+			instance.removeAll();
+		}
+
+		public static function removeTweensOf(target:Object):void
+		{
+			instance.removeTweensOf(target);
+		}
+
 		public static function get defaultDuration():Number
 		{
 			return instance.defaultDuration;
@@ -169,6 +179,24 @@ package garbuz.motion
 			}
 		}
 
+		public function removeAll():void
+		{
+			for(var tweener:Tweener = _head; tweener; tweener = tweener.next)
+			{
+				tweener.removed = true;
+			}
+		}
+
+		public function removeTweensOf(target:Object):void
+		{
+			var tweeners:Array = _targetsTweenMap[target] || [];
+
+			for each (var tweener:Tweener in tweeners)
+			{
+				tweener.removed = true;
+			}
+		}
+
 		public function get defaultDuration():Number
 		{
 			return _defaultDuration;
@@ -234,8 +262,6 @@ package garbuz.motion
 
 			deleteFromList(tweener);
 			removeFromMap(tweener);
-
-			tweener.dispose();
 		}
 
 		private function deleteFromList(tweener:Tweener):void
@@ -383,5 +409,6 @@ package garbuz.motion
 
 			return text;
 		}
+
 	}
 }

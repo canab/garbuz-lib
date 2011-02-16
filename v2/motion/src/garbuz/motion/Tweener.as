@@ -235,20 +235,6 @@ package garbuz.motion
 			_startTime += time;
 		}
 
-		motion_internal function dispose():void
-		{
-			target = null;
-
-			_completeHandler = null;
-			_completeParams = null;
-			_updateHandler = null;
-			_updateParams = null;
-
-			next = null;
-			prev = null;
-			chain = null;
-		}
-
 		private function applyComplete():void
 		{
 			for each (var property:ITweenProperty in properties)
