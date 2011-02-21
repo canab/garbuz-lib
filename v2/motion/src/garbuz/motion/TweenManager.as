@@ -335,11 +335,10 @@ package garbuz.motion
 				if (targetTweener == sourceTweener)
 					continue;
 
-				var targetProps:Object = targetTweener.properties;
-				for (var propName:String in sourceProps)
-				{
-					delete targetProps[propName];
-				}
+				targetTweener.overrideProperties(sourceProps);
+
+				if (targetTweener.numProperties == 0)
+					targetTweener.removed = true;
 			}
 		}
 

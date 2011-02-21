@@ -2,8 +2,8 @@ package garbuz.motion
 {
 	import flash.display.DisplayObject;
 
-	import garbuz.motion.properties.NumberProperty;
 	import garbuz.motion.properties.ITweenProperty;
+	import garbuz.motion.properties.NumberProperty;
 
 	use namespace motion_internal;
 
@@ -18,6 +18,7 @@ package garbuz.motion
 		motion_internal var removed:Boolean = false;
 		motion_internal var target:Object;
 		motion_internal var properties:Object = {};
+		motion_internal var numProperties:int = 0;
 		motion_internal var isInChain:Boolean = false;
 
 		private var _duration:Number;
@@ -186,17 +187,19 @@ package garbuz.motion
 		{
 			for (var propName:String in _params)
 			{
-				var property:ITweenProperty = createProperty(propName);
-				properties[propName] = property;
-				property.initialize(target, _params[propName]);
+				addProperty(propName);
 			}
 		}
 
-		private function createProperty(propName:String):ITweenProperty
+		private function addProperty(propName:String):void
 		{
-			return (propName in TweenManager.specialProperties)
+			var property:ITweenProperty = (propName in TweenManager.specialProperties)
 					? new (TweenManager.specialProperties[propName])()
 					: new NumberProperty(propName);
+
+			properties[propName] = property;
+			numProperties++;
+			property.initialize(target, _params[propName]);
 		}
 
 		motion_internal function doStep(currentTime:Number):void
@@ -233,6 +236,21 @@ package garbuz.motion
 		motion_internal function addTime(time:Number):void
 		{
 			_startTime += time;
+		}
+
+		motion_internal function overrideProperties(sourceProps:Object):void
+		{
+			for (var propName:String in sourceProps)
+			{
+				if (propName in properties)
+					removeProperty(propName);
+			}
+		}
+
+		private function removeProperty(propName:String):void
+		{
+			delete properties[propName];
+			numProperties--;
 		}
 
 		private function applyComplete():void
