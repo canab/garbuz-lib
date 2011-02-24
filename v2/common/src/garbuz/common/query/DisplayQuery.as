@@ -2,6 +2,7 @@ package garbuz.common.query
 {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+
 	import garbuz.common.comparing.FilterRequirement;
 	import garbuz.common.comparing.IRequirement;
 	import garbuz.common.comparing.NameRequirement;
@@ -10,10 +11,6 @@ package garbuz.common.query
 	import garbuz.common.comparing.TypeRequirement;
 	import garbuz.common.errors.NullPointerError;
 
-	/**
-	 * ...
-	 * @author canab
-	 */
 	public class DisplayQuery
 	{
 		private var _source:DisplayObjectContainer;

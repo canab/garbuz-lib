@@ -1,10 +1,5 @@
 ﻿package garbuz.common.comparing
 {
-	
-	/**
-	* ...
-	* @author Canab
-	*/
 	public class PropertyRequirement implements IRequirement
 	{
 		private var _path:Array;
@@ -33,6 +28,5 @@
 			
 			return item === _value;
 		}
-		
 	}
 }

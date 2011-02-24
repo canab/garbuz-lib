@@ -1,10 +1,5 @@
 ﻿package garbuz.common.comparing
 {
-	
-	/**
-	 * ...
-	 * @author Canab
-	 */
 	public class NameRequirement implements IRequirement
 	{
 		private static const NAME:String = 'name';
@@ -22,7 +17,5 @@
 				&& object.hasOwnProperty(NAME)
 				&& object[NAME] == _value;
 		}
-		
 	}
-	
 }

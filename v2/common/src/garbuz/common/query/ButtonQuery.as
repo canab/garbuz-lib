@@ -12,10 +12,6 @@ package garbuz.common.query
 	import garbuz.common.comparing.TypeRequirement;
 	import garbuz.common.errors.NullPointerError;
 
-	/**
-	 * ...
-	 * @author canab
-	 */
 	public class ButtonQuery
 	{
 		private var _source:SimpleButton;

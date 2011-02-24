@@ -12,10 +12,6 @@ package garbuz.common.query
 	import garbuz.common.converting.ToPropertyConverter;
 	import garbuz.common.errors.NullPointerError;
 
-	/**
-	 * ...
-	 * @author canab
-	 */
 	public class Query
 	{
 		private var _source:Object;

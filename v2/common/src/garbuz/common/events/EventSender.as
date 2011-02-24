@@ -1,9 +1,5 @@
 package garbuz.common.events
 {
-	/**
-	 * ...
-	 * @author canab
-	 */
 	public class EventSender
 	{
 		private var _sender:Object;

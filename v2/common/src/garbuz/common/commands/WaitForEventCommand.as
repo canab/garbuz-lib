@@ -1,10 +1,7 @@
 package garbuz.common.commands 
 {
 	import garbuz.common.events.EventSender;
-	/**
-	 * ...
-	 * @author canab
-	 */
+
 	public class WaitForEventCommand implements ICancelableCommand
 	{
 		private var _targetEvent:EventSender = new EventSender(this);
@@ -15,9 +12,7 @@ package garbuz.common.commands
 			_targetEvent = event;
 		}
 		
-		/* INTERFACE garbuz.common.commands.ICancelableCommand */
-		
-		public function cancel():void 
+		public function cancel():void
 		{
 			if (_targetEvent.hasListener(onTargetEvent))
 				_targetEvent.removeListener(onTargetEvent);

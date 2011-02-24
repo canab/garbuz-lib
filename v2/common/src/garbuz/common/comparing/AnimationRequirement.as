@@ -2,10 +2,6 @@
 {
 	import flash.display.MovieClip;
 
-	/**
-	* ...
-	* @author canab
-	*/
 	public class AnimationRequirement implements IRequirement
 	{
 		public function AnimationRequirement()

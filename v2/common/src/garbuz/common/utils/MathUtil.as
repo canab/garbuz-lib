@@ -1,11 +1,7 @@
 package garbuz.common.utils
 {
 	import flash.geom.Point;
-	
-	/**
-	* ...
-	* @author Canab
-	*/
+
 	public class MathUtil
 	{
 		private static var _PI:Number = Math.PI;

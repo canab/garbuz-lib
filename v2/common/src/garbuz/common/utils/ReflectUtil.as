@@ -3,10 +3,7 @@ package garbuz.common.utils
 	import flash.system.ApplicationDomain;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
-	/**
-	 * ...
-	 * @author canab
-	 */
+
 	public class ReflectUtil
 	{
 		static public function getInstanceClass(instance:Object, domain:ApplicationDomain = null):Class

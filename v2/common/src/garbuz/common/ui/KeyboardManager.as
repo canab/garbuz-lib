@@ -1,13 +1,12 @@
 package garbuz.common.ui
 {
-	import flash.display.DisplayObject;
 	import flash.display.Sprite;
-	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.utils.Dictionary;
+
 	import garbuz.common.events.EventSender;
-	
+
 	public class KeyboardManager
 	{
 		static private var _instance:KeyboardManager;

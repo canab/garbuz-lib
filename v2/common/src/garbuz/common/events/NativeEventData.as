@@ -1,10 +1,7 @@
 package garbuz.common.events 
 {
 	import flash.events.EventDispatcher;
-	/**
-	 * ...
-	 * @author canab
-	 */
+
 	internal class NativeEventData
 	{
 		public var object:EventDispatcher;

@@ -2,11 +2,7 @@
 {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
-	
-	/**
-	 * ...
-	 * @author Canab
-	 */
+
 	public class GridLayout implements ILayout
 	{
 		private var _numColumns:int;
@@ -19,8 +15,6 @@
 			_hGridSize = hGridSize;
 			_vGridSize = vGridSize;
 		}
-		
-		/* INTERFACE common.flash.layouts.ILayout */
 		
 		public function apply(content:DisplayObjectContainer):void
 		{

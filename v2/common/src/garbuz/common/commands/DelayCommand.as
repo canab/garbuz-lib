@@ -1,10 +1,5 @@
 package garbuz.common.commands 
 {
-	import garbuz.common.events.EventSender;
-	/**
-	 * ...
-	 * @author canab
-	 */
 	public class DelayCommand extends CallLaterCommand
 	{
 		/**

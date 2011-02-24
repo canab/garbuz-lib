@@ -1,10 +1,7 @@
 package garbuz.common.utils 
 {
 	import garbuz.common.errors.ItemNotFoundError;
-	/**
-	 * ...
-	 * @author canab
-	 */
+
 	public class ArrayUtil
 	{
 		static public function lastItem(source:Array):Object

@@ -1,9 +1,5 @@
 package garbuz.common.converting 
 {
-	/**
-	 * ...
-	 * @author canab
-	 */
 	public class ToPropertyConverter implements IConverter
 	{
 		private var _propertyName:String;
@@ -13,12 +9,9 @@ package garbuz.common.converting
 			_propertyName = propertyName;
 		}
 		
-		/* INTERFACE common.converting.IConverter */
-		
 		public function convert(value:Object):Object
 		{
 			return value[_propertyName];
 		}
-		
 	}
 }

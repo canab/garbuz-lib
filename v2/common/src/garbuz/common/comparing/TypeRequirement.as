@@ -1,10 +1,5 @@
 ﻿package garbuz.common.comparing
 {
-	
-	/**
-	* ...
-	* @author canab
-	*/
 	public class TypeRequirement implements IRequirement
 	{
 		private var _type:Class;
@@ -18,6 +13,5 @@
 		{
 			return object is _type;
 		}
-		
 	}
 }

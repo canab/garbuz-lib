@@ -3,12 +3,10 @@ package garbuz.common.processing
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.utils.getTimer;
+
 	import garbuz.common.commands.ICancelableCommand;
 	import garbuz.common.events.EventSender;
-	/**
-	 * ...
-	 * @author canab
-	 */
+
 	public class EnterFrameProcessor implements ICancelableCommand
 	{
 		private var _completeEvent:EventSender = new EventSender(this);

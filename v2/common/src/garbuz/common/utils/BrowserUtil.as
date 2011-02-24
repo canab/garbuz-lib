@@ -1,13 +1,9 @@
 ﻿package garbuz.common.utils
 {
 	import flash.external.ExternalInterface;
-	import flash.net.navigateToURL;
 	import flash.net.URLRequest;
-	
-	/**
-	 * ...
-	 * @author Canab
-	 */
+	import flash.net.navigateToURL;
+
 	public class BrowserUtil
 	{
 		static public function navigate(url:String, window:String = '_blank'):void

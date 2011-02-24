@@ -1,10 +1,7 @@
 ﻿package garbuz.common.events
 {
 	import flash.events.EventDispatcher;
-	/**
-	 * ...
-	 * @author Canab
-	 */
+
 	public class EventManager
 	{
 		static private const NOT_REGISTERED_ERROR:String = "Event is not registered";

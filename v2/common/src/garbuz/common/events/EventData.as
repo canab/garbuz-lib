@@ -1,9 +1,5 @@
 package garbuz.common.events 
 {
-	/**
-	 * ...
-	 * @author canab
-	 */
 	internal class EventData
 	{
 		public var event:EventSender;

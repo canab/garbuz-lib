@@ -4,12 +4,9 @@
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
+
 	import garbuz.common.events.EventSender;
-	
-	/**
-	* ...
-	* @author Canab
-	*/
+
 	public class DragController
 	{
 		public var enabled:Boolean = true;

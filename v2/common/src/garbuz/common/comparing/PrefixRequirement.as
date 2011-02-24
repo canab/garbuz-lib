@@ -1,10 +1,5 @@
 ﻿package garbuz.common.comparing
 {
-	
-	/**
-	 * ...
-	 * @author Canab
-	 */
 	public class PrefixRequirement implements IRequirement
 	{
 		private static const NAME:String = 'name';
@@ -22,7 +17,5 @@
 				&& object.hasOwnProperty(NAME)
 				&& String(object[NAME]).indexOf(_value) == 0;
 		}
-		
 	}
-	
 }

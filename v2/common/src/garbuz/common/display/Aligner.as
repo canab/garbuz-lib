@@ -1,12 +1,8 @@
 package garbuz.common.display
 {
 	import flash.display.DisplayObject;
-	import flash.display.Sprite;
 	import flash.geom.Rectangle;
-	/**
-	 * ...
-	 * @author canab
-	 */
+
 	public class Aligner
 	{
 		static public const TOP:String = "top";

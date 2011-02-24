@@ -1,11 +1,6 @@
 package garbuz.common.query
 {
 	/**
-	 * ...
-	 * @author canab
-	 */
-	
-	/**
 	 * Query objects from collection
 	 * @param	source
 	 * object that supports (for each...) iteration

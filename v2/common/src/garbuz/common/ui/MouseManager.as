@@ -7,11 +7,9 @@ package garbuz.common.ui
 	import flash.events.MouseEvent;
 	import flash.ui.Mouse;
 	import flash.utils.Dictionary;
+
 	import garbuz.common.utils.DisplayUtil;
-	/**
-	 * ...
-	 * @author canab
-	 */
+
 	public class MouseManager
 	{
 		static private var _instance:MouseManager;

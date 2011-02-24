@@ -1,9 +1,5 @@
 package garbuz.common.ui
 {
-	/**
-	 * ...
-	 * @author Canab
-	 */
 	public class Anchor
 	{
 		private var _target:Object;

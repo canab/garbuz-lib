@@ -5,10 +5,6 @@ package garbuz.common.commands
 	import garbuz.common.errors.NullPointerError;
 	import garbuz.common.events.EventSender;
 
-	/**
-	 * ...
-	 * @author Canab
-	 */
 	public class AsincMacroCommand implements ICancelableCommand
 	{
 		private var _completeEvent:EventSender = new EventSender(this);

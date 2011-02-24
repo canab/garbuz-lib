@@ -1,10 +1,5 @@
 ﻿package garbuz.common.comparing
 {
-	
-	/**
-	* ...
-	* @author canab
-	*/
 	public class FilterRequirement implements IRequirement
 	{
 		private var _func:Function;
@@ -23,6 +18,5 @@
 		{
 			return _func(object);
 		}
-		
 	}
 }

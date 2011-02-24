@@ -3,12 +3,10 @@
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.utils.Dictionary;
+
 	import garbuz.common.commands.ICancelableCommand;
 	import garbuz.common.events.EventSender;
-	/**
-	 * ...
-	 * @author Canab
-	 */
+
 	public class MoviePlayer implements ICancelableCommand
 	{
 		static private const _players:Dictionary = new Dictionary(true);
@@ -63,8 +61,6 @@
 			}
 		}
 		
-		/* INTERFACE common.commands.IAsincCommand */
-		
 		public function get completeEvent():EventSender
 		{
 			return _completeEvent;
@@ -80,8 +76,6 @@
 			clip.gotoAndStop(fromFrame);
 			clip.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
-		
-		/* INTERFACE common.commands.ICancelableCommand */
 		
 		public function cancel():void
 		{

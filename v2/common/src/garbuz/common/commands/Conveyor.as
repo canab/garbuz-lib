@@ -1,9 +1,5 @@
 package garbuz.common.commands 
 {
-	/**
-	 * ...
-	 * @author canab
-	 */
 	public class Conveyor
 	{
 		private var _items:Array = [];
@@ -14,22 +10,17 @@ package garbuz.common.commands
 		{
 		}
 		
-		/**
-		 * Push call to the queue 
-		 * 
-		 * @param	action
-		 * should be ICommand or Function
-		 */
-		public function pushAction(action:Object):void 
+		public function pushCall(func:Function, ...args):void
 		{
-			if (action is Function || action is ICommand)
-				_items.push(action);
-			else
-				throw new ArgumentError();
-				
-			checkForExecute();
+			pushCommand(new CallFunctionCommand(func, args));
 		}
 		
+		public function pushCommand(command:ICommand):void
+		{
+			_items.push(command);
+			checkForExecute();
+		}
+
 		private function checkForExecute():void
 		{
 			if (_active && !_currentItem)
@@ -47,11 +38,6 @@ package garbuz.common.commands
 					IAsincCommand(_currentItem).completeEvent.addListener(onComplete);
 					IAsincCommand(_currentItem).execute();
 					break;
-				}
-				else if (_currentItem is Function)
-				{
-					(_currentItem as Function)();
-					_currentItem = null;
 				}
 				else if (_currentItem is ICommand)
 				{

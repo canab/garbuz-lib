@@ -2,11 +2,9 @@ package garbuz.common.commands
 {
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
+
 	import garbuz.common.events.EventSender;
-	/**
-	 * ...
-	 * @author canab
-	 */
+
 	public class CallLaterCommand implements ICancelableCommand
 	{
 		private var _func:Function;

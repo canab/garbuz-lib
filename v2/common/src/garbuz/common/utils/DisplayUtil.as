@@ -11,10 +11,6 @@ package garbuz.common.utils
 	import garbuz.common.comparing.IRequirement;
 	import garbuz.common.query.fromDisplay;
 
-	/**
-	 * ...
-	 * @author canab
-	 */
 	public class DisplayUtil
 	{
 		static public function transformCoords(point:Point, source:DisplayObject, target:DisplayObject):Point

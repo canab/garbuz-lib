@@ -1,11 +1,7 @@
 package garbuz.common.commands
 {
 	import garbuz.common.events.EventSender;
-	
-	/**
-	 * ...
-	 * @author canab
-	 */
+
 	public class CommandHistory
 	{
 		private var _maxUndo:int = 0;

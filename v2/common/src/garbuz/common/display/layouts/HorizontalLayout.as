@@ -2,11 +2,7 @@
 {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
-	
-	/**
-	 * ...
-	 * @author Canab
-	 */
+
 	public class HorizontalLayout implements ILayout
 	{
 		private var _distance:int;
@@ -15,8 +11,6 @@
 		{
 			_distance = distance;
 		}
-		
-		/* INTERFACE common.flash.layouts.ILayout */
 		
 		public function apply(content:DisplayObjectContainer):void
 		{

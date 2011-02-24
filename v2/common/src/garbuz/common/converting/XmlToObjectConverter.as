@@ -1,9 +1,5 @@
 package garbuz.common.converting 
 {
-	/**
-	 * ...
-	 * @author canab
-	 */
 	public class XmlToObjectConverter implements IConverter
 	{
 		private var _objectType:Class;
@@ -12,8 +8,6 @@ package garbuz.common.converting
 		{
 			_objectType = objectType;
 		}
-		
-		/* INTERFACE common.converting.IConverter */
 		
 		public function convert(value:Object):Object
 		{
@@ -43,5 +37,4 @@ package garbuz.common.converting
 			return result;
 		}
 	}
-
 }

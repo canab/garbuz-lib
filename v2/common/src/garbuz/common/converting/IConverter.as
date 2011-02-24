@@ -1,13 +1,7 @@
 package garbuz.common.converting 
 {
-	
-	/**
-	 * ...
-	 * @author canab
-	 */
-	public interface IConverter 
+	public interface IConverter
 	{
 		function convert(value:Object):Object;
 	}
-	
 }

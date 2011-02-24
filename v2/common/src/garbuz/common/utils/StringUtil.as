@@ -1,10 +1,5 @@
 ﻿package garbuz.common.utils
 {
-	
-	/**
-	* ...
-	* @author Canab
-	*/
 	public class StringUtil
 	{
 		static public const EMPTY_CHARS:String = ' \t\r\n\f' + String.fromCharCode(160);

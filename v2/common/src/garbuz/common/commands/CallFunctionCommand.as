@@ -1,9 +1,5 @@
 package garbuz.common.commands 
 {
-	/**
-	 * ...
-	 * @author canab
-	 */
 	public class CallFunctionCommand implements ICommand
 	{
 		private var _func:Function;
@@ -21,7 +17,5 @@ package garbuz.common.commands
 		{
 			_func.apply(_thisObject, _args);
 		}
-		
 	}
-
 }
