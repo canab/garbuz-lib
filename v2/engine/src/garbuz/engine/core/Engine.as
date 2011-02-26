@@ -167,9 +167,6 @@ package garbuz.engine.core
 					trace("Engine stopped");
 				}
 					
-				_root.mouseEnabled = _started;
-				_root.mouseChildren = _started;
-					
 				_stateChangedEvent.dispatch();
 			}
 		}

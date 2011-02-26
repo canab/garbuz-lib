@@ -2,9 +2,11 @@ package garbuz.engine.scene
 {
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
+
 	import garbuz.common.errors.ItemNotFoundError;
 	import garbuz.common.utils.DisplayUtil;
 	import garbuz.engine.core.Component;
+
 	/**
 	 * ...
 	 * @author canab
@@ -18,6 +20,7 @@ package garbuz.engine.scene
 		public function VectorLayer(content:Sprite = null)
 		{
 			_content = content || new Sprite();
+			_content.mouseEnabled = false;
 			_items = new Vector.<IVectorRenderer>();
 		}
 		
