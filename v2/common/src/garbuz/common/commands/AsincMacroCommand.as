@@ -14,29 +14,30 @@ package garbuz.common.commands
 		private var _canceled:Boolean = false;
 		private var _completed:Boolean = false;
 
-		public function AsincMacroCommand(completeHandler:Function = null, commands:Array = null)
+		public function AsincMacroCommand(completeHandler:Function = null)
 		{
 			if (completeHandler != null)
 				_completeEvent.addListener(completeHandler);
-
-			if (commands)
-				addAll(commands);
 		}
 
-		public function add(command:IAsincCommand):void
+		public function add(command:IAsincCommand):AsincMacroCommand
 		{
 			if (!command)
 				throw new NullPointerError();
 
 			_commands[command] = false;
+
+			return this;
 		}
 
-		public function addAll(commands:/*iterable*/Object):void
+		public function addAll(commands:/*iterable*/Object):AsincMacroCommand
 		{
 			for each (var command:IAsincCommand in commands)
 			{
 				add(command);
 			}
+
+			return this;
 		}
 
 		public function execute():void

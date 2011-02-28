@@ -14,17 +14,20 @@ package garbuz.common.commands
 		private var _canceled:Boolean = false;
 		private var _completed:Boolean = false;
 
-		public function CommandQueue()
+		public function CommandQueue(completeHandler:Function = null)
 		{
-			super();
+			if (completeHandler != null)
+				_completeEvent.addListener(completeHandler);
 		}
 
-		public function add(command:IAsincCommand):void
+		public function add(command:IAsincCommand):CommandQueue
 		{
 			if (!command)
 				throw new NullPointerError();
 
 			_commands.push(command);
+
+			return this;
 		}
 
 		public function execute():void
