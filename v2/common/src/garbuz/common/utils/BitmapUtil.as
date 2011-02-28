@@ -30,10 +30,10 @@ package garbuz.common.utils
 		public static function calculateIntBounds(content:Sprite):Rectangle
 		{
 			var bounds:Rectangle = content.getBounds(content);
-			bounds.left = int(bounds.left);
-			bounds.top = int(bounds.top);
-			bounds.right = int(bounds.right) + 1;
-			bounds.bottom = int(bounds.bottom) + 1;
+			bounds.left = Math.floor(bounds.left);
+			bounds.top = Math.floor(bounds.top);
+			bounds.right = Math.ceil(bounds.right);
+			bounds.bottom = Math.ceil(bounds.bottom);
 
 			return bounds;
 		}
