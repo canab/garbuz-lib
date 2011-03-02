@@ -32,11 +32,11 @@ package garbuz.engine.scene.renderers
 
 			var rootClip:MovieClip = _content as MovieClip;
 
-
 			if (rootClip && rootClip.totalFrames > 1)
 			{
 				rootClip.stop();
 				_subClips.push(rootClip);
+				_totalFrames = rootClip.totalFrames;
 			}
 
 			var children:Array = fromDisplay(_content)
