@@ -9,11 +9,11 @@
 		private var _hGridSize:Number;
 		private var _vGridSize:Number;
 		
-		public function GridLayout(numColumns:int, hGridSize:Number, vGridSize:Number)
+		public function GridLayout(hGridSize:Number, vGridSize:Number, numColumns:int)
 		{
-			_numColumns = numColumns;
 			_hGridSize = hGridSize;
 			_vGridSize = vGridSize;
+			_numColumns = numColumns;
 		}
 		
 		public function apply(content:DisplayObjectContainer):void
