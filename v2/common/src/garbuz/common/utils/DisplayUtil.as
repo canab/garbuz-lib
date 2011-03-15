@@ -1,9 +1,11 @@
 package garbuz.common.utils 
 {
+	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
@@ -190,7 +192,20 @@ package garbuz.common.utils
 				? true
 				: fromDisplay(content).byRequirement(requirement).existsRecursive();
 		}
-		
+
+		public static function getPixel(item:DisplayObject, x:int, y:int):uint
+		{
+			var bitmapData:BitmapData = new BitmapData(4, 4);
+			var matrix:Matrix = new Matrix();
+			matrix.tx = -x;
+			matrix.ty = -y;
+
+			bitmapData.draw(item, matrix,
+				item.transform.colorTransform,
+				item.blendMode);
+
+			return bitmapData.getPixel(1, 1);
+		}
 	}
 
 }
