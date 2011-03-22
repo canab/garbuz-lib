@@ -133,6 +133,17 @@ package garbuz.common.query
 			return convert(new ConstructorConverter(type));
 		}
 
+		/**
+		 *
+		 * @param func
+		 * function(source:Object):Object
+		 * @return
+		 */
+		public function convertByFunction(func:Function):Array
+		{
+			return convert(new FunctionConverter(func));
+		}
+
 		public function selectProperty(property:String):Array
 		{
 			return convert(new ToPropertyConverter(property));
