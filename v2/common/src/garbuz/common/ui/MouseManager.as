@@ -8,11 +8,41 @@ package garbuz.common.ui
 	import flash.ui.Mouse;
 	import flash.utils.Dictionary;
 
+	import garbuz.common.errors.AlreadyInitializedError;
+	import garbuz.common.errors.NotInitializedError;
 	import garbuz.common.utils.DisplayUtil;
 
 	public class MouseManager
 	{
 		static private var _instance:MouseManager;
+
+		public static function get instance():MouseManager
+		{
+			if (!initialized)
+				throw new NotInitializedError();
+
+			return _instance;
+		}
+
+		public static function initialize(root:Sprite):void
+		{
+			if (initialized)
+				throw new AlreadyInitializedError();
+
+			_instance = new MouseManager(new PrivateConstructor());
+			_instance.initialize(root);
+		}
+
+		public static function get initialized():Boolean
+		{
+			return Boolean(_instance);
+		}
+
+		/////////////////////////////////////////////////////////////////////////////////////
+		//
+		// instance
+		//
+		/////////////////////////////////////////////////////////////////////////////////////
 		
 		private var _root:Sprite;
 		private var _pointer:DisplayObject; 
@@ -24,15 +54,7 @@ package garbuz.common.ui
 			super();
 		}
 		
-		static public function get instance():MouseManager
-		{
-			if (!_instance)
-				_instance = new MouseManager(new PrivateConstructor);
-			
-			return _instance;
-		}
-		
-		public function initialize(root:Sprite):void 
+		private function initialize(root:Sprite):void
 		{
 			_root = root;
 		}

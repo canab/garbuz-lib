@@ -5,19 +5,41 @@ package garbuz.common.ui
 	import flash.events.KeyboardEvent;
 	import flash.utils.Dictionary;
 
+	import garbuz.common.errors.AlreadyInitializedError;
+	import garbuz.common.errors.NotInitializedError;
 	import garbuz.common.events.EventSender;
 
 	public class KeyboardManager
 	{
-		static private var _instance:KeyboardManager;
+		private static var _instance:KeyboardManager;
 		
-		static public function get instance():KeyboardManager
+		public static function get instance():KeyboardManager
 		{
-			if (!_instance)
-				_instance = new KeyboardManager(new PrivateConstructor());
-				
+			if (!initialized)
+				throw new NotInitializedError();
+
 			return _instance;
 		}
+
+		public static function initialize(root:Sprite):void
+		{
+			if (initialized)
+				throw new AlreadyInitializedError();
+
+			_instance = new KeyboardManager(new PrivateConstructor());
+			_instance.initialize(root);
+		}
+
+		public static function get initialized():Boolean
+		{
+			return Boolean(_instance);
+		}
+
+		/////////////////////////////////////////////////////////////////////////////////////
+		//
+		// instance
+		//
+		/////////////////////////////////////////////////////////////////////////////////////
 		
 		private var _pressEvent:EventSender = new EventSender(this);
 		private var _releaseEvent:EventSender = new EventSender(this);
@@ -30,7 +52,7 @@ package garbuz.common.ui
 			super();
 		}
 		
-		public function initialize(root:Sprite):void 
+		private function initialize(root:Sprite):void
 		{
 			_root = root;
 			
@@ -80,11 +102,6 @@ package garbuz.common.ui
 			}
 			
 			return result;
-		}
-		
-		public function get initialized():Boolean
-		{
-			return Boolean(_root);
 		}
 		
 		public function get pressEvent():EventSender { return _pressEvent; }
