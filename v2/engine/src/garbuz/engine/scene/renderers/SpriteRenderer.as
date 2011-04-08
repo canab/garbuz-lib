@@ -32,7 +32,6 @@ package garbuz.engine.scene.renderers
 			if (!_clickEvent)
 			{
 				_clickEvent = new EventSender(this);
-				_content.mouseEnabled = true;
 				_content.addEventListener(MouseEvent.CLICK, onClick);
 			}
 
