@@ -197,14 +197,41 @@ package garbuz.common.utils
 		{
 			var bitmapData:BitmapData = new BitmapData(4, 4);
 			var matrix:Matrix = new Matrix();
-			matrix.tx = -x;
-			matrix.ty = -y;
+			matrix.translate(-x, -y);
 
-			bitmapData.draw(item, matrix,
-				item.transform.colorTransform,
-				item.blendMode);
+			bitmapData.draw(item, matrix, item.transform.colorTransform, item.blendMode);
 
 			return bitmapData.getPixel(1, 1);
+		}
+
+		public static function getPixel32(item:DisplayObject, x:int, y:int):uint
+		{
+			var bitmapData:BitmapData = new BitmapData(4, 4, true, 0);
+			var matrix:Matrix = new Matrix();
+			matrix.translate(-x, -y);
+
+			bitmapData.draw(item, matrix, item.transform.colorTransform, item.blendMode);
+
+			return bitmapData.getPixel32(1, 1);
+		}
+
+		static public function getRandomPoint(area:Sprite):Point
+		{
+			var bounds:Rectangle = area.getBounds(area);
+			var stepCount:int = 100;
+			var point:Point;
+
+			while (stepCount-- > 0)
+			{
+				point = new Point(
+					bounds.left + Math.random() * bounds.width,
+					bounds.top + Math.random() * bounds.height);
+
+				if (getPixel32(area, point.x, point.y) != 0)
+					break;
+			}
+			
+			return point;
 		}
 	}
 
