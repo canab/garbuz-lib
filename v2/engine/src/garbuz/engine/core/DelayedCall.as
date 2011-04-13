@@ -1,11 +1,7 @@
 package garbuz.engine.core 
 {
 	import garbuz.common.commands.ICommand;
-	
-	/**
-	 * ...
-	 * @author canab
-	 */
+
 	internal class DelayedCall
 	{
 		public var numFrames:int;

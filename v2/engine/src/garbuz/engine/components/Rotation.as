@@ -1,11 +1,7 @@
 package garbuz.engine.components 
 {
 	import garbuz.engine.core.Component;
-	
-	/**
-	 * ...
-	 * @author canab
-	 */
+
 	public class Rotation extends Component
 	{
 		public var value:Number;

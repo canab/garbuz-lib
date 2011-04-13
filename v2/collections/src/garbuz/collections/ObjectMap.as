@@ -1,6 +1,7 @@
 package garbuz.collections 
 {
 	import flash.utils.Dictionary;
+
 	/**
 	 * ...
 	 * @author canab

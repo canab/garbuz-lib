@@ -12,10 +12,6 @@ package garbuz.engine.scene.renderers
 	import garbuz.engine.scene.IVectorRenderer;
 	import garbuz.engine.scene.VectorLayer;
 
-	/**
-	 * ...
-	 * @author canab
-	 */
 	public class DisplayObjectRenderer extends Component implements IVectorRenderer
 	{
 		private var _content:DisplayObject;

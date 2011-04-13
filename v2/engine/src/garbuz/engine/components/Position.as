@@ -1,12 +1,9 @@
 package garbuz.engine.components 
 {
 	import flash.geom.Point;
+
 	import garbuz.engine.core.Component;
-	
-	/**
-	 * ...
-	 * @author canab
-	 */
+
 	public class Position extends Component
 	{
 		static public function fromPoint(point:Point):Position

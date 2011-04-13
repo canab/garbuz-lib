@@ -2,11 +2,9 @@ package garbuz.engine.scene.renderers
 {
 	import flash.display.SimpleButton;
 	import flash.events.MouseEvent;
+
 	import garbuz.common.events.EventSender;
-	/**
-	 * ...
-	 * @author canab
-	 */
+
 	public class ButtonRenderer extends DisplayObjectRenderer
 	{
 		private var _button:SimpleButton;

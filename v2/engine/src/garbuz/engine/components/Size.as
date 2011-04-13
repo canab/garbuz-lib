@@ -1,11 +1,7 @@
 package garbuz.engine.components 
 {
 	import garbuz.engine.core.Component;
-	
-	/**
-	 * ...
-	 * @author canab
-	 */
+
 	public class Size extends Component
 	{
 		public var width:Number;

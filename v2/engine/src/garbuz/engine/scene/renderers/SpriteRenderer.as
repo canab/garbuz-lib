@@ -5,10 +5,6 @@ package garbuz.engine.scene.renderers
 
 	import garbuz.common.events.EventSender;
 
-	/**
-	 * ...
-	 * @author canab
-	 */
 	public class SpriteRenderer extends DisplayObjectRenderer
 	{
 		private var _content:Sprite;

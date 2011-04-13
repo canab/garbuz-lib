@@ -6,10 +6,6 @@ package garbuz.engine.core
 	import garbuz.common.commands.ICommand;
 	import garbuz.common.errors.ItemNotFoundError;
 
-	/**
-	 * ...
-	 * @author canab
-	 */
 	internal class ProcessManager
 	{
 		private var _engine:Engine;

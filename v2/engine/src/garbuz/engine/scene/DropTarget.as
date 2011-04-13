@@ -3,11 +3,7 @@ package garbuz.engine.scene
 	import garbuz.common.events.EventSender;
 	import garbuz.engine.core.Component;
 	import garbuz.engine.scene.renderers.SpriteRenderer;
-	
-	/**
-	 * ...
-	 * @author canab
-	 */
+
 	public class DropTarget extends Component
 	{
 		private var _renderer:SpriteRenderer;

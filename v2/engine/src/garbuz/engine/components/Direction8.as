@@ -1,11 +1,5 @@
 package garbuz.engine.components 
 {
-	import garbuz.engine.core.Component;
-	
-	/**
-	 * ...
-	 * @author canab
-	 */
 	public class Direction8 extends DataComponent
 	{
 		public static const UP:int         = 0;

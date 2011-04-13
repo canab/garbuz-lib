@@ -1,13 +1,10 @@
 package garbuz.engine.components 
 {
 	import flash.geom.Point;
+
 	import garbuz.common.events.EventSender;
 	import garbuz.engine.core.Component;
-	
-	/**
-	 * ...
-	 * @author canab
-	 */
+
 	public class PathMover extends Component
 	{
 		public var targetPosition:Position;

@@ -2,11 +2,7 @@ package garbuz.engine.components
 {
 	import garbuz.common.commands.CallFunctionCommand;
 	import garbuz.engine.core.Component;
-	
-	/**
-	 * ...
-	 * @author canab
-	 */
+
 	public class ThinkComponent extends Component
 	{
 		private var _command:CallFunctionCommand;

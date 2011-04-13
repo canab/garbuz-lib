@@ -7,10 +7,6 @@ package garbuz.engine.core
 	import garbuz.common.errors.ItemNotFoundError;
 	import garbuz.common.events.EventSender;
 
-	/**
-	 * ...
-	 * @author canab
-	 */
 	public class Engine
 	{
 		internal var nameManager:NameManager = new NameManager();

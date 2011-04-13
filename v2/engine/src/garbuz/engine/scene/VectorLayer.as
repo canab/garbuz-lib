@@ -7,10 +7,6 @@ package garbuz.engine.scene
 	import garbuz.common.utils.DisplayUtil;
 	import garbuz.engine.core.Component;
 
-	/**
-	 * ...
-	 * @author canab
-	 */
 	public class VectorLayer extends Component
 	{
 		private var _content:Sprite;

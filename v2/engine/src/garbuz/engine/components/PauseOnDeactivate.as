@@ -1,16 +1,12 @@
 package garbuz.engine.components 
 {
 	import flash.events.Event;
+
 	import garbuz.engine.core.Component;
-	
-	/**
-	 * ...
-	 * @author canab
-	 */
+
 	public class PauseOnDeactivate extends Component
 	{
-		
-		public function PauseOnDeactivate() 
+		public function PauseOnDeactivate()
 		{
 			super();
 		}

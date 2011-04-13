@@ -1,9 +1,6 @@
 package garbuz.engine.core 
 {
-	/**
-	 * ...
-	 * @author canab
-	 */
+
 	public class Component
 	{
 		internal var initialized:Boolean = false;

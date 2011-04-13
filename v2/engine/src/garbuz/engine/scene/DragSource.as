@@ -3,15 +3,12 @@ package garbuz.engine.scene
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
+
 	import garbuz.common.events.EventSender;
 	import garbuz.common.utils.DisplayUtil;
 	import garbuz.engine.core.Component;
 	import garbuz.engine.scene.renderers.SpriteRenderer;
-	
-	/**
-	 * ...
-	 * @author canab
-	 */
+
 	public class DragSource extends Component
 	{
 		public var lockHorizontal:Boolean = false;
