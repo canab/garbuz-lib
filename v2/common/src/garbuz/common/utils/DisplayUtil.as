@@ -215,7 +215,7 @@ package garbuz.common.utils
 			return bitmapData.getPixel32(1, 1);
 		}
 
-		static public function getRandomPoint(area:Sprite):Point
+		static public function getRandomPoint(area:DisplayObject):Point
 		{
 			var bounds:Rectangle = area.getBounds(area);
 			var stepCount:int = 100;
