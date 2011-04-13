@@ -13,6 +13,8 @@ package garbuz.engine.core
 	 */
 	public class Engine
 	{
+		internal var nameManager:NameManager = new NameManager();
+
 		private var _root:Sprite;
 		private var _processManager:ProcessManager;
 		private var _entities:Vector.<Entity>;
@@ -44,7 +46,10 @@ package garbuz.engine.core
 		public function addEntity(entity:Entity, name:String = null):void
 		{
 			_entities.push(entity);
-			entity.name = name;
+
+			if (entity.name == null)
+				entity.name = name;
+
 			entity.engine = this;
 			entity.initialize();
 		}
@@ -137,6 +142,19 @@ package garbuz.engine.core
 					return item;
 			}
 			return null;
+		}
+
+		public function getComponent(fullName:String):Component
+		{
+			var parts:Array = fullName.split(NameManager.SEPARATOR);
+			var entityName:String = parts[0];
+			var componentName:String = parts[1];
+
+			var entity:Entity = getEntityByName(entityName);
+
+			return (entity)
+					? entity.getComponentByName(componentName)
+					: null;
 		}
 		
 		public function get frameRate():int

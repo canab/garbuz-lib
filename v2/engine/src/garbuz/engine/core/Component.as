@@ -23,6 +23,9 @@ package garbuz.engine.core
 			if (initialized)
 				throw new Error("Component is already initialized");
 			
+			if (!name)
+				name = engine.nameManager.getUniqueName();
+
 			initialized = true;
 			
 			onInitialize();
@@ -39,6 +42,13 @@ package garbuz.engine.core
 			disposed = true;
 				
 			onDispose();
+		}
+
+		public function get fullName():String
+		{
+			return (parent)
+				? parent.name + NameManager.SEPARATOR + name
+				: name;
 		}
 
 		public function get isInitialized():Boolean

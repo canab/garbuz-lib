@@ -1,6 +1,7 @@
 package garbuz.engine.core 
 {
 	import garbuz.common.errors.ItemNotFoundError;
+
 	/**
 	 * ...
 	 * @author canab
@@ -25,7 +26,10 @@ package garbuz.engine.core
 			if (initialized)
 				throw new Error("Entity is already initialized");
 			
-			for each (var component:Component in _components) 
+			if (!name)
+				name = _engine.nameManager.getUniqueName();
+
+			for each (var component:Component in _components)
 			{
 				initializeComponent(component);
 			}
@@ -53,11 +57,12 @@ package garbuz.engine.core
 		{
 			if (disposed)
 				throw new Error("Entity is disposed");
-			
+
+			if (component.name == null)
+				component.name = name;
+
 			_components.push(component);
-			
-			component.name = name;
-			
+
 			if (initialized)
 				initializeComponent(component);
 		}
