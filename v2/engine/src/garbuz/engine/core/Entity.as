@@ -2,10 +2,6 @@ package garbuz.engine.core
 {
 	import garbuz.common.errors.ItemNotFoundError;
 
-	/**
-	 * ...
-	 * @author canab
-	 */
 	public class Entity
 	{
 		public var name:String;
