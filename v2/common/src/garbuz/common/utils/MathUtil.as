@@ -34,6 +34,25 @@ package garbuz.common.utils
 		{
 			return minValue + int(Math.random() * (maxValue - minValue + 1));
 		}
+
+		public static function radiansToDegrees(radians:Number):Number
+		{
+			return radians / _PI * 180;
+		}
+
+		/**
+		 * returns angle from startPoint to endPoint in ranges [-PI...PI]
+		 */
+		public static function getAngle(startPoint:Point, endPoint:Point):Number
+		{
+			var dx:Number = endPoint.x - startPoint.x;
+			var dy:Number = endPoint.y - startPoint.y;
+
+			if (dx == 0)
+				return (dy > 0) ? -_PI : _PI;
+			else
+				return Math.atan2(dy,  dx);
+		}
 		
 		/**
 		 * Normalize value to range [-PI...PI]
