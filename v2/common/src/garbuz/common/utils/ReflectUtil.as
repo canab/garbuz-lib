@@ -7,7 +7,32 @@ package garbuz.common.utils
 
 	public class ReflectUtil
 	{
-		static public function getInstanceClass(instance:Object, domain:ApplicationDomain = null):Class
+		public static function createInstance(className:String, args:Array = null):Object
+		{
+			return createInstanceFromDomain(ApplicationDomain.currentDomain, className,  args);
+		}
+
+		public static function createInstanceFromDomain(domain:ApplicationDomain, className:String, args:Array = null):Object
+		{
+			var classRef:Class = Class(domain.getDefinition(className));
+
+			if (!args || args.length == 0)
+				return new classRef();
+			else if (args.length == 1)
+				return new classRef(args[0]);
+			else if (args.length == 2)
+				return new classRef(args[0], args[1]);
+			else if (args.length == 3)
+				return new classRef(args[0], args[1], args[2]);
+			else if (args.length == 4)
+				return new classRef(args[0], args[1], args[2], args[3]);
+			else if (args.length == 5)
+				return new classRef(args[0], args[1], args[2], args[3], args[4]);
+			else
+				throw new ArgumentError("Incorrect number of arguments");
+		}
+
+		public static function getInstanceClass(instance:Object, domain:ApplicationDomain = null):Class
 		{
 			if (domain)
 				return domain.getDefinition(getQualifiedClassName(instance)) as Class;
@@ -15,7 +40,7 @@ package garbuz.common.utils
 				return getDefinitionByName(getQualifiedClassName(instance)) as Class;
 		}
 		
-		static public function getClassName(object:Object):String
+		public static function getClassName(object:Object):String
 		{
 			var fullName:String = getQualifiedClassName(object);
 			var index:int = fullName.indexOf("::");
