@@ -85,8 +85,8 @@ package garbuz.common.utils
 		static public function calcBounds(objects:Array, target:DisplayObjectContainer):Rectangle
 		{
 			var minX : Number = Number.MAX_VALUE;
-			var maxX : Number = Number.MIN_VALUE;
 			var minY : Number = Number.MAX_VALUE;
+			var maxX : Number = Number.MIN_VALUE;
 			var maxY : Number = Number.MIN_VALUE;
 			
 			for each (var object:DisplayObject in objects) 
