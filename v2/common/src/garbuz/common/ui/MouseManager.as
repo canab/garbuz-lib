@@ -4,6 +4,7 @@ package garbuz.common.ui
 	import flash.display.DisplayObjectContainer;
 	import flash.display.InteractiveObject;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.ui.Mouse;
 	import flash.utils.Dictionary;
@@ -95,9 +96,8 @@ package garbuz.common.ui
 		{
 			var info:PointerInfo = new PointerInfo(pointer, hideMouse);
 			
-			target.addEventListener(MouseEvent.MOUSE_OVER, onSpriteOver);
-			target.addEventListener(MouseEvent.MOUSE_OUT, onSpriteOut);
-			
+			addListeners(target);
+
 			if (target.hitTestPoint(_root.stage.mouseX, _root.stage.mouseY, true))
 				setPointer(info.pointer, info.hideMouse);
 			
@@ -106,23 +106,40 @@ package garbuz.common.ui
 		
 		public function unRegisterObject(target:DisplayObject):void
 		{
-			target.removeEventListener(MouseEvent.MOUSE_OVER, onSpriteOver);
-			target.removeEventListener(MouseEvent.MOUSE_OUT, onSpriteOut);
-			
+			removeListeners(target);
 			delete _targets[target];
 		}
-		
-		private function onSpriteOver(e:MouseEvent):void
+
+		private function addListeners(target:DisplayObject):void
+		{
+			target.addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
+			target.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
+			target.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
+		}
+
+		private function removeListeners(target:DisplayObject):void
+		{
+			target.removeEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
+			target.removeEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
+			target.removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
+		}
+
+		private function onMouseOver(e:MouseEvent):void
 		{
 			var info:PointerInfo = _targets[e.currentTarget];
 			setPointer(info.pointer, info.hideMouse);
 		}
-		
-		private function onSpriteOut(e:MouseEvent):void
+
+		private function onMouseOut(e:MouseEvent):void
 		{
 			resetPointer();
 		}
-		
+
+		private function onRemovedFromStage(event:Event):void
+		{
+			resetPointer();
+		}
+
 		public function resetPointer():void
 		{
 			if (_pointer)
