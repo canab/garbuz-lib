@@ -6,7 +6,7 @@ package garbuz.common.commands
 		private var _args:Array;
 		private var _thisObject:Object;
 		
-		public function CallFunctionCommand(func:Function, args:Array = null, thisObject:Object = null) 
+		public function CallFunctionCommand(func:Function, args:Array = null, thisObject:Object = null)
 		{
 			_func = func;
 			_args = args;
