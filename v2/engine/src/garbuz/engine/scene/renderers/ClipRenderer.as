@@ -21,7 +21,7 @@ package garbuz.engine.scene.renderers
 			super.onInitialize();
 
 			if (_isPlaying)
-				engine.addFrameListener(this, onPlayFrame);
+				engine.addFrameListener(this, handlePlaying);
 		}
 
 		public function play():void
@@ -75,7 +75,7 @@ package garbuz.engine.scene.renderers
 				_isPlaying = true;
 
 				if (isInitialized)
-					engine.addFrameListener(this, onPlayFrame);
+					engine.addFrameListener(this, handlePlaying);
 			}
 		}
 
@@ -86,11 +86,11 @@ package garbuz.engine.scene.renderers
 				_isPlaying = false;
 
 				if (isInitialized)
-					engine.removeFrameListener(this, onPlayFrame);
+					engine.removeFrameListener(this, handlePlaying);
 			}
 		}
 
-		private function onPlayFrame():void
+		private function handlePlaying():void
 		{
 			_playHandler();
 		}
