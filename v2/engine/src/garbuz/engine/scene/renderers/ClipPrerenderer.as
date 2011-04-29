@@ -51,9 +51,9 @@ package garbuz.engine.scene.renderers
 			}
 		}
 
-		public function getAllFrames():Array/*of BitmapFrame*/
+		public function getAllFrames():Vector.<BitmapFrame>
 		{
-			var result:Array = [];
+			var result:Vector.<BitmapFrame> = new <BitmapFrame>[];
 
 			while (hasNext)
 			{

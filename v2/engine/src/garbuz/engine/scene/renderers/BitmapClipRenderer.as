@@ -7,10 +7,10 @@ package garbuz.engine.scene.renderers
 	{
 		private var _content:Sprite;
 
-		private var _frames:Array;
+		private var _frames:Vector.<BitmapFrame>;
 		private var _bitmap:Bitmap = new Bitmap();
 
-		public function BitmapClipRenderer(frames:Array /*of BitmapFrame*/ = null)
+		public function BitmapClipRenderer(frames:Vector.<BitmapFrame> = null)
 		{
 			super(_content = new Sprite());
 
@@ -48,15 +48,16 @@ package garbuz.engine.scene.renderers
 		//
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		public function get frames():Array /*of BitmapFrame*/
+		public function get frames():Vector.<BitmapFrame>
 		{
 			return _frames;
 		}
 
-		public function set frames(value:Array /*of BitmapFrame*/):void
+		public function set frames(value:Vector.<BitmapFrame>):void
 		{
 			_frames = value;
 			currentFrame = 1;
+			updateFrame();
 		}
 
 		public function get bitmap():Bitmap

@@ -8,7 +8,8 @@ package garbuz.engine.scene.renderers
 	{
 		private var _isPlaying:Boolean = false;
 		private var _currentFrame:int = 1;
-		private var _playHandler:Function = loopHandler;
+		private var _playHandler:Function;
+		private var _endFrame:int;
 
 		public function ClipRenderer(content:Sprite)
 		{
@@ -20,12 +21,28 @@ package garbuz.engine.scene.renderers
 			super.onInitialize();
 
 			if (_isPlaying)
-				engine.addFrameListener(this, _playHandler);
+				engine.addFrameListener(this, onPlayFrame);
 		}
 
 		public function play():void
 		{
-			beginPlay();
+			beginPlay(loopHandler);
+		}
+
+		public function playTo(frameNum:int):void
+		{
+			_endFrame = MathUtil.claimRange(frameNum, 1, totalFrames);
+			beginPlay(toFrameHandler);
+		}
+
+		public function playForward():void
+		{
+			playTo(totalFrames);
+		}
+
+		public function playReverse():void
+		{
+			playTo(0);
 		}
 
 		public function stop():void
@@ -49,14 +66,16 @@ package garbuz.engine.scene.renderers
 			updateFrame();
 		}
 
-		private function beginPlay():void
+		private function beginPlay(playHandler:Function):void
 		{
+			_playHandler = playHandler;
+
 			if (!_isPlaying)
 			{
 				_isPlaying = true;
 
 				if (isInitialized)
-					engine.addFrameListener(this, _playHandler);
+					engine.addFrameListener(this, onPlayFrame);
 			}
 		}
 
@@ -67,13 +86,28 @@ package garbuz.engine.scene.renderers
 				_isPlaying = false;
 
 				if (isInitialized)
-					engine.removeFrameListener(this, _playHandler);
+					engine.removeFrameListener(this, onPlayFrame);
 			}
+		}
+
+		private function onPlayFrame():void
+		{
+			_playHandler();
 		}
 
 		private function loopHandler():void
 		{
 			nextFrame();
+		}
+
+		private function toFrameHandler():void
+		{
+			if (_currentFrame < _endFrame)
+				nextFrame();
+			else if (_currentFrame > _endFrame)
+				prevFrame();
+			else
+				stopPlay();
 		}
 
 		protected function updateFrame():void
