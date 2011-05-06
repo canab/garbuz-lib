@@ -35,7 +35,7 @@ package garbuz.motion.easing
 			}
 		}
 
-		static public function easeOutWith(a:Number, p:Number):Function
+		static public function easeOutWith(a:Number = 0.1, p:Number = 0.4):Function
 		{
 			return function (k:Number):Number
 			{

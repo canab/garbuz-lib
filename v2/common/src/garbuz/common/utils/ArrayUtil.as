@@ -1,5 +1,6 @@
 package garbuz.common.utils 
 {
+	import garbuz.common.errors.ItemAlreadyExistsError;
 	import garbuz.common.errors.ItemNotFoundError;
 
 	public class ArrayUtil
@@ -47,14 +48,39 @@ package garbuz.common.utils
 			}
 			return length - source.length;
 		}
-		
-		static public function removeItemSafe(source:Array, item:Object):void
+
+		/**
+		 * Removes the item from the array or vector.
+		 * If array/vector does not contains this item, exception is thrown.
+		 * @param source
+		 * Vector or Array
+		 * @param item
+		 * Object
+		 */
+		static public function removeItemSafe(source:Object, item:Object):void
 		{
 			var index:int = source.indexOf(item);
 			if (index >= 0)
 				source.splice(index, 1);
 			else
 				throw new ItemNotFoundError();
+		}
+
+		/**
+		 * Adds the item to the array or vector.
+		 * If array/vector does contains this item, exception is thrown.
+		 * @param source
+		 * Vector or Array
+		 * @param item
+		 * Object
+		 */
+		static public function addItemSafe(source:Object, item:Object):void
+		{
+			var index:int = source.indexOf(item);
+			if (index >= 0)
+				throw new ItemAlreadyExistsError();
+			else
+				source.push(item);
 		}
 		
 		static public function getRandomItem(source: Array):*
