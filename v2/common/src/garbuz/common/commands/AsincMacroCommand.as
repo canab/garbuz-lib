@@ -102,7 +102,7 @@ package garbuz.common.commands
 		//
 		// get/set
 		//
-		/////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////*/
 
 		public function get completeEvent():EventSender
 		{
@@ -116,6 +116,7 @@ package garbuz.common.commands
 
 		public function get isEmpty():Boolean
 		{
+			//noinspection LoopStatementThatDoesntLoopJS
 			for (var command:Object in _commands)
 			{
 				return false;
