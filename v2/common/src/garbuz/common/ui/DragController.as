@@ -29,10 +29,11 @@
 		
 		private var _positionChanged:Boolean = false;
 		
-		public function DragController(content:Sprite, hitArea:Sprite = null)
+		public function DragController(content:Sprite, bounds:Rectangle = null)
 		{
 			_content = content;
-			_hitArea = (hitArea) ? hitArea : content;
+			_bounds = bounds;
+			_hitArea = content.hitArea || content;
 			
 			_hitArea.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			
