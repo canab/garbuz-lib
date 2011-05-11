@@ -123,7 +123,7 @@ package garbuz.common.utils
 				object.x += bounds.left - rect.left;
 			else if (rect.right > bounds.right)
 				object.x += bounds.right - rect.right;
-				
+
 			if (rect.top < bounds.top)
 				object.y += bounds.top - rect.top;
 			else if (rect.bottom > bounds.bottom)
