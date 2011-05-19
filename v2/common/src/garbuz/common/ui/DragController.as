@@ -1,6 +1,6 @@
 ﻿package garbuz.common.ui
 {
-	import flash.display.Sprite;
+	import flash.display.InteractiveObject;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
@@ -17,8 +17,8 @@
 		private var _finishEvent:EventSender = new EventSender(this);
 		private var _dragEvent:EventSender = new EventSender(this);
 
-		private var _content:Sprite;
-		private var _hitArea:Sprite;
+		private var _content:InteractiveObject;
+		private var _hitArea:InteractiveObject;
 		private var _bounds:Rectangle;
 
 		private var _dX:Number;
@@ -29,11 +29,10 @@
 
 		private var _positionChanged:Boolean = false;
 
-		public function DragController(content:Sprite, bounds:Rectangle = null)
+		public function DragController(content:InteractiveObject, hitArea:InteractiveObject = null)
 		{
 			_content = content;
-			_bounds = bounds;
-			_hitArea = content.hitArea || content;
+			_hitArea = hitArea || content;
 
 			_hitArea.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 
@@ -159,7 +158,7 @@
 			_bounds = value;
 		}
 
-		public function get content():Sprite
+		public function get content():InteractiveObject
 		{
 			return _content;
 		}
