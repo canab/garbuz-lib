@@ -22,7 +22,7 @@ package garbuz.common.utils
 			return result;
 		}
 		
-		static public function removeItem(source:Array, item:Object):Boolean
+		static public function removeItem(source:Object, item:Object):Boolean
 		{
 			var index:int = source.indexOf(item);
 			if (index >= 0)
@@ -33,7 +33,7 @@ package garbuz.common.utils
 			return false;
 		}
 		
-		static public function removeItems(source:Array, items:Array):int
+		static public function removeItems(source:Object, items:Array):int
 		{
 			var i:int = 0;
 			var length:int = source.length;
