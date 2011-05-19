@@ -92,13 +92,9 @@ package garbuz.engine.scene.renderers
 			for each (var clip:MovieClip in _subClips)
 			{
 				if (clip.currentFrame < clip.totalFrames)
-				{
 					clip.nextFrame();
-				}
 				else
-				{
 					clip.gotoAndStop(1);
-				}
 			}
 		}
 
