@@ -28,6 +28,7 @@
 		private var _startY:Number;
 
 		private var _positionChanged:Boolean = false;
+		private var _isActive:Boolean = false;
 
 		public function DragController(content:InteractiveObject, hitArea:InteractiveObject = null)
 		{
@@ -58,7 +59,23 @@
 			_hitArea.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 			_hitArea.stage.addEventListener(Event.ENTER_FRAME, onFrame);
 
+			_isActive = true;
 			_startEvent.dispatch();
+		}
+
+		private function onMouseUp(e:MouseEvent):void
+		{
+			stopDrag();
+		}
+
+		private function stopDrag():void
+		{
+			_hitArea.stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+			_hitArea.stage.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+			_hitArea.stage.removeEventListener(Event.ENTER_FRAME, onFrame);
+
+			_isActive = false;
+			_finishEvent.dispatch();
 		}
 
 		public function undo():void
@@ -118,15 +135,6 @@
 			}
 		}
 
-		private function onMouseUp(e:MouseEvent):void
-		{
-			_hitArea.stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
-			_hitArea.stage.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
-			_hitArea.stage.removeEventListener(Event.ENTER_FRAME, onFrame);
-
-			_finishEvent.dispatch();
-		}
-
 		/*///////////////////////////////////////////////////////////////////////////////////
 		//
 		// get/set
@@ -161,6 +169,11 @@
 		public function get content():InteractiveObject
 		{
 			return _content;
+		}
+
+		public function get isActive():Boolean
+		{
+			return _isActive;
 		}
 	}
 }
