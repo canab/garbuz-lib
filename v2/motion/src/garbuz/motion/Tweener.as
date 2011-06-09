@@ -19,7 +19,6 @@ package garbuz.motion
 		motion_internal var target:Object;
 		motion_internal var properties:Object = {};
 		motion_internal var numProperties:int = 0;
-		motion_internal var isInChain:Boolean = false;
 
 		private var _duration:Number;
 		private var _delay:Number = 0;
@@ -146,7 +145,6 @@ package garbuz.motion
 		public function tween(duration:Number = -1):Tweener
 		{
 			chain = new Tweener(_manager, target, duration);
-			chain.isInChain = true;
 			return chain;
 		}
 
