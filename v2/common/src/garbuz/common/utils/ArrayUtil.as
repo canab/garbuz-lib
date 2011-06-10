@@ -83,12 +83,12 @@ package garbuz.common.utils
 				source.push(item);
 		}
 		
-		static public function getRandomItem(source: Array):*
+		static public function getRandomItem(source:Object):*
 		{
 			return source[int(Math.random() * source.length)];
 		}
 		
-		static public function getRandomItems(source:Array, count:int):Array
+		static public function getRandomItems(source:Object, count:int):Array
 		{
 			var result:Array = [];
 			var selection:Array = [];
