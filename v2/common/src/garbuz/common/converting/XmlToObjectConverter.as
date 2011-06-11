@@ -29,7 +29,7 @@ package garbuz.common.converting
 				var tagName:String = String(child.name());
 
 				if (result[tagName] is Boolean)
-					result[tagName] = attr == "true";
+					result[tagName] = child == "true";
 				else
 					result[tagName] = child;
 			}
