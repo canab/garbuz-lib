@@ -3,7 +3,6 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.text.TextField;
-	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 
 	import garbuz.motion.TweenManager;
@@ -18,11 +17,11 @@ package
 			createDebugInfo();
 			addEventListener(Event.ENTER_FRAME, refreshDebugInfo);
 
-//			new TestBasicTween().initialize(this);
+			new TestBasicTween().initialize(this);
 //			new TestOverride().initialize(this);
 //			new TestCustomProperties().initialize(this);
 //			new TestFilter().initialize(this);
-			new TestRemove().initialize(this);
+//			new TestRemove().initialize(this);
 		}
 
 		private function refreshDebugInfo(event:Event):void

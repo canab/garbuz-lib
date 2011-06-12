@@ -23,7 +23,7 @@ package garbuz.motion
 		private var _startTime:Number;
 		private var _duration:Number;
 		private var _easing:IEasing;
-		private var _params:Object = {};
+		private var _parameters:Object = {};
 		private var _completeHandler:Function;
 		private var _completeParams:Array;
 		private var _updateHandler:Function;
@@ -82,7 +82,12 @@ package garbuz.motion
 			if (!parameters)
 				throw new ArgumentError(Errors.NULL_POINTER);
 
-			_params = parameters;
+			_parameters = parameters;
+
+			for (var propName:String in _parameters)
+			{
+				addProperty(propName);
+			}
 
 			return this;
 		}
@@ -143,28 +148,9 @@ package garbuz.motion
 
 			_startTime = currentTime;
 
-			initProperties();
+			initializeProperties();
 
 			initialized = true;
-		}
-
-		private function initProperties():void
-		{
-			for (var propName:String in _params)
-			{
-				addProperty(propName);
-			}
-		}
-
-		private function addProperty(propName:String):void
-		{
-			var property:ITweenProperty = (propName in TweenManager.specialProperties)
-					? new (TweenManager.specialProperties[propName])()
-					: new NumberProperty(propName);
-
-			properties[propName] = property;
-			numProperties++;
-			property.initialize(target, _params[propName]);
 		}
 
 		motion_internal function doStep(currentTime:Number):void
@@ -204,6 +190,27 @@ package garbuz.motion
 				if (propName in properties)
 					removeProperty(propName);
 			}
+		}
+
+		private function initializeProperties():void
+		{
+			for (var propName:String in _parameters)
+			{
+				var property:ITweenProperty = ITweenProperty(properties[propName]);
+				var endValue:Object = _parameters[propName];
+				
+				property.initialize(target, endValue);
+			}
+		}
+
+		private function addProperty(propName:String):void
+		{
+			var property:ITweenProperty = (propName in TweenManager.specialProperties)
+				? new (TweenManager.specialProperties[propName])()
+				: new NumberProperty(propName);
+
+			properties[propName] = property;
+			numProperties++;
 		}
 
 		private function removeProperty(propName:String):void
