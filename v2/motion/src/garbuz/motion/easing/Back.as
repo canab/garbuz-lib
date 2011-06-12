@@ -1,37 +1,31 @@
 package garbuz.motion.easing
 {
+	import garbuz.motion.IEasing;
+	import garbuz.motion.easing.equations.BackIn;
+	import garbuz.motion.easing.equations.BackInOut;
+	import garbuz.motion.easing.equations.BackOut;
+
 	public class Back
 	{
-		static public var easeIn:Function = easeInWith();
-		static public var easeOut:Function = easeOutWith();
-		static public var easeInOut:Function = easeInOutWith();
+		private static const S:Number = 1.70158;
 
-		static public function easeInWith(s:Number = 1.70158):Function
+		public static const easeIn:IEasing = new BackIn(S);
+		public static const easeOut:IEasing = new BackOut(S);
+		public static const easeInOut:IEasing = new BackInOut(S);
+
+		public static function easeInWith(s:Number = S):IEasing
 		{
-			return function (k:Number):Number
-			{
-				return k * k * ((s + 1) * k - s);
-			}
+			return new BackIn(s);
 		}
 
-		static public function easeOutWith(s:Number = 1.70158):Function
+		public static function easeOutWith(s:Number = S):IEasing
 		{
-			return function (k:Number):Number
-			{
-				return (k = k - 1) * k * ((s + 1) * k + s) + 1;
-			}
+			return new BackOut(s);
 		}
 
-		static public function easeInOutWith(s:Number = 1.70158):Function
+		public static function easeInOutWith(s:Number = S):IEasing
 		{
-			s *= 1.525;
-
-			return function (k:Number):Number
-			{
-				return (k *= 2) < 1
-						? 0.5 * (k * k * ((s + 1) * k - s))
-						: 0.5 * ((k -= 2) * k * ((s + 1) * k + s) + 2);
-			}
+			return new BackInOut(s);
 		}
 	}
 }

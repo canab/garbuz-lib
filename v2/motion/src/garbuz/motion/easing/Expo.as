@@ -1,33 +1,15 @@
 ﻿package garbuz.motion.easing
 {
+	import garbuz.motion.IEasing;
+	import garbuz.motion.easing.equations.ExpoIn;
+	import garbuz.motion.easing.equations.ExpoInOut;
+	import garbuz.motion.easing.equations.ExpoOut;
+
 	final public class Expo
 	{
-		static public function easeIn(k:Number):Number
-		{
-			return k == 0
-					? 0
-					: Math.pow(2, 10 * (k - 1));
-		}
-
-		static public function easeOut(k:Number):Number
-		{
-			return k == 1
-					? 1
-					: -Math.pow(2, -10 * k) + 1;
-		}
-
-		static public function easeInOut(k:Number):Number
-		{
-			if (k == 0)
-				return 0;
-
-			if (k == 1)
-				return 1;
-
-			return (k *= 2) < 1
-					? 0.5 * Math.pow(2, 10 * (k - 1))
-					: 0.5 * (-Math.pow(2, -10 * (k - 1)) + 2);
-		}
+		public static const easeIn:IEasing = new ExpoIn();
+		public static const easeOut:IEasing = new ExpoOut();
+		public static const easeInOut:IEasing = new ExpoInOut();
 	}
 
 }

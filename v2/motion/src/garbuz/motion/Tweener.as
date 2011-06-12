@@ -2,6 +2,8 @@ package garbuz.motion
 {
 	import flash.display.DisplayObject;
 
+	import garbuz.motion.IEasing;
+
 	import garbuz.motion.properties.ITweenProperty;
 	import garbuz.motion.properties.NumberProperty;
 
@@ -23,7 +25,7 @@ package garbuz.motion
 		private var _duration:Number;
 		private var _delay:Number = 0;
 		private var _params:Object = {};
-		private var _easeFunction:Function;
+		private var _easing:IEasing;
 		private var _completeHandler:Function;
 		private var _completeParams:Array;
 		private var _updateHandler:Function;
@@ -61,12 +63,12 @@ package garbuz.motion
 		 * @see garbuz.motion.easing
 		 * @see garbuz.motion.TweenManager.defaultEasing
 		 */
-		public function easing(value:Function):Tweener
+		public function easing(value:IEasing):Tweener
 		{
 			if (!(value is Function))
 				throw new ArgumentError(Errors.NOT_A_FUNCTION);
 
-			_easeFunction = value;
+			_easing = value;
 
 			return this;
 		}
@@ -171,8 +173,8 @@ package garbuz.motion
 
 		motion_internal function initialize(currentTime:Number):void
 		{
-			if (_easeFunction == null)
-				_easeFunction = _manager.defaultEasing;
+			if (_easing == null)
+				_easing = _manager.defaultEasing;
 
 			_startTime = currentTime + _delay;
 
@@ -209,7 +211,7 @@ package garbuz.motion
 
 			if (timePosition < 1)
 			{
-				var easingPosition:Number = _easeFunction(timePosition);
+				var easingPosition:Number = _easing.calculate(timePosition);
 				completed = true;
 
 				for each (var property:ITweenProperty in properties)

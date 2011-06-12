@@ -1,11 +1,10 @@
 package garbuz.motion.easing
 {
+	import garbuz.motion.IEasing;
+	import garbuz.motion.easing.equations.LinearNone;
+
 	public class Linear
 	{
-		static public function easeNone(k:Number):Number
-		{
-			return k;
-		}
+		public static const easeNone:IEasing = new LinearNone();
 	}
-
 }
