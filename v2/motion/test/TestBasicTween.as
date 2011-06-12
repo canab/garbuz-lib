@@ -30,10 +30,10 @@ package
 			tween(target)
 				.to({x: 400, y:100})
 				.easing(Elastic.easeOut)
-				.tween()
+			.tween()
 				.to({y: 100})
-				.tween(0.5)
-				.delay(1)
+			.tween(1)
+			.tween(0.5)
 				.to({y: 250})
 				.onUpdate(update, target)
 				.onComplete(moveBack, target);

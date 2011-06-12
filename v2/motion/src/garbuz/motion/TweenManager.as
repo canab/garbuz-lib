@@ -337,10 +337,47 @@ package garbuz.motion
 				if (targetTweener == sourceTweener)
 					continue;
 
+				if (targetTweener.completed || targetTweener.removed)
+					continue;
+
+				// do not override pauses & remove empty tweens (pauses)
+				if (targetTweener.numProperties == 0)
+					continue;
+
 				targetTweener.overrideProperties(sourceProps);
 
 				if (targetTweener.numProperties == 0)
 					targetTweener.removed = true;
+				else
+					overrideChain(targetTweener, sourceProps);
+			}
+		}
+
+		private function overrideChain(targetTweener:Tweener, sourceProps:Object):void
+		{
+			var tweener:Tweener = targetTweener;
+			var chain:Tweener = tweener.chain;
+
+			while (chain)
+			{
+				// do not override pauses
+				if (chain.numProperties == 0 || chain.removed)
+				{
+					tweener = chain;
+					chain = tweener.chain;
+					continue;
+				}
+
+				chain.overrideProperties(sourceProps);
+
+				if (chain.numProperties == 0)
+				{
+					tweener.chain = null;
+					break;
+				}
+
+				tweener = chain;
+				chain = tweener.chain;
 			}
 		}
 

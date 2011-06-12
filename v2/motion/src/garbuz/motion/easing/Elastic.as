@@ -10,9 +10,9 @@ package garbuz.motion.easing
 		private static const A:Number = 0.1;
 		private static const P:Number = 0.4;
 
-		public static var easeIn:IEasing = new ElasticIn(A, P);
-		public static var easeOut:IEasing = new ElasticOut(A, P);
-		public static var easeInOut:IEasing = new ElasticInOut(A, P);
+		public static const easeIn:IEasing = new ElasticIn(A, P);
+		public static const easeOut:IEasing = new ElasticOut(A, P);
+		public static const easeInOut:IEasing = new ElasticInOut(A, P);
 
 		public static function easeInWith(a:Number = A, p:Number = P):IEasing
 		{

@@ -52,10 +52,13 @@ package
 				.to({blurX:30, blurY:30})
 				.autoRemove();
 
-			tween(sprite).to({$filter: filterTween1})
-				.tween().to({$filter: filterTween2})
-				.tween().delay(1)
-				.onComplete(testInstanceFilter, sprite);
+			tween(sprite)
+				.to({$filter: filterTween1})
+				.tween()
+					.to({$filter: filterTween2})
+				.tween(1)
+				.tween()
+					.onComplete(testInstanceFilter, sprite);
 		}
 
 		private function testSingleFilter(sprite:Sprite):void

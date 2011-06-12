@@ -1,9 +1,5 @@
 package garbuz.motion
 {
-	import flash.display.DisplayObject;
-
-	import garbuz.motion.IEasing;
-
 	import garbuz.motion.properties.ITweenProperty;
 	import garbuz.motion.properties.NumberProperty;
 
@@ -22,28 +18,26 @@ package garbuz.motion
 		motion_internal var properties:Object = {};
 		motion_internal var numProperties:int = 0;
 
+		private var _manager:TweenManager;
+
+		private var _startTime:Number;
 		private var _duration:Number;
-		private var _delay:Number = 0;
-		private var _params:Object = {};
 		private var _easing:IEasing;
+		private var _params:Object = {};
 		private var _completeHandler:Function;
 		private var _completeParams:Array;
 		private var _updateHandler:Function;
 		private var _updateParams:Array;
 
-		private var _manager:TweenManager;
-		private var _startTime:Number;
-		private var _autoDetach:Boolean = false;
-
 		public function Tweener(manager:TweenManager, target:Object, duration:Number)
 		{
-			_manager = manager;
-
 			this.target = target;
 
-			_duration = (duration < 0)
-					? _manager.defaultDuration * 1000
-					: duration * 1000;
+			_manager = manager;
+
+			_duration = (duration > 0)
+				? duration * 1000
+				: _manager.defaultDuration * 1000;
 		}
 
 
@@ -65,8 +59,8 @@ package garbuz.motion
 		 */
 		public function easing(value:IEasing):Tweener
 		{
-			if (!(value is Function))
-				throw new ArgumentError(Errors.NOT_A_FUNCTION);
+			if (!value)
+				throw new ArgumentError(Errors.NULL_POINTER);
 
 			_easing = value;
 
@@ -89,20 +83,6 @@ package garbuz.motion
 				throw new ArgumentError(Errors.NULL_POINTER);
 
 			_params = parameters;
-
-			return this;
-		}
-
-		/**
-		 * Apply delay before an animation will be started.
-		 * @param value delay time in seconds
-		 */
-		public function delay(value:Number):Tweener
-		{
-			if (value <= 0)
-				throw new ArgumentError("Value should be >= 0");
-
-			_delay = value * 1000;
 
 			return this;
 		}
@@ -150,21 +130,6 @@ package garbuz.motion
 			return chain;
 		}
 
-		/**
-		 * Detach target from display list.
-		 * Target should be a DisplayObject.
-		 */
-		public function autoDetach():Tweener
-		{
-			if (!(target is DisplayObject))
-				throw new ArgumentError(Errors.NOT_A_DISPLAY_OBJECT);
-
-			_autoDetach = true;
-
-			return this;
-		}
-
-
 		/*///////////////////////////////////////////////////////////////////////////////////
 		//
 		// private
@@ -176,7 +141,7 @@ package garbuz.motion
 			if (_easing == null)
 				_easing = _manager.defaultEasing;
 
-			_startTime = currentTime + _delay;
+			_startTime = currentTime;
 
 			initProperties();
 
@@ -204,25 +169,19 @@ package garbuz.motion
 
 		motion_internal function doStep(currentTime:Number):void
 		{
-			if (currentTime < _startTime)
-				return;
-
 			var timePosition:Number = (currentTime - _startTime) / _duration;
 
 			if (timePosition < 1)
 			{
 				var easingPosition:Number = _easing.calculate(timePosition);
-				completed = true;
 
 				for each (var property:ITweenProperty in properties)
 				{
 					property.applyTween(easingPosition);
-					completed = false;
 				}
 			}
 			else
 			{
-				completed = true;
 				applyComplete();
 			}
 
@@ -255,15 +214,11 @@ package garbuz.motion
 
 		private function applyComplete():void
 		{
+			completed = true;
+
 			for each (var property:ITweenProperty in properties)
 			{
 				property.applyComplete();
-			}
-
-			if (_autoDetach)
-			{
-				var displayObject:DisplayObject = DisplayObject(target);
-				displayObject.parent.removeChild(displayObject);
 			}
 		}
 	}
