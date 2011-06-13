@@ -22,9 +22,6 @@ package garbuz.engine.core
 			if (initialized)
 				throw new Error("Entity is already initialized");
 			
-			if (!name)
-				name = _engine.nameManager.getUniqueName();
-
 			for each (var component:Component in _components)
 			{
 				initializeComponent(component);

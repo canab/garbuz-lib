@@ -2,6 +2,8 @@ package garbuz.engine.core
 {
 	import flash.display.Sprite;
 
+	import garbuz.common.errors.ItemAlreadyExistsError;
+
 	import garbuz.common.errors.ItemNotFoundError;
 	import garbuz.common.events.EventSender;
 
@@ -11,7 +13,7 @@ package garbuz.engine.core
 
 		private var _root:Sprite;
 		private var _processManager:ProcessManager;
-		private var _entities:Vector.<Entity>;
+		private var _entities:Object = {};
 		private var _started:Boolean;
 
 		private var _stateChangedEvent:EventSender = new EventSender(this);
@@ -20,7 +22,6 @@ package garbuz.engine.core
 		{
 			_root = root;
 			_processManager = new ProcessManager(this);
-			_entities = new Vector.<Entity>();
 		}
 
 		public function dispose():void
@@ -37,26 +38,29 @@ package garbuz.engine.core
 			trace("Engine disposed");
 		}
 
-		public function addEntity(entity:Entity, name:String = null):void
+		public function addEntity(entity:Entity):void
 		{
-			_entities.push(entity);
+			if (entityExists(entity.name))
+				throw new ItemAlreadyExistsError();
 
-			if (entity.name == null)
-				entity.name = name;
+			if (!entity.name)
+				entity.name = nameManager.getUniqueName();
+
+			_entities[entity.name] = entity;
 
 			entity.engine = this;
 			entity.initialize();
 		}
 
+
 		public function removeEntity(entity:Entity):void
 		{
+			if (!encodeURI(entity.name))
+				throw new ItemNotFoundError();
+
 			entity.dispose();
 
-			var index:int = _entities.indexOf(entity);
-			if (index == -1)
-				throw new ItemNotFoundError();
-			else
-				_entities.splice(index, 1);
+			delete _entities[entity.name];
 		}
 
 		public function start():void
@@ -165,6 +169,11 @@ package garbuz.engine.core
 				: null;
 		}
 
+		private function entityExists(name:String):Boolean
+		{
+			return name && (name in _entities);
+		}
+
 		/*///////////////////////////////////////////////////////////////////////////////////
 		//
 		// get/set
@@ -213,11 +222,6 @@ package garbuz.engine.core
 		public function get stateChangedEvent():EventSender
 		{
 			return _stateChangedEvent;
-		}
-
-		public function get entities():Vector.<Entity>
-		{
-			return _entities;
 		}
 	}
 
