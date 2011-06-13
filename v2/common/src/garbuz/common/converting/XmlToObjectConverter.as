@@ -16,25 +16,25 @@ package garbuz.common.converting
 			
 			for each (var attr:XML in xml.attributes())
 			{
-				var attrName:String = String(attr.name());
-
-				if (result[attrName] is Boolean)
-					result[attrName] = attr == "true";
-				else
-					result[attrName] = attr;
+				applyProperty(result, attr);
 			}
 			
-			for each (var child:XML in xml.children())
+			for each (var tag:XML in xml.children())
 			{
-				var tagName:String = String(child.name());
-
-				if (result[tagName] is Boolean)
-					result[tagName] = child == "true";
-				else
-					result[tagName] = child;
+				applyProperty(result, tag);
 			}
 			
 			return result;
+		}
+
+		private function applyProperty(result:Object, value:XML):void
+		{
+			var attrName:String = String(value.name());
+
+			if (result[attrName] is Boolean)
+				result[attrName] = value == "true";
+			else
+				result[attrName] = value;
 		}
 	}
 }

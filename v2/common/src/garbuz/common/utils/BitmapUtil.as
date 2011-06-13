@@ -2,20 +2,20 @@ package garbuz.common.utils
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	import flash.display.Sprite;
+	import flash.display.DisplayObject;
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
 
 	public class BitmapUtil
 	{
-		public static function convertToBitmap(content:Sprite, bounds:Rectangle = null, transparent:Boolean = true):Bitmap
+		public static function convertToBitmap(content:DisplayObject, bounds:Rectangle = null, transparent:Boolean = true):Bitmap
 		{
 			var bitmap:Bitmap = new Bitmap(getBitmapData(content, bounds, transparent));
 			bitmap.smoothing = true;
 			return bitmap;
 		}
 
-		public static function getBitmapData(content:Sprite, bounds:Rectangle = null, transparent:Boolean = true):BitmapData
+		public static function getBitmapData(content:DisplayObject, bounds:Rectangle = null, transparent:Boolean = true):BitmapData
 		{
 			bounds = bounds || calculateIntBounds(content);
 
@@ -27,7 +27,7 @@ package garbuz.common.utils
 			return bitmapData;
 		}
 
-		public static function calculateIntBounds(content:Sprite):Rectangle
+		public static function calculateIntBounds(content:DisplayObject):Rectangle
 		{
 			var bounds:Rectangle = content.getBounds(content);
 			bounds.left = Math.floor(bounds.left);
