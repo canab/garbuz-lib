@@ -2,17 +2,10 @@ package garbuz.engine.core
 {
 	import flash.events.Event;
 
-	import garbuz.common.commands.CallFunctionCommand;
-	import garbuz.common.commands.ICommand;
-	import garbuz.common.errors.ItemNotFoundError;
-
 	internal class ProcessManager
 	{
 		private var _engine:Engine;
-		private var _frameListeners:Vector.<FrameCall>		= new Vector.<FrameCall>();
-		private var _afterCalls:Vector.<ICommand>           = new Vector.<ICommand>();
-		private var _delayedCalls:Vector.<DelayedCall>      = new Vector.<DelayedCall>();
-		private var _isProcessing:Boolean = false;
+		private var _head:ProcessorBase;
 		private var _disposed:Boolean = false;
 		
 		public function ProcessManager(engine:Engine) 
@@ -29,138 +22,78 @@ package garbuz.engine.core
 		{
 			_engine.root.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
-		
+
+		private function onEnterFrame(e:Event):void
+		{
+			var processor:ProcessorBase = _head;
+
+			while (processor)
+			{
+				var nextProcessor:ProcessorBase = processor.next;
+
+				if (processor.isActive)
+					processor.process();
+
+				if (!processor.isActive)
+					removeFromList(processor);
+
+				processor = nextProcessor;
+			}
+		}
+
 		internal function dispose():void
 		{
 			stop();
 			_disposed = true;
 		}
-		
-		internal function addFrameListener(component:Component, method:Function):void
-		{
-			if (_isProcessing)
-				_afterCalls.push(new CallFunctionCommand(addFrameListener, [component, method]));
-			else
-				_frameListeners.push(new FrameCall(component, method));
-		}
-		
-		internal function removeFrameListener(component:Component, method:Function):void
-		{
-			if (_isProcessing)
-			{
-				_afterCalls.push(new CallFunctionCommand(removeFrameListener, [component, method]));
-				return;
-			}
 
-			for (var i:int = 0; i < _frameListeners.length; i++)
-			{
-				var frameCall:FrameCall = _frameListeners[i];
+		internal function addProcessor(processor:ProcessorBase):void
+		{
+			addToList(processor);
+		}
 
-				if (frameCall.target == component && frameCall.method == method)
-				{
-					_frameListeners.splice(i, 1);
-					return;
-				}
-			}
+		internal function removeProcessor(processor:ProcessorBase):void
+		{
+			processor.disposed = true;
+		}
 
-			throw new ItemNotFoundError();
-		}
-		
-		internal function addDelayedCall(time:int, command:ICommand):void
+		internal function findProcessor(component:Component, method:Function):ProcessorBase
 		{
-			if (_isProcessing)
+			for (var processor:ProcessorBase = _head; processor != null; processor = processor.next)
 			{
-				_afterCalls.push(new CallFunctionCommand(addDelayedCall, [time, command]));
+				if (processor.component == component && processor.method == method)
+					return processor;
 			}
-			else
-			{
-				var frames:int = Math.max(time / 1000.0 * _engine.root.stage.frameRate, 1);
-				_delayedCalls.push(new DelayedCall(frames, command));
-			}
+			
+			return null;
 		}
-		
-		internal function removeDelayedCall(command:ICommand):void
-		{
-			if (_isProcessing)
-			{
-				_afterCalls.push(new CallFunctionCommand(removeDelayedCall, [command]));
-				return;
-			}
 
-			for (var i:int = 0; i < _delayedCalls.length; i++)
-			{
-				if (_delayedCalls[i].command == command)
-				{
-					_delayedCalls.splice(i, 1);
-					return;
-				}
-			}
-		}
-		
-		private function onEnterFrame(e:Event):void 
+		private function addToList(processor:ProcessorBase):void
 		{
-			_isProcessing = true;
-			processFrameListeners();
-			_isProcessing = false;
-			
-			processAfterCalls();
-			
-			_isProcessing = true;
-			processDelayedCalls();
-			_isProcessing = false;
-			
-			processAfterCalls();
+			processor.next = _head;
+			processor.prev = null;
+
+			if (_head)
+				_head.prev = processor;
+
+			_head = processor;
 		}
-		
-		private function processFrameListeners():void
+
+		private function removeFromList(processor:ProcessorBase):void
 		{
-			for each (var frameCall:FrameCall in _frameListeners)
-			{
-				if (_disposed)
-					break;
-				
-				if (frameCall.target.disposed)
-					removeFrameListener(frameCall.target, frameCall.method);
-				else
-					frameCall.method();
-			}
+			var prevProcessor:ProcessorBase = processor.prev;
+			var nextProcessor:ProcessorBase = processor.next;
+
+			if (prevProcessor)
+				prevProcessor.next = nextProcessor;
+
+			if (nextProcessor)
+				nextProcessor.prev = prevProcessor;
+
+			if (processor == _head)
+				_head = nextProcessor;
 		}
-		
-		private function processDelayedCalls():void
-		{
-			var i:int = 0;
-			var call:DelayedCall;
-			
-			while (i < _delayedCalls.length && !_disposed)
-			{
-				call = _delayedCalls[i];
-				call.numFrames--;
-				
-				if (call.numFrames == 0)
-				{
-					call.command.execute();
-					_delayedCalls.splice(i, 1);
-				}
-				else 
-				{
-					i++;
-				}
-			}
-		}
-		
-		private function processAfterCalls():void
-		{
-			for each (var command:ICommand in _afterCalls) 
-			{
-				if (_disposed)
-					break;
-					
-				command.execute();
-			}
-			
-			_afterCalls.length = 0;
-		}
-		
+
 	}
 
 }

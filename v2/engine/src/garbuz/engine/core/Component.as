@@ -1,5 +1,6 @@
 package garbuz.engine.core 
 {
+	import garbuz.common.errors.NotInitializedError;
 
 	public class Component
 	{
@@ -53,19 +54,57 @@ package garbuz.engine.core
 			return initialized;
 		}
 		
-		protected function onInitialize():void 
+		protected virtual function onInitialize():void
 		{
-			// virtual
 		}
 		
-		protected function onDispose():void 
+		protected virtual function onDispose():void
 		{
-			// virtual
 		}
 		
-		public function onEnterFrame():void 
+		/**
+		 * Call method on enter frame
+		 */
+		protected function addFrameListener(method:Function):void
 		{
-			// virtual
+			if (!initialized)
+				throw new NotInitializedError();
+
+			engine.addFrameListener(this, method);
+		}
+
+		/**
+		 * Call method after given time
+		 * @param	time
+		 * time in milliseconds
+		 */
+		protected function callAfter(time:int, method:Function):void
+		{
+			if (!initialized)
+				throw new NotInitializedError();
+
+			engine.callAfter(time, this, method);
+		}
+
+		/**
+		 * Call method periodically
+		 * @param	time
+		 * time in milliseconds
+		 */
+		protected function createTimer(time:int, method:Function):void
+		{
+			if (!initialized)
+				throw new NotInitializedError();
+
+			engine.createTimer(time, this, method);
+		}
+
+		/**
+		 * Remove previously added timer, delayedCall or frameListener
+		 */
+		protected function removeProcessor(method:Function):void
+		{
+			engine.removeProcessor(this, method);
 		}
 	}
 

@@ -37,7 +37,7 @@ package garbuz.engine.components
 			
 			_startEvent.dispatch();
 			
-			engine.addFrameListener(this);
+			addFrameListener(onEnterFrame);
 		}
 		
 		private function processNextPoint():void
@@ -70,11 +70,11 @@ package garbuz.engine.components
 			if (_executed)
 			{
 				_executed = false;
-				engine.removeFrameListener(this);
+				removeProcessor(onEnterFrame);
 			}
 		}
 		
-		override public function onEnterFrame():void 
+		public function onEnterFrame():void
 		{
 			if (--_counter <= 0)
 				processNextPoint();

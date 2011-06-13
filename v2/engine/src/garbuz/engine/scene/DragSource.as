@@ -80,7 +80,7 @@ package garbuz.engine.scene
 			
 			_startEvent.dispatch();
 			
-			engine.addFrameListener(this);
+			addFrameListener(onEnterFrame);
 		}
 		
 		private function stopDrag():void
@@ -89,7 +89,7 @@ package garbuz.engine.scene
 			_content.stage.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 			
 			setCurrentTarget(null);
-			engine.removeFrameListener(this);
+			removeProcessor(onEnterFrame);
 		}
 		
 		private function onMouseMove(e:MouseEvent):void 
@@ -134,7 +134,7 @@ package garbuz.engine.scene
 			}
 		}
 		
-		override public function onEnterFrame():void 
+		private function onEnterFrame():void
 		{
 			if (_positionChanged)
 			{

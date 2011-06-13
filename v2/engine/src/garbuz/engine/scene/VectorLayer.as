@@ -1,4 +1,4 @@
-package garbuz.engine.scene 
+package garbuz.engine.scene
 {
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -12,35 +12,35 @@ package garbuz.engine.scene
 		private var _content:Sprite;
 		private var _items:Vector.<IVectorRenderer>;
 		private var _enableOrdering:Boolean = false;
-		
+
 		public function VectorLayer(content:Sprite = null)
 		{
 			_content = content || new Sprite();
 			_content.mouseEnabled = false;
 			_items = new Vector.<IVectorRenderer>();
 		}
-		
-		override protected function onInitialize():void 
+
+		override protected function onInitialize():void
 		{
 			if (!_content.parent)
 				engine.root.addChild(_content);
-				
+
 			if (_enableOrdering)
-				engine.addFrameListener(this);
+				addFrameListener(orderItems);
 		}
-		
-		override protected function onDispose():void 
+
+		override protected function onDispose():void
 		{
 			DisplayUtil.detachFromDisplay(_content);
 		}
-		
-		public function addItem(item:IVectorRenderer):void 
+
+		public function addItem(item:IVectorRenderer):void
 		{
 			_items.push(item);
 			_content.addChild(item.content);
 		}
-		
-		public function removeItem(item:IVectorRenderer):void 
+
+		public function removeItem(item:IVectorRenderer):void
 		{
 			var index:int = _items.indexOf(item);
 			if (index == -1)
@@ -53,28 +53,28 @@ package garbuz.engine.scene
 				_content.removeChild(item.content);
 			}
 		}
-		
-		override public function onEnterFrame():void 
+
+		private function orderItems():void
 		{
 			//ordering
 			if (_content.numChildren == 0)
 				return;
-			
+
 			var prevChild:DisplayObject = _content.getChildAt(0);
-			
+
 			for (var i:int = 1; i < _content.numChildren; i++)
 			{
 				var currentChild:DisplayObject = _content.getChildAt(i);
-				
+
 				if (currentChild.y < prevChild.y)
 				{
 					var j:int = i - 1;
-					
+
 					while (j >= 0 && currentChild.y < _content.getChildAt(j).y)
 					{
 						j--;
 					}
-					
+
 					_content.setChildIndex(currentChild, j + 1);
 				}
 				else
@@ -83,11 +83,24 @@ package garbuz.engine.scene
 				}
 			}
 		}
-		
-		public function get content():Sprite { return _content; }
-		
-		public function get enableOrdering():Boolean { return _enableOrdering; }
-		public function set enableOrdering(value:Boolean):void 
+
+		/*///////////////////////////////////////////////////////////////////////////////////
+		//
+		// get/set
+		//
+		///////////////////////////////////////////////////////////////////////////////////*/
+
+		public function get content():Sprite
+		{
+			return _content;
+		}
+
+		public function get enableOrdering():Boolean
+		{
+			return _enableOrdering;
+		}
+
+		public function set enableOrdering(value:Boolean):void
 		{
 			if (_enableOrdering != value)
 			{
@@ -96,13 +109,13 @@ package garbuz.engine.scene
 				if (isInitialized)
 				{
 					if (_enableOrdering)
-						engine.addFrameListener(this);
+						addFrameListener(orderItems);
 					else
-						engine.removeFrameListener(this);
+						removeProcessor(orderItems);
 				}
 			}
 		}
-		
+
 	}
 
 }

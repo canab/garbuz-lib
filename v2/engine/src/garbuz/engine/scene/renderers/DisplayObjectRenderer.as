@@ -125,19 +125,14 @@ package garbuz.engine.scene.renderers
 
 				if (_renderOnFrame)
 				{
-					engine.addFrameListener(this);
-					onEnterFrame();
+					addFrameListener(render);
+					render();
 				}
 				else
 				{
-					engine.removeFrameListener(this);
+					removeProcessor(render);
 				}
 			}
-		}
-
-		override public function onEnterFrame():void
-		{
-			render();
 		}
 	}
 
