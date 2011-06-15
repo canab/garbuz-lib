@@ -1,6 +1,9 @@
 package garbuz.engine.core 
 {
+	import garbuz.common.errors.AlreadyDisposedError;
+	import garbuz.common.errors.AlreadyInitializedError;
 	import garbuz.common.errors.ItemNotFoundError;
+	import garbuz.common.errors.NotInitializedError;
 
 	public class Entity
 	{
@@ -20,7 +23,7 @@ package garbuz.engine.core
 		public function initialize():void 
 		{
 			if (initialized)
-				throw new Error("Entity is already initialized");
+				throw new AlreadyInitializedError();
 			
 			for each (var component:Component in _components)
 			{
@@ -33,10 +36,10 @@ package garbuz.engine.core
 		public function dispose():void 
 		{
 			if (!initialized)
-				throw new Error("Entity is not initialized");
+				throw new NotInitializedError();
 			
 			if (disposed)
-				throw new Error("Entity is already disposed");
+				throw new AlreadyDisposedError();
 			
 			for each (var component:Component in _components) 
 			{
@@ -70,7 +73,7 @@ package garbuz.engine.core
 		public function removeComponent(component:Component):void 
 		{
 			if (disposed)
-				throw new Error("Entity is disposed");
+				throw new AlreadyDisposedError();
 				
 			component.dispose();
 			

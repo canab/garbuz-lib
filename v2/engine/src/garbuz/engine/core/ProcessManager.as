@@ -6,8 +6,7 @@ package garbuz.engine.core
 	{
 		private var _engine:Engine;
 		private var _head:ProcessorBase;
-		private var _disposed:Boolean = false;
-		
+
 		public function ProcessManager(engine:Engine) 
 		{
 			_engine = engine;
@@ -39,12 +38,6 @@ package garbuz.engine.core
 
 				processor = nextProcessor;
 			}
-		}
-
-		internal function dispose():void
-		{
-			stop();
-			_disposed = true;
 		}
 
 		internal function addProcessor(processor:ProcessorBase):void

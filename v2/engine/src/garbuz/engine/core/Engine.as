@@ -3,7 +3,6 @@ package garbuz.engine.core
 	import flash.display.Sprite;
 
 	import garbuz.common.errors.ItemAlreadyExistsError;
-
 	import garbuz.common.errors.ItemNotFoundError;
 	import garbuz.common.events.EventSender;
 
@@ -33,7 +32,7 @@ package garbuz.engine.core
 				entity.dispose();
 			}
 
-			_processManager.dispose();
+			_processManager.stop();
 
 			trace("Engine disposed");
 		}

@@ -1,5 +1,7 @@
 package garbuz.engine.core 
 {
+	import garbuz.common.errors.AlreadyDisposedError;
+	import garbuz.common.errors.AlreadyInitializedError;
 	import garbuz.common.errors.NotInitializedError;
 
 	public class Component
@@ -19,7 +21,7 @@ package garbuz.engine.core
 		internal function initialize():void 
 		{
 			if (initialized)
-				throw new Error("Component is already initialized");
+				throw new AlreadyInitializedError();
 			
 			if (!name)
 				name = engine.nameManager.getUniqueName();
@@ -32,10 +34,10 @@ package garbuz.engine.core
 		internal function dispose():void 
 		{
 			if (!initialized)
-				throw new Error("Component is not initialized");
+				throw new NotInitializedError();
 			
 			if (disposed)
-				throw new Error("Component is already disposed");
+				throw new AlreadyDisposedError();
 				
 			disposed = true;
 				
