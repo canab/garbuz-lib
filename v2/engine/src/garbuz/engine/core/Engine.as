@@ -65,12 +65,29 @@ package garbuz.engine.core
 
 		public function start():void
 		{
-			started = true;
+			if (_started)
+				return;
+
+			if (!_root.stage)
+				throw new Error("Root should be on the stage at this moment");
+
+			_started = true;
+			_processManager.start();
+			_startEvent.dispatch();
+
+			trace("Engine started");
 		}
 
 		public function stop():void
 		{
-			started = false;
+			if (!_started)
+				return;
+
+			_started = false;
+			_processManager.stop();
+			_stopEvent.dispatch();
+
+			trace("Engine stopped");
 		}
 
 		internal function addFrameListener(component:Component, method:Function):void
@@ -197,28 +214,10 @@ package garbuz.engine.core
 
 		public function set started(value:Boolean):void
 		{
-			if (_started != value)
-			{
-				_started = value;
-
-				if (_started)
-				{
-					if (!_root.stage)
-						throw new Error("Root should be on the stage at this moment");
-
-					_processManager.start();
-					_startEvent.dispatch();
-					
-					trace("Engine started");
-				}
-				else
-				{
-					_processManager.stop();
-					_stopEvent.dispatch();
-					
-					trace("Engine stopped");
-				}
-			}
+			if (value)
+				start();
+			else
+				stop();
 		}
 
 		public function get startEvent():EventSender
