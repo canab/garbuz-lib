@@ -8,6 +8,15 @@ package garbuz.common.utils
 
 	public class BitmapUtil
 	{
+		public static function replaceWithBitmap(content:DisplayObject, bounds:Rectangle = null, transparent:Boolean = true):Bitmap
+		{
+			var bitmap:Bitmap = BitmapUtil.convertToBitmap(content, bounds, transparent);
+			content.parent.addChildAt(bitmap, content.parent.getChildIndex(content));
+			DisplayUtil.detachFromDisplay(content);
+
+			return bitmap;
+		}
+
 		public static function convertToBitmap(content:DisplayObject, bounds:Rectangle = null, transparent:Boolean = true):Bitmap
 		{
 			var bitmap:Bitmap = new Bitmap(getBitmapData(content, bounds, transparent));
