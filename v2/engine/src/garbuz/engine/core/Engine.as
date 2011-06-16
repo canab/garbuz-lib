@@ -10,12 +10,13 @@ package garbuz.engine.core
 	{
 		internal var nameManager:NameManager = new NameManager();
 
+		private var _startEvent:EventSender = new EventSender(this);
+		private var _stopEvent:EventSender = new EventSender(this);
+
 		private var _root:Sprite;
 		private var _processManager:ProcessManager;
 		private var _entities:Object = {};
 		private var _started:Boolean;
-
-		private var _stateChangedEvent:EventSender = new EventSender(this);
 
 		public function Engine(root:Sprite)
 		{
@@ -206,21 +207,28 @@ package garbuz.engine.core
 						throw new Error("Root should be on the stage at this moment");
 
 					_processManager.start();
+					_startEvent.dispatch();
+					
 					trace("Engine started");
 				}
 				else
 				{
 					_processManager.stop();
+					_stopEvent.dispatch();
+					
 					trace("Engine stopped");
 				}
-
-				_stateChangedEvent.dispatch();
 			}
 		}
 
-		public function get stateChangedEvent():EventSender
+		public function get startEvent():EventSender
 		{
-			return _stateChangedEvent;
+			return _startEvent;
+		}
+
+		public function get stopEvent():EventSender
+		{
+			return _stopEvent;
 		}
 	}
 
