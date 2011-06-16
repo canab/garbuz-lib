@@ -5,8 +5,6 @@ package garbuz.motion
 	import flash.utils.Dictionary;
 	import flash.utils.getTimer;
 
-	import garbuz.motion.IEasing;
-
 	import garbuz.motion.easing.Quad;
 	import garbuz.motion.filter.FilterProperty;
 	import garbuz.motion.properties.ScaleProperty;
@@ -105,12 +103,12 @@ package garbuz.motion
 			instance.defaultDuration = value;
 		}
 
-		public static function get defaultEasing():IEasing
+		public static function get defaultEasing():Function
 		{
 			return instance.defaultEasing;
 		}
 
-		public static function set defaultEasing(value:IEasing):void
+		public static function set defaultEasing(value:Function):void
 		{
 			instance.defaultEasing = value;
 		}
@@ -136,7 +134,7 @@ package garbuz.motion
 
 		private var _currentTime:Number;
 		private var _defaultDuration:Number = 1.0;
-		private var _defaultEasing:IEasing = Quad.easeOut;
+		private var _defaultEasing:Function = Quad.easeOut;
 		private var _tweensCount:int = 0;
 
 		public function TweenManager()
@@ -209,12 +207,12 @@ package garbuz.motion
 			_defaultDuration = value;
 		}
 
-		public function get defaultEasing():IEasing
+		public function get defaultEasing():Function
 		{
 			return _defaultEasing;
 		}
 
-		public function set defaultEasing(value:IEasing):void
+		public function set defaultEasing(value:Function):void
 		{
 			_defaultEasing = value;
 		}

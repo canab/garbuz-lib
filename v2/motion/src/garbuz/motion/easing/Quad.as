@@ -1,14 +1,23 @@
 package garbuz.motion.easing
 {
-	import garbuz.motion.IEasing;
-	import garbuz.motion.easing.equations.QuadIn;
-	import garbuz.motion.easing.equations.QuadInOut;
-	import garbuz.motion.easing.equations.QuadOut;
-
-	public class Quad
+	final public class Quad
 	{
-		public static const easeIn:IEasing = new QuadIn();
-		public static const easeOut:IEasing = new QuadOut();
-		public static const easeInOut:IEasing = new QuadInOut();
+		static public function easeIn(k:Number):Number
+		{
+			return k * k;
+		}
+
+		static public function easeOut(k:Number):Number
+		{
+			return -k * (k - 2);
+		}
+
+		static public function easeInOut(k:Number):Number
+		{
+			return (k *= 2) < 1
+					? 0.5 * k * k
+					: -0.5 * (--k * (k - 2) - 1);
+		}
 	}
+
 }

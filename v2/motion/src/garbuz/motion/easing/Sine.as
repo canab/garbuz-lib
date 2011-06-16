@@ -1,14 +1,20 @@
 package garbuz.motion.easing
 {
-	import garbuz.motion.IEasing;
-	import garbuz.motion.easing.equations.SineIn;
-	import garbuz.motion.easing.equations.SineInOut;
-	import garbuz.motion.easing.equations.SineOut;
-
 	final public class Sine
 	{
-		public static const easeIn:IEasing = new SineIn();
-		public static const easeOut:IEasing = new SineOut();
-		public static const easeInOut:IEasing = new SineInOut();
+		static public function easeIn(k:Number):Number
+		{
+			return 1 - Math.cos(k * (Math.PI / 2));
+		}
+
+		static public function easeOut(k:Number):Number
+		{
+			return Math.sin(k * (Math.PI / 2));
+		}
+
+		static public function easeInOut(k:Number):Number
+		{
+			return - (Math.cos(Math.PI * k) - 1) / 2;
+		}
 	}
 }

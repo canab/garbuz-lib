@@ -22,7 +22,7 @@ package garbuz.motion
 
 		private var _startTime:Number;
 		private var _duration:Number;
-		private var _easing:IEasing;
+		private var _easing:Function;
 		private var _parameters:Object = {};
 		private var _completeHandler:Function;
 		private var _completeParams:Array;
@@ -57,9 +57,9 @@ package garbuz.motion
 		 * @see garbuz.motion.easing
 		 * @see garbuz.motion.TweenManager.defaultEasing
 		 */
-		public function easing(value:IEasing):Tweener
+		public function easing(value:Function):Tweener
 		{
-			if (!value)
+			if (value == null)
 				throw new ArgumentError(Errors.NULL_POINTER);
 
 			_easing = value;
@@ -159,7 +159,7 @@ package garbuz.motion
 
 			if (timePosition < 1)
 			{
-				var easingPosition:Number = _easing.calculate(timePosition);
+				var easingPosition:Number = _easing(timePosition);
 
 				for each (var property:ITweenProperty in properties)
 				{
