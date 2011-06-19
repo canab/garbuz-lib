@@ -11,7 +11,7 @@ package garbuz.simpleControls
 	{
 		private var _container:Sprite;
 		private var _currentScreen:ScreenBase;
-		private var _dialogs:Array = [];
+		private var _dialogs:Vector.<IDialog> = new <IDialog>[];
 		private var _frame:Sprite = new Sprite();
 		private var _bounds:Rectangle;
 
@@ -42,7 +42,7 @@ package garbuz.simpleControls
 			}
 		}
 
-		public function showDialog(dialog:DialogBase, shadowColor:int = 0x000000, shadowAlpha:Number = 0.25):void
+		public function showDialog(dialog:IDialog, shadowColor:int = 0x000000, shadowAlpha:Number = 0.25):void
 		{
 			if (_dialogs.indexOf(dialog) >= 0)
 				throw new Error("Dialog already exists");
@@ -64,7 +64,7 @@ package garbuz.simpleControls
 			dialog.onShow();
 		}
 
-		public function hideDialog(dialog:DialogBase = null):void
+		public function hideDialog(dialog:IDialog = null):void
 		{
 			if (!dialog)
 				dialog = ArrayUtil.lastItem(_dialogs) as DialogBase;
@@ -100,7 +100,7 @@ package garbuz.simpleControls
 			}
 		}
 
-		private function alignDialog(dialog:DialogBase):void
+		private function alignDialog(dialog:IDialog):void
 		{
 			AlignUtil.alignCenter(dialog.content, _bounds);
 		}

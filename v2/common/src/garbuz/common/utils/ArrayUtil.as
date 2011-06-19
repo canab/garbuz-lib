@@ -5,7 +5,7 @@ package garbuz.common.utils
 
 	public class ArrayUtil
 	{
-		static public function lastItem(source:Array):Object
+		static public function lastItem(source:Object):Object
 		{
 			return (source.length > 0)
 				? source[source.length - 1]

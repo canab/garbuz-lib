@@ -17,6 +17,7 @@ package garbuz.engine.core
 		private var _processManager:ProcessManager;
 		private var _entities:Object = {};
 		private var _started:Boolean;
+		private var _initialized:Boolean = false;
 
 		public function Engine(root:Sprite)
 		{
@@ -33,8 +34,6 @@ package garbuz.engine.core
 				entity.dispose();
 			}
 
-			_processManager.stop();
-
 			trace("Engine disposed");
 		}
 
@@ -49,16 +48,18 @@ package garbuz.engine.core
 			_entities[entity.name] = entity;
 
 			entity.engine = this;
-			entity.initialize();
-		}
 
+			if (_initialized)
+				entity.initialize();
+		}
 
 		public function removeEntity(entity:Entity):void
 		{
-			if (!encodeURI(entity.name))
+			if (!entityExists(entity.name))
 				throw new ItemNotFoundError();
 
-			entity.dispose();
+			if (_initialized)
+				entity.dispose();
 
 			delete _entities[entity.name];
 		}
@@ -68,8 +69,8 @@ package garbuz.engine.core
 			if (_started)
 				return;
 
-			if (!_root.stage)
-				throw new Error("Root should be on the stage at this moment");
+			if (!_initialized)
+				initialize();
 
 			_started = true;
 			_processManager.start();
@@ -88,6 +89,19 @@ package garbuz.engine.core
 			_stopEvent.dispatch();
 
 			trace("Engine stopped");
+		}
+
+		private function initialize():void
+		{
+			if (!_root.stage)
+				throw new Error("Root should be on the stage at this moment");
+
+			for each (var entity:Entity in _entities)
+			{
+				entity.initialize();
+			}
+
+			_initialized = true;
 		}
 
 		internal function addFrameListener(component:Component, method:Function):void

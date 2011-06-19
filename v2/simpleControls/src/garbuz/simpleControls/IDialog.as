@@ -8,6 +8,9 @@ package garbuz.simpleControls
 	 */
 	public interface IDialog
 	{
+		function onShow():void;
+		function onHide():void;
+
 		function get content():Sprite;
 		function get closeEvent():EventSender;
 	}
