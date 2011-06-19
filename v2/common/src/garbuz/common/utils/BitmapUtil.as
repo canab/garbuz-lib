@@ -10,7 +10,11 @@ package garbuz.common.utils
 	{
 		public static function replaceWithBitmap(content:DisplayObject, bounds:Rectangle = null, transparent:Boolean = true):Bitmap
 		{
+			var parentBounds:Rectangle = content.getBounds(content.parent);
 			var bitmap:Bitmap = BitmapUtil.convertToBitmap(content, bounds, transparent);
+			bitmap.x = Math.floor(parentBounds.x);
+			bitmap.y = Math.floor(parentBounds.y);
+
 			content.parent.addChildAt(bitmap, content.parent.getChildIndex(content));
 			DisplayUtil.detachFromDisplay(content);
 
