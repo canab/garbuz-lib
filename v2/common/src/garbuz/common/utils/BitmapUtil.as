@@ -4,16 +4,20 @@ package garbuz.common.utils
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.geom.Matrix;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
 	public class BitmapUtil
 	{
 		public static function replaceWithBitmap(content:DisplayObject, bounds:Rectangle = null, transparent:Boolean = true):Bitmap
 		{
-			var parentBounds:Rectangle = content.getBounds(content.parent);
+			bounds = bounds || calculateIntBounds(content);
+
 			var bitmap:Bitmap = BitmapUtil.convertToBitmap(content, bounds, transparent);
-			bitmap.x = Math.floor(parentBounds.x);
-			bitmap.y = Math.floor(parentBounds.y);
+
+			var position:Point = DisplayUtil.transformCoords(bounds.topLeft, content, content.parent);
+			bitmap.x = Math.floor(position.x);
+			bitmap.y = Math.floor(position.y);
 
 			content.parent.addChildAt(bitmap, content.parent.getChildIndex(content));
 			DisplayUtil.detachFromDisplay(content);
