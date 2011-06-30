@@ -2,11 +2,10 @@ package garbuz.common.commands
 {
 	import garbuz.common.events.EventSender;
 
-	public class WaitForEventCommand implements ICancelableCommand
+	public class WaitForEventCommand extends AsincCommand implements ICancelableCommand
 	{
 		private var _targetEvent:EventSender = new EventSender(this);
-		private var _completeEvent:EventSender = new EventSender(this);
-		
+
 		public function WaitForEventCommand(event:EventSender) 
 		{
 			_targetEvent = event;
@@ -18,7 +17,7 @@ package garbuz.common.commands
 				_targetEvent.removeListener(onTargetEvent);
 		}
 		
-		public function execute():void 
+		override public function execute():void
 		{
 			_targetEvent.addListener(onTargetEvent);
 		}
@@ -26,11 +25,8 @@ package garbuz.common.commands
 		private function onTargetEvent():void 
 		{
 			_targetEvent.removeListener(onTargetEvent);
-			_completeEvent.dispatch();
+			dispatchComplete();
 		}
-		
-		public function get completeEvent():EventSender { return _completeEvent; }
-		
 	}
 
 }

@@ -3,17 +3,14 @@ package garbuz.common.commands
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 
-	import garbuz.common.events.EventSender;
-
-	public class CallLaterCommand implements ICancelableCommand
+	public class CallLaterCommand extends AsincCommand implements ICancelableCommand
 	{
 		private var _func:Function;
 		private var _args:Array;
 		private var _thisObject:Object;
 		private var _interval:int;
 		private var _timer:Timer;
-		private var _completeEvent:EventSender = new EventSender(this);
-		
+
 		public function CallLaterCommand(func:Function = null, interval:int = 10,
 			args:Array = null, thisObject:Object = null) 
 		{
@@ -23,7 +20,7 @@ package garbuz.common.commands
 			_thisObject = thisObject;
 		}
 		
-		public function execute():void
+		override public function execute():void
 		{
 			_timer = new Timer(_interval, 1);
 			_timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
@@ -35,7 +32,8 @@ package garbuz.common.commands
 			disposeTimer();
 			if (_func != null)
 				_func.apply(_thisObject, _args);
-			_completeEvent.dispatch();
+
+			dispatchComplete();
 		}
 		
 		private function disposeTimer():void 
@@ -50,9 +48,6 @@ package garbuz.common.commands
 			if (_timer)
 				disposeTimer();
 		}
-		
-		public function get completeEvent():EventSender { return _completeEvent; }
-		
 	}
 
 }

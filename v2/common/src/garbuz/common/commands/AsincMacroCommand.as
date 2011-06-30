@@ -3,11 +3,9 @@ package garbuz.common.commands
 	import flash.utils.Dictionary;
 
 	import garbuz.common.errors.NullPointerError;
-	import garbuz.common.events.EventSender;
 
-	public class AsincMacroCommand implements ICancelableCommand
+	public class AsincMacroCommand extends AsincCommand implements ICancelableCommand
 	{
-		private var _completeEvent:EventSender = new EventSender(this);
 		private var _commands:Dictionary = new Dictionary();
 
 		private var _started:Boolean = false;
@@ -17,12 +15,6 @@ package garbuz.common.commands
 		public function AsincMacroCommand()
 		{
 			super()
-		}
-
-		public function onComplete(completeHandler:Function):AsincMacroCommand
-		{
-			_completeEvent.addListener(completeHandler);
-			return this;
 		}
 
 		public function add(command:IAsincCommand):AsincMacroCommand
@@ -45,7 +37,7 @@ package garbuz.common.commands
 			return this;
 		}
 
-		public function execute():void
+		override public function execute():void
 		{
 			if (_started)
 				throw new Error("Command is already executed.");
@@ -80,7 +72,7 @@ package garbuz.common.commands
 		{
 			_started = false;
 			_completed = true;
-			_completeEvent.dispatch();
+			dispatchComplete();
 		}
 
 		public function cancel():void
@@ -104,11 +96,6 @@ package garbuz.common.commands
 		//
 		///////////////////////////////////////////////////////////////////////////////////*/
 
-		public function get completeEvent():EventSender
-		{
-			return _completeEvent;
-		}
-
 		public function get commands():Dictionary
 		{
 			return _commands;
@@ -116,7 +103,7 @@ package garbuz.common.commands
 
 		public function get isEmpty():Boolean
 		{
-			//noinspection LoopStatementThatDoesntLoopJS
+			//noinspection LoopStatementThatDoesntLoopJS,JSUnusedLocalSymbols
 			for (var command:Object in _commands)
 			{
 				return false;

@@ -1,12 +1,9 @@
 package garbuz.common.commands
 {
 	import garbuz.common.errors.NullPointerError;
-	import garbuz.common.events.EventSender;
 
-	public class CommandQueue implements ICancelableCommand
+	public class CommandQueue extends AsincCommand implements ICancelableCommand
 	{
-		private var _completeEvent:EventSender = new EventSender(this);
-
 		private var _commands:Array = [];
 		private var _currentCommand:IAsincCommand;
 
@@ -19,12 +16,6 @@ package garbuz.common.commands
 			super();
 		}
 
-		public function onComplete(completeHandler:Function):CommandQueue
-		{
-			_completeEvent.addListener(completeHandler);
-			return this;
-		}
-
 		public function add(command:IAsincCommand):CommandQueue
 		{
 			if (!command)
@@ -35,7 +26,7 @@ package garbuz.common.commands
 			return this;
 		}
 
-		public function execute():void
+		override public function execute():void
 		{
 			if (_started)
 				throw new Error("Command is already executed.");
@@ -68,7 +59,8 @@ package garbuz.common.commands
 		{
 			_started = false;
 			_completed = true;
-			_completeEvent.dispatch();
+
+			dispatchComplete();
 		}
 
 		public function cancel():void
@@ -91,11 +83,6 @@ package garbuz.common.commands
 		// get/set
 		//
 		///////////////////////////////////////////////////////////////////////////////////*/
-
-		public function get completeEvent():EventSender
-		{
-			return _completeEvent;
-		}
 
 		public function get commands():Array
 		{
