@@ -86,7 +86,9 @@ package garbuz.engine.core
 		
 		public function removeComponentByType(type:Class):void 
 		{
-			removeComponent(getComponentByType(type));
+			var component:Component = getComponentByType(type);
+			if (component)
+				removeComponent(component);
 		}
 		
 		public function getComponentByType(type:Class):Component
