@@ -2,15 +2,17 @@ package garbuz.engine.scene.renderers
 {
 	import flash.display.Sprite;
 
+	import garbuz.common.events.EventSender;
 	import garbuz.common.utils.MathUtil;
 
 	public class ClipRenderer extends SpriteRenderer
 	{
+		private var _playCompleteEvent:EventSender = new EventSender(this);
+
 		private var _isPlaying:Boolean = false;
 		private var _currentFrame:int = 1;
 		private var _playHandler:Function;
 		private var _endFrame:int;
-		private var _completeHandler:Function;
 
 		public function ClipRenderer(content:Sprite)
 		{
@@ -30,21 +32,20 @@ package garbuz.engine.scene.renderers
 			beginPlay(loopHandler);
 		}
 
-		public function playTo(frameNum:int, completeHandler:Function = null):void
+		public function playTo(frameNum:int):void
 		{
 			_endFrame = MathUtil.claimRange(frameNum, 1, totalFrames);
-			_completeHandler = completeHandler;
 			beginPlay(toFrameHandler);
 		}
 
-		public function playForward(completeHandler:Function = null):void
+		public function playForward():void
 		{
-			playTo(totalFrames, completeHandler);
+			playTo(totalFrames);
 		}
 
-		public function playReverse(completeHandler:Function = null):void
+		public function playReverse():void
 		{
-			playTo(0, completeHandler);
+			playTo(0);
 		}
 
 		public function stop():void
@@ -115,9 +116,7 @@ package garbuz.engine.scene.renderers
 			else
 			{
 				stopPlay();
-
-				if (_completeHandler != null)
-					_completeHandler();
+				_playCompleteEvent.dispatch();
 			}
 		}
 
@@ -152,5 +151,9 @@ package garbuz.engine.scene.renderers
 			}
 		}
 
+		public function get playCompleteEvent():EventSender
+		{
+			return _playCompleteEvent;
+		}
 	}
 }
