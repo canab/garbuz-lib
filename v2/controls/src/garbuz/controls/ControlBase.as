@@ -1,7 +1,5 @@
 package garbuz.controls
 {
-	import assets.core.common.McControlLoading;
-
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.InteractiveObject;
@@ -18,6 +16,7 @@ package garbuz.controls
 	public class ControlBase extends Sprite
 	{
 		public static var defaultBundle:MessageBundle;
+		public static var loaderViewClass:Class;
 
 		protected var _width:Number = -1;
 		protected var _height:Number = -1;
@@ -133,7 +132,7 @@ package garbuz.controls
 
 		public function showLoading():void
 		{
-			_loadingClip = new McControlLoading();
+			_loadingClip = new loaderViewClass();
 			addChild(_loadingClip);
 			applyLoadingClipLayout();
 		}

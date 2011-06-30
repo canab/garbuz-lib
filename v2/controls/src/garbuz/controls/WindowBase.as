@@ -6,7 +6,6 @@ package garbuz.controls
 	import garbuz.common.events.EventManager;
 	import garbuz.common.events.EventSender;
 	import garbuz.controls.managers.WindowManager;
-	import garbuz.mmo.Application;
 
 	public class WindowBase extends ControlBase
 	{
@@ -89,11 +88,6 @@ package garbuz.controls
 				_events = new EventManager();
 
 			return _events;
-		}
-
-		protected function get app():Application
-		{
-			return Application.instance;
 		}
 
 		override public function get hitArea():Sprite
