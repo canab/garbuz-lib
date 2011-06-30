@@ -87,25 +87,26 @@ package garbuz.common.resources.loaders
 			_completeEvent.dispatch();
 		}
 
-		protected function startLoading():void
+		protected virtual function startLoading():void
 		{
 			throw new NotImplementedError();
 		}
 
-		protected function removeListeners():void
+		protected virtual function removeListeners():void
 		{
 			throw new NotImplementedError();
 		}
 
-		protected function stopLoading():void
+		protected virtual function stopLoading():void
 		{
 			throw new NotImplementedError();
 		}
 
-		public function get progress():Number
-		{
-			return 0;
-		}
+		/*///////////////////////////////////////////////////////////////////////////////////
+		//
+		// get/set
+		//
+		///////////////////////////////////////////////////////////////////////////////////*/
 
 		public function get completeEvent():EventSender
 		{
@@ -115,6 +116,11 @@ package garbuz.common.resources.loaders
 		public function get url():String
 		{
 			return _url;
+		}
+
+		public function get progress():Number
+		{
+			return 0;
 		}
 
 		public function get successful():Boolean

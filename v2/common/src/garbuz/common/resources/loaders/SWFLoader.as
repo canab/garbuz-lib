@@ -101,11 +101,16 @@ package garbuz.common.resources.loaders
 			return _loader;
 		}
 
+		public function set loader(value:Loader):void
+		{
+			_loader = value;
+		}
+
 		public function get initEvent():EventSender
 		{
 			if (!_initEvent)
 				_initEvent = new EventSender(this);
-			
+
 			return _initEvent;
 		}
 
@@ -117,11 +122,6 @@ package garbuz.common.resources.loaders
 		public function set loaderContext(value:LoaderContext):void
 		{
 			_loaderContext = value;
-		}
-
-		public function set loader(value:Loader):void
-		{
-			_loader = value;
 		}
 	}
 
