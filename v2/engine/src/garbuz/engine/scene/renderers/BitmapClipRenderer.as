@@ -5,6 +5,22 @@ package garbuz.engine.scene.renderers
 
 	public class BitmapClipRenderer extends ClipRenderer
 	{
+		public static function captureClip(target:Sprite):BitmapClipRenderer
+		{
+			var frames:Vector.<BitmapFrame> = new ClipPrerenderer(target).getAllFrames();
+			var renderer:BitmapClipRenderer = new BitmapClipRenderer(frames);
+			renderer.content.x = int(target.x);
+			renderer.content.y = int(target.y);
+			return renderer;
+		}
+
+		/*///////////////////////////////////////////////////////////////////////////////////
+		//
+		// instance
+		//
+		///////////////////////////////////////////////////////////////////////////////////*/
+
+
 		private var _content:Sprite;
 
 		private var _frames:Vector.<BitmapFrame>;
@@ -16,14 +32,6 @@ package garbuz.engine.scene.renderers
 
 			_frames = frames;
 			_content.addChild(_bitmap);
-		}
-
-		public function captureClip(target:Sprite):void
-		{
-			frames = new ClipPrerenderer(target).getAllFrames();
-
-			_content.x = int(target.x);
-			_content.y = int(target.y);
 		}
 
 		override protected function updateFrame():void

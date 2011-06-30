@@ -10,6 +10,7 @@ package garbuz.engine.scene.renderers
 		private var _currentFrame:int = 1;
 		private var _playHandler:Function;
 		private var _endFrame:int;
+		private var _completeHandler:Function;
 
 		public function ClipRenderer(content:Sprite)
 		{
@@ -29,20 +30,21 @@ package garbuz.engine.scene.renderers
 			beginPlay(loopHandler);
 		}
 
-		public function playTo(frameNum:int):void
+		public function playTo(frameNum:int, completeHandler:Function = null):void
 		{
 			_endFrame = MathUtil.claimRange(frameNum, 1, totalFrames);
+			_completeHandler = completeHandler;
 			beginPlay(toFrameHandler);
 		}
 
-		public function playForward():void
+		public function playForward(completeHandler:Function = null):void
 		{
-			playTo(totalFrames);
+			playTo(totalFrames, completeHandler);
 		}
 
-		public function playReverse():void
+		public function playReverse(completeHandler:Function = null):void
 		{
-			playTo(0);
+			playTo(0, completeHandler);
 		}
 
 		public function stop():void
@@ -103,11 +105,20 @@ package garbuz.engine.scene.renderers
 		private function toFrameHandler():void
 		{
 			if (_currentFrame < _endFrame)
+			{
 				nextFrame();
+			}
 			else if (_currentFrame > _endFrame)
+			{
 				prevFrame();
+			}
 			else
+			{
 				stopPlay();
+
+				if (_completeHandler != null)
+					_completeHandler();
+			}
 		}
 
 		protected function updateFrame():void

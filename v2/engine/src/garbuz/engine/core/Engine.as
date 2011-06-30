@@ -6,6 +6,8 @@ package garbuz.engine.core
 	import garbuz.common.errors.ItemNotFoundError;
 	import garbuz.common.events.EventSender;
 	import garbuz.common.logging.Logger;
+	import garbuz.motion.TweenManager;
+	import garbuz.motion.Tweener;
 
 	public class Engine
 	{
@@ -18,6 +20,7 @@ package garbuz.engine.core
 
 		private var _root:Sprite;
 		private var _processManager:ProcessManager;
+		private var _tweenManager:TweenManager;
 		private var _entities:Object = {};
 		private var _started:Boolean;
 		private var _initialized:Boolean = false;
@@ -26,6 +29,7 @@ package garbuz.engine.core
 		{
 			_root = root;
 			_processManager = new ProcessManager(this);
+			_tweenManager = new TweenManager();
 		}
 
 		public function dispose():void
@@ -77,9 +81,9 @@ package garbuz.engine.core
 
 			_started = true;
 			_processManager.start();
-			_startEvent.dispatch();
-
+			_tweenManager.resumeAll();
 			_logger.debug("started");
+			_startEvent.dispatch();
 		}
 
 		public function stop():void
@@ -89,9 +93,9 @@ package garbuz.engine.core
 
 			_started = false;
 			_processManager.stop();
-			_stopEvent.dispatch();
-
+			_tweenManager.pauseAll();
 			_logger.debug("stopped");
+			_stopEvent.dispatch();
 		}
 
 		private function initialize():void
@@ -105,6 +109,11 @@ package garbuz.engine.core
 			}
 
 			_initialized = true;
+		}
+
+		public function tween(target:Object, duration:Number = -1):Tweener
+		{
+			return _tweenManager.tween(target, duration);
 		}
 
 		internal function addFrameListener(component:Component, method:Function):void
@@ -245,6 +254,11 @@ package garbuz.engine.core
 		public function get stopEvent():EventSender
 		{
 			return _stopEvent;
+		}
+
+		public function get tweenManager():TweenManager
+		{
+			return _tweenManager;
 		}
 	}
 

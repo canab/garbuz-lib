@@ -10,7 +10,7 @@ package garbuz.engine.scene.renderers
 	import garbuz.common.query.fromDisplay;
 	import garbuz.common.utils.BitmapUtil;
 
-	internal class ClipPrerenderer
+	public class ClipPrerenderer
 	{
 		private var _content:Sprite;
 		private var _subClips:Array = [];
