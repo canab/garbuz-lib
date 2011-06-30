@@ -83,7 +83,7 @@ package garbuz.common.resources.loaders
 		{
 			removeListeners();
 			_successful = true;
-			_logger.info("completed: " + url);
+			_logger.debug("completed: " + url);
 			_completeEvent.dispatch();
 		}
 

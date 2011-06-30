@@ -11,7 +11,7 @@ package garbuz.controls.managers
 
 	public class PopupManager
 	{
-		private static const AUTO_HIDE_DISTANCE:int = 75;
+		private static const AUTO_HIDE_DISTANCE:int = 40;
 
 		private static var _instance:PopupManager;
 		

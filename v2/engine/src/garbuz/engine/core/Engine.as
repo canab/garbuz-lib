@@ -5,10 +5,13 @@ package garbuz.engine.core
 	import garbuz.common.errors.ItemAlreadyExistsError;
 	import garbuz.common.errors.ItemNotFoundError;
 	import garbuz.common.events.EventSender;
+	import garbuz.common.logging.Logger;
 
 	public class Engine
 	{
 		internal var nameManager:NameManager = new NameManager();
+
+		private var _logger:Logger = new Logger(this);
 
 		private var _startEvent:EventSender = new EventSender(this);
 		private var _stopEvent:EventSender = new EventSender(this);
@@ -34,7 +37,7 @@ package garbuz.engine.core
 				entity.dispose();
 			}
 
-			trace("Engine disposed");
+			_logger.debug("disposed");
 		}
 
 		public function addEntity(entity:Entity):void
@@ -76,7 +79,7 @@ package garbuz.engine.core
 			_processManager.start();
 			_startEvent.dispatch();
 
-			trace("Engine started");
+			_logger.debug("started");
 		}
 
 		public function stop():void
@@ -88,7 +91,7 @@ package garbuz.engine.core
 			_processManager.stop();
 			_stopEvent.dispatch();
 
-			trace("Engine stopped");
+			_logger.debug("stopped");
 		}
 
 		private function initialize():void
