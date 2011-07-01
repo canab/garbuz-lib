@@ -33,6 +33,5 @@ package garbuz.collections
 		function get last():*;
 
 		function toArray():Array;
-
 	}
 }
