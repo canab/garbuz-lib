@@ -27,7 +27,13 @@ package garbuz.collections
 
 		override public function indexOf(item:*):int
 		{
-			return _array.indexOf(item);
+			var length:int  = this.length;
+			for (var i:int = 0; i < length; i++)
+			{
+				if (_array[i] === item)
+					return i;
+			}
+			return -1;
 		}
 
 		override public function getItemAt(index:int):*

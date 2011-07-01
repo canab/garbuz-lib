@@ -2,6 +2,8 @@ package garbuz.collections
 {
 	public interface IList extends IIterable
 	{
+		function contains(item:*):Boolean
+
 		function getItemAt(index:int):*;
 
 		function setItemAt(item:*, index:int):void;

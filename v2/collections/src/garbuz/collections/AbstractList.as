@@ -16,6 +16,11 @@ package garbuz.collections
 			_itemType = type;
 		}
 
+		public function contains(item:*):Boolean
+		{
+			return indexOf(item) >= 0;
+		}
+
 		public function addItem(item:*):*
 		{
 			return addItemAt(item, length);
