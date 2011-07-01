@@ -160,7 +160,7 @@ package garbuz.controls
 			_pageContainer.x = 1.3 * fromX;
 			_pageContainer.alpha = 0;
 			
-			tween(_pageContainer, 0.5)
+			tween(_pageContainer, 500)
 					.easing(Linear.easeNone)
 					.to({x: 0, alpha: 1});
 		}
@@ -170,7 +170,7 @@ package garbuz.controls
 			_pageContainer.mouseChildren = false;
 			_pageContainer.cacheAsBitmap = true;
 
-			tween(_pageContainer, 0.3)
+			tween(_pageContainer, 300)
 					.easing(Linear.easeNone)
 					.to({x: toX, alpha: 0})
 					.onComplete(DisplayUtil.detachFromDisplay, _pageContainer);

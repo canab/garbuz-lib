@@ -56,7 +56,7 @@ package
 				.to({$filter: filterTween1})
 				.tween()
 					.to({$filter: filterTween2})
-				.tween(1)
+				.tween(1000)
 				.tween()
 					.onComplete(testInstanceFilter, sprite);
 		}

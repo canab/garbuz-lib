@@ -29,15 +29,15 @@ package garbuz.motion
 		private var _updateHandler:Function;
 		private var _updateParams:Array;
 
-		public function Tweener(manager:TweenManager, target:Object, duration:Number)
+		public function Tweener(manager:TweenManager, target:Object, duration:int)
 		{
 			this.target = target;
 
 			_manager = manager;
 
-			_duration = (duration > 0)
-				? duration * 1000
-				: _manager.defaultDuration * 1000;
+			_duration = (duration >= 0)
+				? duration
+				: _manager.defaultDuration;
 		}
 
 
@@ -122,14 +122,14 @@ package garbuz.motion
 		/**
 		 * Put new tween of the same target in a chain.
 		 * Tween executes after parent tween will be completed.
-		 * @param duration Tween duration in seconds
+		 * @param duration Tween duration in milliseconds
 		 *
 		 * @example <code>
 		 * tween(sprite, 2.0).to({x: 50})
 		 *  .tween(0.5).to({y: 20})
 		 *  .tween().to({x: 100})</code>
 		 */
-		public function tween(duration:Number = -1):Tweener
+		public function tween(duration:int = -1):Tweener
 		{
 			chain = new Tweener(_manager, target, duration);
 			return chain;
@@ -155,7 +155,7 @@ package garbuz.motion
 
 		motion_internal function doStep(currentTime:Number):void
 		{
-			var timePosition:Number = (currentTime - _startTime) / _duration;
+			var timePosition:Number = Number(currentTime - _startTime) / _duration;
 
 			if (timePosition < 1)
 			{

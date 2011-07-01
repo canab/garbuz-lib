@@ -31,8 +31,8 @@ package
 				.easing(Elastic.easeOut)
 			.tween()
 				.to({y: 100})
-			.tween(1)
-			.tween(0.5)
+			.tween(1000)
+			.tween(500)
 				.to({y: 250})
 				.onUpdate(update, target)
 				.onComplete(moveBack, target);

@@ -15,8 +15,8 @@ package garbuz.controls.managers
 
 	public class ToolTipManager
 	{
-		private static const SHOW_DURATION:Number = 0.1;
-		private static const SHOW_DELAY:Number = 0.4;
+		private static const SHOW_DURATION:int = 100;
+		private static const SHOW_DELAY:int = 400;
 
 		private static var _instance:ToolTipManager;
 

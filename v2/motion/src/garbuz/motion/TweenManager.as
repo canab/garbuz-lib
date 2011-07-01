@@ -64,11 +64,11 @@ package garbuz.motion
 		 * @param target
 		 * target object
 		 * @param duration
-		 * Tween time in seconds. If omitted defaultDuration value will be used.
+		 * Tween time in milliseconds. If omitted defaultDuration value will be used.
 		 * 
 		 * @see #defaultDuration
 		 */
-		public static function tween(target:Object, duration:Number):Tweener
+		public static function tween(target:Object, duration:int):Tweener
 		{
 			return instance.tween(target, duration);
 		}
@@ -133,7 +133,7 @@ package garbuz.motion
 		private var _targetsTweenMap:Dictionary = new Dictionary();
 
 		private var _currentTime:Number;
-		private var _defaultDuration:Number = 1.0;
+		private var _defaultDuration:int = 500;
 		private var _defaultEasing:Function = Quad.easeOut;
 		private var _tweensCount:int = 0;
 
@@ -147,11 +147,11 @@ package garbuz.motion
 		 * @param target
 		 * target object
 		 * @param duration
-		 * Tween time in seconds. If omitted defaultDuration value will be used.
+		 * Tween time in milliseconds. If omitted defaultDuration value will be used.
 		 *
 		 * @see #defaultDuration
 		 */
-		public function tween(target:Object, duration:Number = -1):Tweener
+		public function tween(target:Object, duration:int = -1):Tweener
 		{
 			var tweener:Tweener = new Tweener(this, target, duration);
 			addTween(tweener);

@@ -21,7 +21,7 @@ package
 			tween(_sprite)
 				.to({$scale: 1.5, alpha: 0.2})
 				.tween()
-				.tween(0.5)
+				.tween(500)
 				.to({$scale: 0.1, alpha: 1.0})
 				.onComplete(createTween);
 		}
