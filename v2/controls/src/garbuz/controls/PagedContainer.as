@@ -130,8 +130,6 @@ package garbuz.controls
 
 				_pageContainer.addControl(renderer);
 			}
-
-			_pageContainer.applyLayout();
 		}
 
 		private function onItemClick(sender:ControlBase):void

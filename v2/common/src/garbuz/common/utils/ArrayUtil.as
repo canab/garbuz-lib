@@ -5,24 +5,15 @@ package garbuz.common.utils
 
 	public class ArrayUtil
 	{
-		static public function lastItem(source:Object):Object
+		public static function lastItem(source:Object):Object
 		{
-			return (source.length > 0)
-				? source[source.length - 1]
-				: null;
+			if (source.length > 0)
+				return source[source.length - 1];
+			else
+				throw new ItemNotFoundError();
 		}
-		
-		static public function getKeys(object:Object):Array
-		{
-			var result:Array = [];
-			for (var key:Object in object)
-			{
-				result.push(key);
-			}
-			return result;
-		}
-		
-		static public function removeItem(source:Object, item:Object):Boolean
+
+		public static function removeItem(source:Object, item:Object):Boolean
 		{
 			var index:int = source.indexOf(item);
 			if (index >= 0)
@@ -33,7 +24,7 @@ package garbuz.common.utils
 			return false;
 		}
 		
-		static public function removeItems(source:Object, items:Array):int
+		public static function removeItems(source:Object, items:Array):int
 		{
 			var i:int = 0;
 			var length:int = source.length;
@@ -57,7 +48,7 @@ package garbuz.common.utils
 		 * @param item
 		 * Object
 		 */
-		static public function removeItemSafe(source:Object, item:Object):void
+		public static function removeItemSafe(source:Object, item:Object):void
 		{
 			var index:int = source.indexOf(item);
 			if (index >= 0)
@@ -74,7 +65,7 @@ package garbuz.common.utils
 		 * @param item
 		 * Object
 		 */
-		static public function addItemSafe(source:Object, item:Object):void
+		public static function addItemSafe(source:Object, item:Object):void
 		{
 			var index:int = source.indexOf(item);
 			if (index >= 0)
@@ -83,12 +74,12 @@ package garbuz.common.utils
 				source.push(item);
 		}
 		
-		static public function getRandomItem(source:Object):*
+		public static function getRandomItem(source:Object):*
 		{
 			return source[int(Math.random() * source.length)];
 		}
 		
-		static public function getRandomItems(source:Object, count:int):Array
+		public static function getRandomItems(source:Object, count:int):Array
 		{
 			var result:Array = [];
 			var selection:Array = [];
@@ -111,7 +102,7 @@ package garbuz.common.utils
 			return result;
 		}		
 		
-		static public function equals(source:Array, target:Array):Boolean
+		public static function equals(source:Array, target:Array):Boolean
 		{
 			if (source == null && target == null)
 				return true;
@@ -131,7 +122,7 @@ package garbuz.common.utils
 			return true;
 		}
 		
-		static public function pushUniqueItem(target:Array, item:Object):Boolean
+		public static function pushUniqueItem(target:Array, item:Object):Boolean
 		{
 			if (target.indexOf(item) == -1)
 			{
@@ -144,7 +135,7 @@ package garbuz.common.utils
 			}
 		}
 		
-		static public function pushUniqueItems(target:Array, items:Array):int
+		public static function pushUniqueItems(target:Array, items:Array):int
 		{
 			var result:int = 0;
 			for each (var item:Object in items) 
@@ -152,21 +143,6 @@ package garbuz.common.utils
 				if (pushUniqueItem(target, item))
 					result++;
 			}
-			return result;
-		}
-		
-		static public function toObject(source:Array, keyProperty:String):Object
-		{
-			var result:Object = { };
-			
-			for each (var item:Object in source) 
-			{
-				if (item.hasOwnProperty(keyProperty))
-				{
-					result[item[keyProperty]] = item;
-				}
-			}
-			
 			return result;
 		}
 	}

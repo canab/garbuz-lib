@@ -2,11 +2,12 @@ package garbuz.common.resources
 {
 	import flash.display.Loader;
 	import flash.system.ApplicationDomain;
+	import flash.utils.Dictionary;
 
-	import garbuz.collections.ObjectMap;
 	import garbuz.common.errors.NullPointerError;
 	import garbuz.common.events.EventSender;
 	import garbuz.common.resources.loaders.SWFLoader;
+	import garbuz.common.utils.MapUtil;
 
 	public class ResourceBundle
 	{
@@ -15,7 +16,7 @@ package garbuz.common.resources
 		private var _swfLoader:SWFLoader;
 		private var _nativeLoader:Loader;
 		private var _url:String;
-		private var _references:ObjectMap = new ObjectMap(true);
+		private var _references:Dictionary = new Dictionary(true);
 		private var _manager:LoadingManager;
 
 		public function ResourceBundle(url:String)
@@ -28,7 +29,7 @@ package garbuz.common.resources
 			if (!reference)
 				throw new NullPointerError();
 
-			_references.put(reference, null);
+			_references[reference] = reference;
 		}
 
 		public function load(manager:LoadingManager):void
@@ -89,12 +90,12 @@ package garbuz.common.resources
 
 		public function get hasReferences():Boolean
 		{
-			return !_references.isEmpty();
+			return !MapUtil.isEmpty(_references);
 		}
 
 		public function toString():String
 		{
-			return "ResourceBundle(" + _references.getKeys().length + ") " + _url;
+			return "ResourceBundle(" + MapUtil.getLength(_references) + ") " + _url;
 		}
 	}
 }

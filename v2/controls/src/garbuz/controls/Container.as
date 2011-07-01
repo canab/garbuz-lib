@@ -22,24 +22,26 @@ package garbuz.controls
 			_anchors.push(new Anchor(source, sourceProp, target, targetProp, multiplier));
 		}
 
-		public function addControls(controls:Object):void
-		{
-			for each (var control:ControlBase in controls)
-			{
-				addControl(control);
-			}
-		}
-
 		public function addControl(control:ControlBase):void
 		{
 			_controls.push(control);
 			addChild(control);
+			invalidate();
 		}
 
 		public function removeControl(control:ControlBase):void
 		{
 			ArrayUtil.removeItem(_controls, control);
 			removeChild(control);
+			invalidate();
+		}
+
+		public function addControls(controls:Object):void
+		{
+			for each (var control:ControlBase in controls)
+			{
+				addControl(control);
+			}
 		}
 
 		public function removeAllControls():void
@@ -52,10 +54,7 @@ package garbuz.controls
 
 		override public function applyLayout():void
 		{
-			for each (var item:ControlBase in _controls)
-			{
-				item.applyLayout();
-			}
+			super.applyLayout();
 
 			for each (var anchor:Anchor in _anchors)
 			{
@@ -64,8 +63,6 @@ package garbuz.controls
 
 			if (_layout)
 				_layout.apply(this);
-
-			super.applyLayout();
 		}
 
 		override protected function applyEnabled():void
@@ -95,9 +92,7 @@ package garbuz.controls
 		public function set layout(value:ILayout):void
 		{
 			_layout = value;
-
-			if (!_layoutSuspended)
-				applyLayout();
+			invalidate();
 		}
 	}
 

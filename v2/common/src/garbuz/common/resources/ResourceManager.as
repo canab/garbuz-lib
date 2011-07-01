@@ -2,9 +2,9 @@ package garbuz.common.resources
 {
 	import flash.system.ApplicationDomain;
 
-	import garbuz.collections.ObjectMap;
 	import garbuz.common.errors.NullPointerError;
 	import garbuz.common.logging.Logger;
+	import garbuz.common.utils.MapUtil;
 
 	public class ResourceManager
 	{
@@ -32,7 +32,7 @@ package garbuz.common.resources
 		///////////////////////////////////////////////////////////////////////////////////*/
 
 		private var _manager:LoadingManager = new LoadingManager();
-		private var _bundles:ObjectMap = new ObjectMap();
+		private var _bundles:Object = {};
 		private var _gcCounter:int = 0;
 
 		//noinspection JSUnusedLocalSymbols
@@ -43,13 +43,13 @@ package garbuz.common.resources
 
 		public function allocateResource(url:String, reference:Object):ResourceBundle
 		{
-			var bundle:ResourceBundle = _bundles.getValue(url) as ResourceBundle;
+			var bundle:ResourceBundle = _bundles[url];
 
 			if (!bundle)
 			{
 				bundle = new ResourceBundle(url);
 				bundle.load(_manager);
-				_bundles.put(url, bundle);
+				_bundles[url] = bundle;
 
 				if (++_gcCounter >= GC_COUNTER_MAX)
 					collectUnusedResources();
@@ -72,7 +72,7 @@ package garbuz.common.resources
 
 		private function getBundle(url:String):ResourceBundle
 		{
-			var bundle:ResourceBundle = ResourceBundle(_bundles.getValue(url));
+			var bundle:ResourceBundle = _bundles[url];
 
 			if (!bundle)
 				throw new NullPointerError();
@@ -86,29 +86,30 @@ package garbuz.common.resources
 
 			_gcCounter = 0;
 
-			var urls:Array = _bundles.getKeys();
+			var urls:Array = MapUtil.getKeys(_bundles);
 
 			for each (var url:String in urls)
 			{
-				var bundle:ResourceBundle = getBundle(url);
+				var bundle:ResourceBundle = _bundles[url];
 				if (!bundle.hasReferences)
 				{
 					bundle.dispose();
-					_bundles.removeKey(url);
+					delete _bundles[url];
 				}
 			}
 		}
 
 		public function printStats():void
 		{
-			var bundles:Array = _bundles.getValues();
-
-			for each (var bundle:ResourceBundle in bundles)
+			var length:int = 0;
+			
+			for each (var bundle:ResourceBundle in _bundles)
 			{
 				_logger.info(bundle);
+				length++;
 			}
 
-			_logger.info("total: " + bundles.length);
+			_logger.info("total: " + length);
 		}
 
 	}

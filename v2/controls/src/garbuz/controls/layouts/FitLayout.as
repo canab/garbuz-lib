@@ -16,6 +16,7 @@ package garbuz.controls.layouts
 			{
 				item.move(0, 0);
 				item.setSize(container.width, container.height);
+				item.validate();
 			}
 		}
 	}

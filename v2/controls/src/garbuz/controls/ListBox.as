@@ -1,7 +1,6 @@
 package garbuz.controls
 {
 	import flash.display.Sprite;
-	import flash.events.Event;
 	import flash.events.MouseEvent;
 
 	import garbuz.common.events.EventSender;
@@ -83,7 +82,6 @@ package garbuz.controls
 
 		private function rebuildList():void
 		{
-			_innerContainer.suspendLayout();
 			_innerContainer.removeAllControls();
 			_innerContainer.y = 0;
 
@@ -101,21 +99,7 @@ package garbuz.controls
 					IClickable(renderer).clickEvent.addListener(onItemClick);
 
 				_innerContainer.addControl(renderer);
-
-				renderer.visible = renderer.hitTestObject(_mask);
 			}
-
-			if (stage)
-				_innerContainer.resumeLayout();
-			else
-				addEventListener(Event.ADDED_TO_STAGE, resumeOnAddedToStage);
-		}
-
-		private function resumeOnAddedToStage(event:Event):void
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, resumeOnAddedToStage);
-			_innerContainer.resumeLayout();
-			updateScrollBar();
 		}
 
 		private function onScroll():void
@@ -182,7 +166,6 @@ package garbuz.controls
 		{
 			ArrayUtil.removeItemSafe(_items, item);
 			_innerContainer.removeControl(getRenderer(item));
-			_innerContainer.applyLayout();
 			_innerContainer.y = MathUtil.claimRange(_innerContainer.y, minY, maxY);
 			updateVisibility();
 			updateScrollBar();

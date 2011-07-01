@@ -3,6 +3,7 @@ package garbuz.common.commands
 	import flash.utils.Dictionary;
 
 	import garbuz.common.errors.NullPointerError;
+	import garbuz.common.utils.MapUtil;
 
 	public class AsincMacroCommand extends AsincCommand implements ICancelableCommand
 	{
@@ -44,7 +45,7 @@ package garbuz.common.commands
 
 			_started = true;
 
-			if (isEmpty)
+			if (MapUtil.isEmpty(_commands))
 				add(new CallLaterCommand());
 
 			for (var command:Object in _commands)
@@ -99,17 +100,6 @@ package garbuz.common.commands
 		public function get commands():Dictionary
 		{
 			return _commands;
-		}
-
-		public function get isEmpty():Boolean
-		{
-			//noinspection LoopStatementThatDoesntLoopJS,JSUnusedLocalSymbols
-			for (var command:Object in _commands)
-			{
-				return false;
-			}
-
-			return true;
 		}
 
 		public function get started():Boolean

@@ -8,6 +8,7 @@ package garbuz.controls
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
 
+	import garbuz.common.display.StageReference;
 	import garbuz.common.localization.MessageBundle;
 	import garbuz.common.utils.AlignUtil;
 	import garbuz.common.utils.DisplayUtil;
@@ -20,12 +21,12 @@ package garbuz.controls
 
 		protected var _width:Number = -1;
 		protected var _height:Number = -1;
-		protected var _layoutSuspended:Boolean = false;
 		protected var _data:Object;
 
 		private var _bundle:MessageBundle;
 		private var _enabled:Boolean = true;
 		private var _disabledAlpha:Number = 0.5;
+		private var _invalidated:Boolean = false;
 
 		private var _tooltip:String;
 		private var _loadingClip:Sprite;
@@ -39,29 +40,10 @@ package garbuz.controls
 			mouseChildren = false;
 		}
 
-		public function suspendLayout():void
-		{
-			_layoutSuspended = true;
-		}
-
-		public function resumeLayout():void
-		{
-			_layoutSuspended = false;
-			applyLayout();
-		}
-
 		public function setSize(width:Number, height:Number):void
 		{
-			var isLayoutSuspended:Boolean = _layoutSuspended;
-
-			if (!isLayoutSuspended)
-				suspendLayout();
-
 			this.width = width;
 			this.height = height;
-
-			if (!isLayoutSuspended)
-				resumeLayout();
 		}
 
 		public function wrapContent(target:DisplayObjectContainer):void
@@ -212,9 +194,7 @@ package garbuz.controls
 			if (_width != value)
 			{
 				_width = value;
-
-				if (!_layoutSuspended)
-					applyLayout();
+				invalidate();
 			}
 		}
 
@@ -228,9 +208,7 @@ package garbuz.controls
 			if (_height != value)
 			{
 				_height = value;
-
-				if (!_layoutSuspended)
-					applyLayout();
+				invalidate();
 			}
 		}
 
@@ -332,6 +310,31 @@ package garbuz.controls
 
 				if (item is DisplayObjectContainer)
 					DisplayObjectContainer(item).mouseChildren = false;
+			}
+		}
+
+		public function invalidate():void
+		{
+			if (!_invalidated)
+			{
+				_invalidated = true;
+				StageReference.stage.addEventListener(Event.RENDER, onStageRender, false, 0, true);
+				StageReference.stage.invalidate();
+			}
+		}
+
+		private function onStageRender(e:Event):void
+		{
+			validate();
+		}
+
+		public function validate():void
+		{
+			if (_invalidated)
+			{
+				_invalidated = false;
+				StageReference.stage.removeEventListener(Event.RENDER, onStageRender, false);
+				applyLayout();
 			}
 		}
 	}
