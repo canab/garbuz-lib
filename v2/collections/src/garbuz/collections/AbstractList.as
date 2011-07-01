@@ -63,32 +63,7 @@ package garbuz.collections
 
 		/*///////////////////////////////////////////////////////////////////////////////////
 		//
-		// protected
-		//
-		///////////////////////////////////////////////////////////////////////////////////*/
-
-		protected function checkInnerBounds(index:int):void
-		{
-			if (index < 0 || index >= length)
-				throw new IndexOutOfBoundsError(index,  length);
-		}
-
-		protected function checkOuterBounds(index:int):void
-		{
-			if (index < 0 || index > length)
-				throw new IndexOutOfBoundsError(index,  length);
-		}
-
-		protected function notImplemented():*
-		{
-			throw new NotImplementedError();
-			//noinspection UnreachableCodeJS
-			return null;
-		}
-
-		/*///////////////////////////////////////////////////////////////////////////////////
-		//
-		// virtual
+		// abstract methods
 		//
 		///////////////////////////////////////////////////////////////////////////////////*/
 
@@ -192,6 +167,31 @@ package garbuz.collections
 		override flash_proxy function callProperty(name:*, ... rest):*
 		{
 		    return notImplemented();
+		}
+
+		/*///////////////////////////////////////////////////////////////////////////////////
+		//
+		// protected
+		//
+		///////////////////////////////////////////////////////////////////////////////////*/
+
+		protected function checkInnerBounds(index:int):void
+		{
+			if (index < 0 || index >= length)
+				throw new IndexOutOfBoundsError(index,  length);
+		}
+
+		protected function checkOuterBounds(index:int):void
+		{
+			if (index < 0 || index > length)
+				throw new IndexOutOfBoundsError(index,  length);
+		}
+
+		protected function notImplemented():*
+		{
+			throw new NotImplementedError();
+			//noinspection UnreachableCodeJS
+			return null;
 		}
 	}
 }
