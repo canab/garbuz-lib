@@ -104,7 +104,7 @@ package garbuz.controls.managers
 			hideTooltip();
 		}
 
-		public function showText(message:String, bundle:MessageBundle = null):void
+		private function showText(message:String, bundle:MessageBundle = null):void
 		{
 			_tooltip.text = bundle
 					? bundle.getLocalizedText(message)
@@ -130,7 +130,7 @@ package garbuz.controls.managers
 			updatePosition();
 		}
 
-		public function hideTooltip():void
+		private function hideTooltip():void
 		{
 			TweenManager.removeTweensOf(_tooltip.content);
 

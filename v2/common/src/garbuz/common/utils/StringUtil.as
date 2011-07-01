@@ -3,6 +3,13 @@
 	public class StringUtil
 	{
 		static public const EMPTY_CHARS:String = ' \t\r\n\f' + String.fromCharCode(160);
+
+		public static function upperFirstChar(source:String):String
+		{
+			return source.length == 0
+					? source
+					: source.substr(0, 1).toUpperCase() + source.substr(1);
+		}
 		
 		static public function replaceChars(source:String, characters:Array, matches:Array):String
 		{
