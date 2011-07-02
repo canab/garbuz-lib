@@ -52,6 +52,11 @@ package garbuz.gui.controls
 			onRemove();
 		}
 
+		ui_internal function processKey(event:KeyboardEvent):void
+		{
+			onKeyPress(event);
+		}
+
 		protected function closeWindow():void
 		{
 			UI.removeWindow(this);

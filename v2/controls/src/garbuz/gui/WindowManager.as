@@ -1,11 +1,12 @@
 package garbuz.gui
 {
 	import flash.display.Sprite;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 
 	import garbuz.common.query.from;
 	import garbuz.common.ui.DragController;
-	import garbuz.common.utils.AlignUtil;
+	import garbuz.common.ui.KeyboardManager;
 	import garbuz.common.utils.ArrayUtil;
 	import garbuz.common.utils.DisplayUtil;
 	import garbuz.gui.controls.DialogBase;
@@ -26,6 +27,19 @@ package garbuz.gui
 		public function WindowManager()
 		{
 			super();
+			initialize();
+		}
+
+		private function initialize():void
+		{
+			KeyboardManager.instance.pressEvent.addListener(onKeyPress);
+		}
+
+		//noinspection JSUnusedLocalSymbols
+		private function onKeyPress(sender:KeyboardManager, event:KeyboardEvent):void
+		{
+			if (_activeWindow)
+				_activeWindow.processKey(event);
 		}
 
 		/*///////////////////////////////////////////////////////////////////////////////////
@@ -119,7 +133,8 @@ package garbuz.gui
 
 		private function alignDialog(dialog:DialogBase):void
 		{
-			AlignUtil.alignCenter(dialog, ui.bounds);
+			dialog.x = 0.5 * (ui.bounds.width - dialog.width);
+			dialog.y = 0.5 * (ui.bounds.height - dialog.height);
 		}
 
 		/*///////////////////////////////////////////////////////////////////////////////////
