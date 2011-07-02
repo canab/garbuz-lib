@@ -1,4 +1,4 @@
-package garbuz.controls
+package garbuz.gui.controls
 {
 	import garbuz.common.events.EventSender;
 	import garbuz.common.utils.ArrayUtil;

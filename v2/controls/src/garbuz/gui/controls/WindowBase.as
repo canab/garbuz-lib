@@ -1,4 +1,4 @@
-package garbuz.controls
+package garbuz.gui.controls
 {
 	import flash.display.Sprite;
 	import flash.events.EventDispatcher;
@@ -6,6 +6,9 @@ package garbuz.controls
 	import garbuz.common.events.EventManager;
 	import garbuz.common.events.EventSender;
 	import garbuz.gui.UI;
+	import garbuz.gui.ui_internal;
+
+	use namespace ui_internal;
 
 	public class WindowBase extends ControlBase
 	{
@@ -17,12 +20,12 @@ package garbuz.controls
 			mouseChildren = true;
 		}
 
-		controls_internal function processAdd():void
+		ui_internal function processAdd():void
 		{
 			onAdd();
 		}
 
-		controls_internal function processRemove():void
+		ui_internal function processRemove():void
 		{
 			if (_events)
 				_events.clearEvents();

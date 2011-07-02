@@ -9,9 +9,9 @@ package garbuz.gui
 	import garbuz.common.errors.AlreadyInitializedError;
 	import garbuz.common.errors.NotInitializedError;
 	import garbuz.common.localization.MessageBundle;
-	import garbuz.controls.ControlBase;
-	import garbuz.controls.WindowBase;
 	import garbuz.controls.interfaces.ITooltip;
+	import garbuz.gui.controls.ControlBase;
+	import garbuz.gui.controls.WindowBase;
 
 	public class UI
 	{

@@ -1,4 +1,4 @@
-package garbuz.controls
+package garbuz.gui.controls
 {
 	import garbuz.common.ui.Anchor;
 	import garbuz.common.utils.ArrayUtil;

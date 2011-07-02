@@ -7,7 +7,7 @@ package garbuz.gui
 
 	import garbuz.common.events.EventManager;
 	import garbuz.common.utils.DisplayUtil;
-	import garbuz.controls.ControlBase;
+	import garbuz.gui.controls.ControlBase;
 
 	internal class PopupManager extends ManagerBase
 	{

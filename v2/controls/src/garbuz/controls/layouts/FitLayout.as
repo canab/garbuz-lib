@@ -1,8 +1,8 @@
 package garbuz.controls.layouts
 {
-	import garbuz.controls.Container;
-	import garbuz.controls.ControlBase;
 	import garbuz.controls.interfaces.ILayout;
+	import garbuz.gui.controls.Container;
+	import garbuz.gui.controls.ControlBase;
 
 	public class FitLayout implements ILayout
 	{

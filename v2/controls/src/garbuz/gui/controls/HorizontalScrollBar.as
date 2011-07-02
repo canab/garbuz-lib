@@ -1,47 +1,45 @@
-﻿package garbuz.controls
+﻿package garbuz.gui.controls
 {
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 
-	public class VerticalScrollBar extends ScrollBar
+	public class HorizontalScrollBar extends ScrollBar
 	{
-
-		public function VerticalScrollBar(content:Sprite)
+		public function HorizontalScrollBar(content:Sprite)
 		{
 			super(content);
 		}
 
 		override protected function applyScrollBounds():void
 		{
-			_dragController.bounds = new Rectangle(0, _minPosition, 0, _distance + buttonSize);
-			_dragController.lockHorizontal = true;
+			_dragController.bounds = new Rectangle(_minPosition, 0, _distance + buttonSize, 0);
+			_dragController.lockVertical = true;
 		}
 
 		override protected function get buttonPosition():int
 		{
-			return _scrollButton.y;
+			return _scrollButton.x;
 		}
 
 		override protected function set buttonPosition(value:int):void
 		{
-			_scrollButton.y = value;
+			_scrollButton.x = value;
 		}
 
 		override protected function get linePosition():int
 		{
-			return _line.y;
+			return _line.x;
 		}
 
 		override protected function get buttonSize():int
 		{
-			return _scrollButton.height;
+			return _scrollButton.width;
 		}
 
 		override protected function get lineSize():int
 		{
-			return _line.height;
+			return _line.width;
 		}
-
 	}
-	
+
 }

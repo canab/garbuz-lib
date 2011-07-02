@@ -6,10 +6,9 @@ package garbuz.gui
 	import garbuz.common.ui.DragController;
 	import garbuz.common.utils.ArrayUtil;
 	import garbuz.common.utils.DisplayUtil;
-	import garbuz.controls.WindowBase;
-	import garbuz.controls.controls_internal;
+	import garbuz.gui.controls.WindowBase;
 
-	use namespace controls_internal;
+	use namespace ui_internal;
 
 	internal class WindowManager extends ManagerBase
 	{

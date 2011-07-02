@@ -1,4 +1,4 @@
-package garbuz.controls
+package garbuz.gui.controls
 {
 	import flash.display.Sprite;
 	import flash.events.Event;

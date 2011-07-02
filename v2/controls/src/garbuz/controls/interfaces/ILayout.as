@@ -1,6 +1,6 @@
 package garbuz.controls.interfaces
 {
-	import garbuz.controls.Container;
+	import garbuz.gui.controls.Container;
 
 	public interface ILayout
 	{
