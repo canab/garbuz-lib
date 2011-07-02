@@ -9,7 +9,7 @@ package garbuz.gui.controls
 
 	import garbuz.common.events.EventSender;
 	import garbuz.common.utils.StringUtil;
-	import garbuz.controls.utils.TextUtil;
+	import garbuz.gui.utils.TextUtil;
 
 	public class SmartInput extends ControlBase
 	{

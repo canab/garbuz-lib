@@ -5,7 +5,7 @@ package garbuz.gui.controls
 	import flash.text.TextField;
 
 	import garbuz.common.localization.MessageBundle;
-	import garbuz.controls.utils.TextUtil;
+	import garbuz.gui.utils.TextUtil;
 
 	public class TextBox extends ControlBase
 	{

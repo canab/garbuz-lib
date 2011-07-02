@@ -1,4 +1,4 @@
-package garbuz.controls.utils
+package garbuz.gui.utils
 {
 	import flash.text.AntiAliasType;
 	import flash.text.GridFitType;

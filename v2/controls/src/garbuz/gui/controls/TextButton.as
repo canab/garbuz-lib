@@ -5,7 +5,7 @@ package garbuz.gui.controls
 
 	import garbuz.common.localization.MessageBundle;
 	import garbuz.common.query.fromDisplay;
-	import garbuz.controls.utils.TextUtil;
+	import garbuz.gui.utils.TextUtil;
 
 	public class TextButton extends PushButton
 	{

@@ -3,7 +3,7 @@ package garbuz.gui.controls
 	import flash.display.Sprite;
 
 	import garbuz.common.localization.MessageBundle;
-	import garbuz.controls.utils.TextUtil;
+	import garbuz.gui.utils.TextUtil;
 
 	public class TipButton extends PushButton
 	{
