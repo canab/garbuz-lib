@@ -78,13 +78,13 @@ package garbuz.gui
 		//
 		///////////////////////////////////////////////////////////////////////////////////*/
 
-		public function showDialog(dialog:DialogBase):void
+		public function showDialog(dialog:DialogBase, x:Number = -1, y:Number = -1):void
 		{
 			dialog.closeEvent.addListener(hideDialog);
 
 			ArrayUtil.addItemSafe(_dialogs, dialog);
 			attachWindow(dialog);
-			alignDialog(dialog);
+			alignDialog(dialog, x, y);
 			createModalFrame();
 			refreshModalFrame();
 
@@ -131,10 +131,10 @@ package garbuz.gui
 			_modalFrame.height = ui.bounds.height;
 		}
 
-		private function alignDialog(dialog:DialogBase):void
+		private function alignDialog(dialog:DialogBase, x:Number, y:Number):void
 		{
-			dialog.x = 0.5 * (ui.bounds.width - dialog.width);
-			dialog.y = 0.5 * (ui.bounds.height - dialog.height);
+			dialog.x = (x >= 0) ? x : 0.5 * (ui.bounds.width - dialog.width);
+			dialog.y = (y >= 0) ? y : 0.5 * (ui.bounds.height - dialog.height);
 		}
 
 		/*///////////////////////////////////////////////////////////////////////////////////
