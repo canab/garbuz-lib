@@ -1,4 +1,4 @@
-package garbuz.controls
+package garbuz.gui
 {
 	public class DefaultStyle
 	{

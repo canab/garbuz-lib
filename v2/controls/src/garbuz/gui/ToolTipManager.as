@@ -1,60 +1,25 @@
-package garbuz.controls.managers
+package garbuz.gui
 {
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.utils.Dictionary;
 
-	import garbuz.common.errors.AlreadyInitializedError;
-	import garbuz.common.errors.NotInitializedError;
 	import garbuz.common.localization.MessageBundle;
 	import garbuz.common.utils.DisplayUtil;
 	import garbuz.controls.interfaces.ITooltip;
 	import garbuz.motion.TweenManager;
 	import garbuz.motion.tween;
 
-	public class ToolTipManager
+	internal class ToolTipManager extends ManagerBase
 	{
 		private static const SHOW_DURATION:int = 100;
 		private static const SHOW_DELAY:int = 400;
 
-		private static var _instance:ToolTipManager;
-
-		public static function get instance():ToolTipManager
-		{
-			if (!_instance)
-				throw new NotInitializedError();
-
-			return _instance;
-		}
-
-		public static function initialize(tooltip:ITooltip):void
-		{
-			if (_instance)
-				throw new AlreadyInitializedError();
-
-			_instance = new ToolTipManager(new PrivateConstructor());
-			_instance.initialize(tooltip);
-		}
-
-		/*///////////////////////////////////////////////////////////////////////////////////
-		//
-		// instance
-		//
-		///////////////////////////////////////////////////////////////////////////////////*/
-
-		private var _tooltip:ITooltip;
 		private var _targets:Dictionary = new Dictionary(true);
-		private var _uiManager:UIManager = UIManager.instance;
 
-		//noinspection JSUnusedLocalSymbols
-		public function ToolTipManager(param:PrivateConstructor)
+		public function ToolTipManager()
 		{
-		}
-
-		private function initialize(tooltip:ITooltip):void
-		{
-			_tooltip = tooltip;
 		}
 
 		public function registerObject(target:DisplayObject, message:String, bundle:MessageBundle = null):void
@@ -106,11 +71,11 @@ package garbuz.controls.managers
 
 		private function showText(message:String, bundle:MessageBundle = null):void
 		{
-			_tooltip.text = bundle
+			tooltip.text = bundle
 					? bundle.getLocalizedText(message)
 					: message;
 
-			if (!_tooltip.content.parent)
+			if (!tooltip.content.parent)
 				showTooltip();
 
 			updatePosition();
@@ -118,12 +83,12 @@ package garbuz.controls.managers
 
 		private function showTooltip():void
 		{
-			_uiManager.root.addChild(_tooltip.content);
-			_uiManager.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+			ui.root.addChild(tooltip.content);
+			ui.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 
-			_tooltip.content.alpha = 0;
+			tooltip.content.alpha = 0;
 
-			tween(_tooltip.content, SHOW_DELAY)
+			tween(tooltip.content, SHOW_DELAY)
 				.tween(SHOW_DURATION)
 				.to({alpha: 1});
 
@@ -132,12 +97,12 @@ package garbuz.controls.managers
 
 		private function hideTooltip():void
 		{
-			TweenManager.removeTweensOf(_tooltip.content);
+			TweenManager.removeTweensOf(tooltip.content);
 
-			if (_tooltip.content.parent)
+			if (tooltip.content.parent)
 			{
-				_uiManager.root.removeChild(_tooltip.content);
-				_uiManager.stage.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+				ui.root.removeChild(tooltip.content);
+				ui.stage.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 			}
 		}
 
@@ -149,16 +114,25 @@ package garbuz.controls.managers
 
 		private function updatePosition():void
 		{
-			_tooltip.content.x = _uiManager.root.mouseX;
-			_tooltip.content.y = _uiManager.root.mouseY;
+			tooltip.content.x = ui.root.mouseX;
+			tooltip.content.y = ui.root.mouseY;
 
-			DisplayUtil.claimBounds(_tooltip.content, _uiManager.bounds);
+			DisplayUtil.claimBounds(tooltip.content, ui.bounds);
 		}
 
 		public function get initialized():Boolean
 		{
-			return Boolean(_tooltip);
+			return Boolean(tooltip);
 		}
+
+		public function get tooltip():ITooltip
+		{
+			if (!ui.tooltipRenderer)
+				throw new Error("UI.tooltipRenderer has not been set.");
+			
+			return ui.tooltipRenderer;
+		}
+
 
 	}
 }
@@ -176,5 +150,3 @@ internal class TargetData
 		this.bundle = bundle;
 	}
 }
-
-internal class PrivateConstructor {}

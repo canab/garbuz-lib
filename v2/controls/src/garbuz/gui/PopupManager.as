@@ -1,4 +1,4 @@
-package garbuz.controls.managers
+package garbuz.gui
 {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -9,33 +9,15 @@ package garbuz.controls.managers
 	import garbuz.common.utils.DisplayUtil;
 	import garbuz.controls.ControlBase;
 
-	public class PopupManager
+	internal class PopupManager extends ManagerBase
 	{
 		private static const AUTO_HIDE_DISTANCE:int = 40;
 
-		private static var _instance:PopupManager;
-		
-		public static function get instance():PopupManager
-		{
-			if (!_instance)
-				_instance = new PopupManager(new PrivateConstructor());
-
-			return _instance;
-		}
-
-		/*///////////////////////////////////////////////////////////////////////////////////
-		//
-		// instance
-		//
-		///////////////////////////////////////////////////////////////////////////////////*/
-
 		private var _currentControl:ControlBase;
 		private var _relatedControl:ControlBase;
-		private var _uiManager:UIManager = UIManager.instance;
 		private var _events:EventManager = new EventManager();
 
-		//noinspection JSUnusedLocalSymbols
-		public function PopupManager(singleton:PrivateConstructor)
+		public function PopupManager()
 		{
 		}
 
@@ -53,15 +35,16 @@ package garbuz.controls.managers
 
 		private function showControl():void
 		{
-			DisplayUtil.claimBounds(_currentControl, _uiManager.bounds);
+			DisplayUtil.claimBounds(_currentControl, ui.bounds);
 
-			_uiManager.root.addChild(_currentControl);
+			ui.root.addChild(_currentControl);
 
-			_events.registerNativeEvent(_uiManager.root, Event.DEACTIVATE, hideControl);
-			_events.registerNativeEvent(_uiManager.root, Event.ENTER_FRAME, onEnterFrame);
+			_events.registerNativeEvent(ui.root, Event.DEACTIVATE, hideControl);
+			_events.registerNativeEvent(ui.root, Event.ENTER_FRAME, onEnterFrame);
+			_events.registerNativeEvent(ui.stage, MouseEvent.MOUSE_DOWN, onMouseDown);
+
 			_events.registerNativeEvent(_relatedControl, Event.REMOVED_FROM_STAGE, hideControl);
 			_events.registerNativeEvent(_currentControl, Event.REMOVED_FROM_STAGE, onRemoved);
-			_events.registerNativeEvent(_uiManager.stage, MouseEvent.MOUSE_DOWN, onMouseDown);
 		}
 
 		private function onEnterFrame(event:Event):void
@@ -105,5 +88,3 @@ package garbuz.controls.managers
 		}
 	}
 }
-
-internal class PrivateConstructor {}

@@ -1,4 +1,4 @@
-package garbuz.controls.managers
+package garbuz.gui
 {
 	import flash.events.MouseEvent;
 
@@ -11,29 +11,11 @@ package garbuz.controls.managers
 
 	use namespace controls_internal;
 
-	public class WindowManager
+	internal class WindowManager extends ManagerBase
 	{
-		private static var _instance:WindowManager;
-
-		public static function get instance():WindowManager
-		{
-			if (!_instance)
-				_instance = new WindowManager(new PrivateConstructor());
-
-			return _instance;
-		}
-
-		/*///////////////////////////////////////////////////////////////////////////////////
-		 //
-		 // instance
-		 //
-		 ///////////////////////////////////////////////////////////////////////////////////*/
-
 		private var _windows:Vector.<WindowBase> = new <WindowBase>[];
-		private var _uiManager:UIManager = UIManager.instance;
 
-		//noinspection JSUnusedLocalSymbols
-		public function WindowManager(param:PrivateConstructor)
+		public function WindowManager()
 		{
 			super();
 		}
@@ -41,8 +23,8 @@ package garbuz.controls.managers
 		public function addWindow(window:WindowBase):void
 		{
 			ArrayUtil.addItemSafe(_windows, window);
-			_uiManager.root.addChild(window);
-			new DragController(window, window.hitArea).bounds = _uiManager.bounds;
+			ui.root.addChild(window);
+			new DragController(window, window.hitArea).bounds = ui.bounds;
 			window.addEventListener(MouseEvent.MOUSE_DOWN, onWindowMouseDown);
 			window.processAdd();
 		}
@@ -56,7 +38,7 @@ package garbuz.controls.managers
 		{
 			ArrayUtil.removeItemSafe(_windows, window);
 			window.processRemove();
-			_uiManager.root.removeChild(window);
+			ui.root.removeChild(window);
 		}
 
 		public function removeAllWindows():void
@@ -83,8 +65,4 @@ package garbuz.controls.managers
 			DisplayUtil.bringToFront(window);
 		}
 	}
-}
-
-internal class PrivateConstructor
-{
 }

@@ -7,7 +7,7 @@ package garbuz.controls
 	import garbuz.common.events.EventManager;
 	import garbuz.common.events.EventSender;
 	import garbuz.common.utils.DisplayUtil;
-	import garbuz.controls.managers.UIManager;
+	import garbuz.gui.UI;
 
 	public class ColorPalette extends ControlBase
 	{
@@ -44,7 +44,7 @@ package garbuz.controls
 		{
 			_events.registerNativeEvent(_colorSprite, Event.ENTER_FRAME, onEnterFrame);
 			_events.registerNativeEvent(_colorSprite, Event.DEACTIVATE, removeListeners);
-			_events.registerNativeEvent(UIManager.instance.stage, MouseEvent.MOUSE_UP, finishSelecting);
+			_events.registerNativeEvent(UI.stage, MouseEvent.MOUSE_UP, finishSelecting);
 		}
 
 		private function removeListeners(event:Event = null):void

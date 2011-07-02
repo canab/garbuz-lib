@@ -7,7 +7,7 @@ package garbuz.controls
 	import garbuz.common.events.EventSender;
 	import garbuz.common.utils.ColorUtil;
 	import garbuz.common.utils.DisplayUtil;
-	import garbuz.controls.managers.PopupManager;
+	import garbuz.gui.UI;
 
 	public class ColorPicker extends ControlBase
 	{
@@ -53,7 +53,7 @@ package garbuz.controls
 			_palette.x = x;
 			_palette.y = y + _button.height + 4;
 
-			PopupManager.instance.showPopup(_palette, _button);
+			UI.showPopup(_palette, _button);
 		}
 
 		private function onColorSelect():void

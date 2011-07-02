@@ -8,16 +8,51 @@ package garbuz.controls
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
 
-	import garbuz.common.display.StageReference;
 	import garbuz.common.localization.MessageBundle;
 	import garbuz.common.utils.AlignUtil;
 	import garbuz.common.utils.DisplayUtil;
-	import garbuz.controls.managers.ToolTipManager;
+	import garbuz.gui.UI;
 
 	public class ControlBase extends Sprite
 	{
 		public static var defaultBundle:MessageBundle;
 		public static var loaderViewClass:Class;
+
+		private static var _validateList:Array = [];
+		private static var _isRenderPhase:Boolean =  false;
+
+		private static function addToValidateList(control:ControlBase):void
+		{
+			if (_validateList.length == 0)
+			{
+				UI.stage.addEventListener(Event.RENDER, validateControls);
+				UI.stage.invalidate();
+			}
+
+			_validateList.push(control);
+		}
+
+		private static function validateControls(event:Event):void
+		{
+			UI.stage.removeEventListener(Event.RENDER, validateControls);
+
+			_isRenderPhase = true;
+
+			for each (var control:ControlBase in _validateList)
+			{
+				control.validate();
+			}
+
+			_isRenderPhase = false;
+			_validateList = [];
+		}
+
+
+		/*///////////////////////////////////////////////////////////////////////////////////
+		//
+		// instance
+		//
+		///////////////////////////////////////////////////////////////////////////////////*/
 
 		protected var _width:Number = -1;
 		protected var _height:Number = -1;
@@ -40,10 +75,21 @@ package garbuz.controls
 			mouseChildren = false;
 		}
 
+		public function move(x:Number, y:Number):void
+		{
+			_x = x;
+			_y = y;
+
+			super.x = int(_x);
+			super.y = int(_y);
+		}
+
 		public function setSize(width:Number, height:Number):void
 		{
-			this.width = width;
-			this.height = height;
+			_width = width;
+			_height = height;
+
+			invalidate();
 		}
 
 		public function wrapContent(target:DisplayObjectContainer):void
@@ -87,12 +133,6 @@ package garbuz.controls
 		protected function applyEnabled():void
 		{
 			alpha = _enabled ? 1.0 : _disabledAlpha;
-		}
-
-		public function move(x:Number, y:Number):void
-		{
-			this.x = x;
-			this.y = y;
 		}
 
 		public function setPlacement(source:Sprite):void
@@ -192,10 +232,7 @@ package garbuz.controls
 		override public function set width(value:Number):void
 		{
 			if (_width != value)
-			{
-				_width = value;
-				invalidate();
-			}
+				setSize(value, height);
 		}
 
 		override public function get height():Number
@@ -206,10 +243,7 @@ package garbuz.controls
 		override public function set height(value:Number):void
 		{
 			if (_height != value)
-			{
-				_height = value;
-				invalidate();
-			}
+				setSize(width, value);
 		}
 
 		override public function get x():Number
@@ -219,8 +253,7 @@ package garbuz.controls
 
 		override public function set x(value:Number):void
 		{
-			_x = value;
-			super.x = int(value);
+			move(value,  y);
 		}
 
 		override public function get y():Number
@@ -230,8 +263,7 @@ package garbuz.controls
 
 		override public function set y(value:Number):void
 		{
-			_y = value;
-			super.y = int(value);
+			move(x, value);
 		}
 
 		public function get bundle():MessageBundle
@@ -295,9 +327,9 @@ package garbuz.controls
 				_tooltip = value;
 
 				if (_tooltip)
-					ToolTipManager.instance.registerObject(this, _tooltip, bundle);
+					UI.registerTooltip(this, _tooltip, bundle);
 				else
-					ToolTipManager.instance.unregisterObject(this);
+					UI.unregisterTooltip(this);
 			}
 		}
 
@@ -318,14 +350,12 @@ package garbuz.controls
 			if (!_invalidated)
 			{
 				_invalidated = true;
-				StageReference.stage.addEventListener(Event.RENDER, onStageRender, false, 0, true);
-				StageReference.stage.invalidate();
-			}
-		}
 
-		private function onStageRender(e:Event):void
-		{
-			validate();
+				if (_isRenderPhase)
+					validate();
+				else
+					addToValidateList(this);
+			}
 		}
 
 		public function validate():void
@@ -333,7 +363,6 @@ package garbuz.controls
 			if (_invalidated)
 			{
 				_invalidated = false;
-				StageReference.stage.removeEventListener(Event.RENDER, onStageRender, false);
 				applyLayout();
 			}
 		}

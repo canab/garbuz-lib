@@ -5,7 +5,7 @@ package garbuz.controls
 
 	import garbuz.common.events.EventManager;
 	import garbuz.common.events.EventSender;
-	import garbuz.controls.managers.WindowManager;
+	import garbuz.gui.UI;
 
 	public class WindowBase extends ControlBase
 	{
@@ -32,7 +32,7 @@ package garbuz.controls
 
 		protected function closeWindow():void
 		{
-			WindowManager.instance.removeWindow(this);
+			UI.removeWindow(this);
 		}
 
 		/*///////////////////////////////////////////////////////////////////////////////////
@@ -76,11 +76,6 @@ package garbuz.controls
 		// get/set
 		//
 		///////////////////////////////////////////////////////////////////////////////////*/
-
-		protected static function get windowManager():WindowManager
-		{
-			return WindowManager.instance;
-		}
 
 		private function get events():EventManager
 		{
