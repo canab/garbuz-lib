@@ -8,8 +8,8 @@ package garbuz.gui.controls
 	import garbuz.common.utils.ArrayUtil;
 	import garbuz.common.utils.DisplayUtil;
 	import garbuz.common.utils.MathUtil;
-	import garbuz.controls.interfaces.IClickable;
-	import garbuz.controls.layouts.VerticalLayout;
+	import garbuz.gui.interfaces.IClickable;
+	import garbuz.gui.layouts.VerticalLayout;
 
 	public class ListBox extends ControlBase
 	{

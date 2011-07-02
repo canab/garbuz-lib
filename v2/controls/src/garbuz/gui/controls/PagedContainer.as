@@ -4,9 +4,9 @@ package garbuz.gui.controls
 
 	import garbuz.common.events.EventSender;
 	import garbuz.common.utils.DisplayUtil;
-	import garbuz.controls.interfaces.IClickable;
-	import garbuz.controls.interfaces.ILayout;
-	import garbuz.controls.layouts.GridLayout;
+	import garbuz.gui.interfaces.IClickable;
+	import garbuz.gui.interfaces.ILayout;
+	import garbuz.gui.layouts.GridLayout;
 	import garbuz.motion.easing.Linear;
 	import garbuz.motion.tween;
 

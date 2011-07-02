@@ -1,4 +1,4 @@
-package garbuz.controls.interfaces
+package garbuz.gui.interfaces
 {
 	import flash.display.DisplayObject;
 

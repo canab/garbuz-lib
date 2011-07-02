@@ -2,7 +2,7 @@ package garbuz.gui.controls
 {
 	import garbuz.common.ui.Anchor;
 	import garbuz.common.utils.ArrayUtil;
-	import garbuz.controls.interfaces.ILayout;
+	import garbuz.gui.interfaces.ILayout;
 
 	public class Container extends ControlBase
 	{

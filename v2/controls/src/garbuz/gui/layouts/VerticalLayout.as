@@ -1,8 +1,8 @@
-package garbuz.controls.layouts
+package garbuz.gui.layouts
 {
-	import garbuz.controls.interfaces.ILayout;
 	import garbuz.gui.controls.Container;
 	import garbuz.gui.controls.ControlBase;
+	import garbuz.gui.interfaces.ILayout;
 
 	public class VerticalLayout implements ILayout
 	{

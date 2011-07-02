@@ -7,7 +7,7 @@ package garbuz.gui
 
 	import garbuz.common.localization.MessageBundle;
 	import garbuz.common.utils.DisplayUtil;
-	import garbuz.controls.interfaces.ITooltip;
+	import garbuz.gui.interfaces.ITooltip;
 	import garbuz.motion.TweenManager;
 	import garbuz.motion.tween;
 

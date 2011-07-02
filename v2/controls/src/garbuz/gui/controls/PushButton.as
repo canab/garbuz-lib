@@ -9,7 +9,7 @@ package garbuz.gui.controls
 	import garbuz.common.localization.MessageBundle;
 	import garbuz.common.query.fromDisplay;
 	import garbuz.common.utils.DisplayUtil;
-	import garbuz.controls.interfaces.IClickable;
+	import garbuz.gui.interfaces.IClickable;
 
 	public class PushButton extends ControlBase implements IClickable
 	{
