@@ -145,6 +145,17 @@ package garbuz.common.utils
 			}
 			return result;
 		}
+
+		public static function toObject(collection:Object, keyField:String):Object
+		{
+			var result:Object = {};
+			for each (var item:Object in collection)
+			{
+				result[item[keyField]] = item;
+			}
+			return result;
+		}
+
 	}
 
 }
