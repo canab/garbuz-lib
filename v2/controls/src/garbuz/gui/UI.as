@@ -10,6 +10,7 @@ package garbuz.gui
 	import garbuz.common.errors.NotInitializedError;
 	import garbuz.common.localization.MessageBundle;
 	import garbuz.gui.controls.ControlBase;
+	import garbuz.gui.controls.DialogBase;
 	import garbuz.gui.controls.WindowBase;
 	import garbuz.gui.interfaces.ITooltip;
 
@@ -89,6 +90,26 @@ package garbuz.gui
 		public static function set tooltipRenderer(value:ITooltip):void
 		{
 			instance.tooltipRenderer = value;
+		}
+
+		public static function changeScreen(screen:WindowBase):void
+		{
+			instance.windowManager.changeScreen(screen);
+		}
+
+		public static function removeScreen():void
+		{
+			instance.windowManager.removeScreen();
+		}
+
+		public static function showDialog(dialog:DialogBase):void
+		{
+			instance.windowManager.showDialog(dialog);
+		}
+
+		public static function hideDialog(dialog:DialogBase = null):void
+		{
+			instance.windowManager.hideDialog(dialog);
 		}
 
 		internal static function get instance():UI

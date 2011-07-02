@@ -2,6 +2,8 @@ package garbuz.gui.controls
 {
 	import flash.display.Sprite;
 	import flash.events.EventDispatcher;
+	import flash.events.KeyboardEvent;
+	import flash.utils.getQualifiedClassName;
 
 	import garbuz.common.events.EventManager;
 	import garbuz.common.events.EventSender;
@@ -13,11 +15,28 @@ package garbuz.gui.controls
 	public class WindowBase extends ControlBase
 	{
 		private var _events:EventManager;
+		private var _wasActivated:Boolean = false;
 
-		public function WindowBase(name:String)
+		public function WindowBase(name:String = null)
 		{
-			this.name = name;
+			this.name = name || getQualifiedClassName(this);
 			mouseChildren = true;
+		}
+
+		ui_internal function activate():void
+		{
+			onActivate();
+
+			if (!_wasActivated)
+			{
+				_wasActivated = true;
+				onFirstActivate();
+			}
+		}
+
+		ui_internal function deactivate():void
+		{
+			onDeactivate();
 		}
 
 		ui_internal function processAdd():void
@@ -71,6 +90,14 @@ package garbuz.gui.controls
 		///////////////////////////////////////////////////////////////////////////////////*/
 
 		protected virtual function onAdd():void {}
+
+		protected virtual function onActivate():void {}
+
+		protected virtual function onFirstActivate():void {}
+
+		protected virtual function onKeyPress(e:KeyboardEvent):void {}
+
+		protected virtual function onDeactivate():void {}
 
 		protected virtual function onRemove():void {}
 

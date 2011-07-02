@@ -218,6 +218,12 @@ package garbuz.gui.controls
 			_bundle.changeEvent.removeListener(applyLocalization);
 		}
 
+		protected function handle(func:Function):void
+		{
+			if (func != null)
+				func();
+		}
+
 		/*///////////////////////////////////////////////////////////////////////////////////
 		//
 		// get/set
