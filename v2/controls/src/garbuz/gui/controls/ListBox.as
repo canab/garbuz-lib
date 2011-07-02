@@ -34,6 +34,7 @@ package garbuz.gui.controls
 		private var _innerContainer:Container;
 		private var _scrollBar:ScrollBar;
 		private var _spacerRenderer:Class;
+		private var _pagePosition:int;
 
 		public function ListBox(content:Sprite, itemRenderer:Class, spacerRenderer:Class = null)
 		{
@@ -83,7 +84,6 @@ package garbuz.gui.controls
 		private function rebuildList():void
 		{
 			_innerContainer.removeAllControls();
-			_innerContainer.y = 0;
 
 			var renderer:ControlBase = null;
 
@@ -100,34 +100,63 @@ package garbuz.gui.controls
 
 				_innerContainer.addControl(renderer);
 			}
+
+			invalidate();
 		}
 
 		private function onScroll():void
 		{
-			_innerContainer.y = maxY - _scrollBar.position * (maxY - minY);
+			_pagePosition = maxY - _scrollBar.position * (maxY - minY);
+			updatePagePosition();
 			updateVisibility();
 		}
 
 		private function onMouseWheel(event:MouseEvent):void
 		{
-			movePage(event.delta * 10);
+			movePage(_pagePosition + event.delta * 10);
 		}
 
 		private function onPrevClick():void
 		{
-			movePage(0.9 * _pageHeight);
+			movePage(_pagePosition + 0.9 * _pageHeight);
 		}
 
 		private function onNextClick():void
 		{
-			movePage(-0.9 * _pageHeight);
+			movePage(_pagePosition -0.9 * _pageHeight);
 		}
 
-		private function movePage(distance:int):void
+		private function movePage(position:int):void
 		{
-			_innerContainer.y = MathUtil.claimRange(_innerContainer.y + distance, minY,	maxY);
-			updateVisibility();
+			_pagePosition = position;
+			invalidate();
+		}
+
+		private function onItemClick(sender:ControlBase):void
+		{
+			_currentItem = sender.data;
+			_currentRenderer = sender;
+			_itemClickEvent.dispatch();
+		}
+
+		public function removeItem(item:Object):void
+		{
+			ArrayUtil.removeItemSafe(_items, item);
+			rebuildList();
+		}
+
+		override public function applyLayout():void
+		{
+			super.applyLayout();
+			updatePagePosition();
 			updateScrollBar();
+			updateVisibility();
+		}
+
+		private function updatePagePosition():void
+		{
+			_pagePosition = MathUtil.claimRange(_pagePosition, minY, maxY);
+			_innerContainer.y = _pagePosition;
 		}
 
 		private function updateScrollBar():void
@@ -144,6 +173,12 @@ package garbuz.gui.controls
 			}
 		}
 
+		/*///////////////////////////////////////////////////////////////////////////////////
+		//
+		// get/set
+		//
+		///////////////////////////////////////////////////////////////////////////////////*/
+
 		private function get minY():int
 		{
 			return Math.min(0.9 * _pageHeight - _innerContainer.height, 0);
@@ -154,33 +189,10 @@ package garbuz.gui.controls
 			return 0;
 		}
 
-		private function onItemClick(sender:ControlBase):void
-		{
-			_currentItem = sender.data;
-			_currentRenderer = sender;
-
-			_itemClickEvent.dispatch();
-		}
-
-		public function removeItem(item:Object):void
-		{
-			ArrayUtil.removeItemSafe(_items, item);
-			_innerContainer.removeControl(getRenderer(item));
-			_innerContainer.y = MathUtil.claimRange(_innerContainer.y, minY, maxY);
-			updateVisibility();
-			updateScrollBar();
-		}
-
 		public function getRenderer(item:Object):ControlBase
 		{
 			return ControlBase(from(_innerContainer.controls).byProperty("data", item).findFirst());
 		}
-
-		/*///////////////////////////////////////////////////////////////////////////////////
-		//
-		// get/set
-		//
-		///////////////////////////////////////////////////////////////////////////////////*/
 
 		public function get items():Object
 		{
@@ -192,6 +204,7 @@ package garbuz.gui.controls
 			_items = value.slice();
 			checkDebugOption();
 			rebuildList();
+			movePage(0);
 		}
 
 		private function checkDebugOption():void
