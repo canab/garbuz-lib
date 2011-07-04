@@ -23,7 +23,7 @@ package garbuz.engine.components
 				return direction;
 		}
 		
-		private var _value:int = 0;
+		private var _value:int = DOWN;
 		
 		public function Direction8(newValue:int = DOWN) 
 		{
