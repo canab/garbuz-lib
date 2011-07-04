@@ -106,7 +106,7 @@ package garbuz.gui.controls
 
 		private function onScroll():void
 		{
-			_pagePosition = maxY - _scrollBar.position * (maxY - minY);
+			_pagePosition = maxY - _scrollBar.scrollPosition * (maxY - minY);
 			updatePagePosition();
 			updateVisibility();
 		}
@@ -161,7 +161,7 @@ package garbuz.gui.controls
 
 		private function updateScrollBar():void
 		{
-			_scrollBar.position = (maxY == minY) ? 0: (maxY - _innerContainer.y) / (maxY - minY);
+			_scrollBar.scrollPosition = (maxY == minY) ? 0: (maxY - _innerContainer.y) / (maxY - minY);
 			_scrollBar.enabled = _innerContainer.height > _pageHeight;
 		}
 

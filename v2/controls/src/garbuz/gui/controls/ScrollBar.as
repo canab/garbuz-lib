@@ -20,7 +20,7 @@ package garbuz.gui.controls
 		protected var _line:Sprite;
 		protected var _scrollButton:Sprite;
 		protected var _dragController:DragController;
-		protected var _position:Number = 0;
+		protected var _scrollPosition:Number = 0;
 		protected var _minPosition:int;
 		protected var _distance:int;
 
@@ -86,10 +86,10 @@ package garbuz.gui.controls
 
 		private function refinePosition():void
 		{
-			if (_position > 0.99)
-				_position = 1.0;
-			else if (_position < 0.01)
-				_position = 0.0;
+			if (_scrollPosition > 0.99)
+				_scrollPosition = 1.0;
+			else if (_scrollPosition < 0.01)
+				_scrollPosition = 0.0;
 		}
 
 		override protected function applyEnabled():void
@@ -101,12 +101,12 @@ package garbuz.gui.controls
 
 		private function updatePosition():void
 		{
-			_position = (buttonPosition - _minPosition) / _distance;
+			_scrollPosition = (buttonPosition - _minPosition) / _distance;
 		}
 
 		private function updateButton():void
 		{
-			buttonPosition = _minPosition + _position * _distance;
+			buttonPosition = _minPosition + _scrollPosition * _distance;
 		}
 
 		/*///////////////////////////////////////////////////////////////////////////////////
@@ -149,14 +149,14 @@ package garbuz.gui.controls
 		 //
 		 ///////////////////////////////////////////////////////////////////////////////////*/
 
-		public function get position():Number
+		public function get scrollPosition():Number
 		{
-			return _position;
+			return _scrollPosition;
 		}
 
-		public function set position(value:Number):void
+		public function set scrollPosition(value:Number):void
 		{
-			_position = MathUtil.claimRange(value, 0, 1);
+			_scrollPosition = MathUtil.claimRange(value, 0, 1);
 			updateButton();
 		}
 

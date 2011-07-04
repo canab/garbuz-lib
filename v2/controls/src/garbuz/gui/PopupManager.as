@@ -11,7 +11,7 @@ package garbuz.gui
 
 	internal class PopupManager extends ManagerBase
 	{
-		private static const AUTO_HIDE_DISTANCE:int = 40;
+		private static const AUTO_HIDE_DISTANCE:int = 50;
 
 		private var _currentControl:ControlBase;
 		private var _relatedControl:ControlBase;
@@ -57,7 +57,7 @@ package garbuz.gui
 
 			var mousePos:Point = new Point(_currentControl.mouseX,  _currentControl.mouseY);
 
-			if (!bounds.containsPoint(mousePos))
+			if (!bounds.containsPoint(mousePos) && !hitControl(_relatedControl))
 				hideControl();
 		}
 

@@ -5,6 +5,7 @@ package garbuz.gui.controls
 	import flash.display.InteractiveObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
 
@@ -371,6 +372,16 @@ package garbuz.gui.controls
 				_invalidated = false;
 				applyLayout();
 			}
+		}
+
+		public function get position():Point
+		{
+			return new Point(x, y);
+		}
+
+		public function set position(value:Point):void
+		{
+			move(value.x,  value.y);
 		}
 	}
 }
