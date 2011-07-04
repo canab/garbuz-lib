@@ -56,7 +56,7 @@ package garbuz.engine.components
 				
 				var distance:Number = Math.sqrt(dx * dx + dy * dy);
 				
-				targetDirection.setFromCoords(dx, dy);
+				targetDirection.value = Direction8.calculateFromCoords(dx, dy);
 				
 				_counter = Math.ceil(distance/speed);
 				
