@@ -1,6 +1,8 @@
 package garbuz.engine.components 
 {
-	public class Direction8 extends DataComponent
+	import garbuz.engine.core.Component;
+
+	public class Direction8 extends Component
 	{
 		public static const UP:int         = 0;
 		public static const RIGHT_UP:int   = 1;
@@ -25,7 +27,6 @@ package garbuz.engine.components
 
 		public static function calculateFromCoords(xDiff:Number, yDiff:Number):int
 		{
-			//noinspection JSSuspiciousNameCombinationInspection
 			var angle:Number = (Math.atan2(yDiff, xDiff)) / Math.PI * 180 + 90;
 
 			if (angle < 0)
@@ -34,23 +35,18 @@ package garbuz.engine.components
 			return Math.round(angle / 45.0) % 8;
 		}
 
-		private var _value:int = DOWN;
+		/*///////////////////////////////////////////////////////////////////////////////////
+		//
+		// instance
+		//
+		///////////////////////////////////////////////////////////////////////////////////*/
+
+		public var value:int = DOWN;
 
 		public function Direction8(newValue:int = DOWN)
 		{
-			_value = newValue;
+			this.value = newValue;
 		}
-
-		public function get value():int { return _value; }
-		public function set value(newValue:int):void 
-		{
-			if (_value != newValue)
-			{
-				_value = newValue;
-				changeEvent.dispatch();
-			}
-		}
-		
 	}
 
 }

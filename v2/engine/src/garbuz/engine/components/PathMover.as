@@ -14,7 +14,8 @@ package garbuz.engine.components
 		private var _path:Vector.<Point>;
 		private var _completeEvent:EventSender = new EventSender(this);
 		private var _startEvent:EventSender = new EventSender(this);
-		
+		private var _directionChangeEvent:EventSender = new EventSender(this);
+
 		private var _counter:int;
 		private var _dx:Number;
 		private var _dy:Number;
@@ -56,15 +57,20 @@ package garbuz.engine.components
 				
 				var distance:Number = Math.sqrt(dx * dx + dy * dy);
 				
-				targetDirection.value = Direction8.calculateFromCoords(dx, dy);
-				
+				var newDirection:int = Direction8.calculateFromCoords(dx, dy);
+				if (targetDirection.value != newDirection)
+				{
+					targetDirection.value = newDirection;
+					_directionChangeEvent.dispatch();
+				}
+
 				_counter = Math.ceil(distance/speed);
 				
 				_dx = dx/_counter;
 				_dy = dy/_counter;
 			}
 		}
-		
+
 		public function stop():void
 		{
 			if (_executed)
@@ -91,6 +97,11 @@ package garbuz.engine.components
 		public function get executed():Boolean { return _executed; }
 		
 		public function get startEvent():EventSender { return _startEvent; }
+
+		public function get directionChangeEvent():EventSender
+		{
+			return _directionChangeEvent;
+		}
 	}
 
 }
