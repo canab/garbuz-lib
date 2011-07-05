@@ -39,7 +39,9 @@ package garbuz.common.utils
 			var matrix:Matrix = new Matrix();
 			matrix.translate(-bounds.left, -bounds.top);
 
-			var bitmapData:BitmapData = new BitmapData(bounds.width, bounds.height, transparent, 0x00000000);
+			var fillColor:int = transparent ? 0x00000000 : 0xFF0000;
+
+			var bitmapData:BitmapData = new BitmapData(bounds.width, bounds.height, transparent, fillColor);
 			bitmapData.draw(content, matrix, null, null, null, true);
 			return bitmapData;
 		}
