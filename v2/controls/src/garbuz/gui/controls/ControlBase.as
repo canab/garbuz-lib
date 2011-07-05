@@ -22,7 +22,7 @@ package garbuz.gui.controls
 		private static var _validateList:Array = [];
 		private static var _isRenderPhase:Boolean =  false;
 
-		private static function addToValidateList(control:ControlBase):void
+		private static function addToValidationList(control:ControlBase):void
 		{
 			if (_validateList.length == 0)
 			{
@@ -361,7 +361,7 @@ package garbuz.gui.controls
 				if (_isRenderPhase)
 					validate();
 				else
-					addToValidateList(this);
+					addToValidationList(this);
 			}
 		}
 
