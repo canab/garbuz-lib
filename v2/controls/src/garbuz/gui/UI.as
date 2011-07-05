@@ -3,6 +3,7 @@ package garbuz.gui
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.display.Stage;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
 	import garbuz.common.display.StageReference;
@@ -45,6 +46,16 @@ package garbuz.gui
 		public static function removeAllWindows():void
 		{
 			instance.windowManager.removeAllWindows();
+		}
+
+		public static function hideAllWindows():void
+		{
+			instance.windowManager.hideAllWindows();
+		}
+
+		public static function showAllWindows():void
+		{
+			instance.windowManager.showAllWindows();
 		}
 
 		public static function getWindow(windowName:String):WindowBase
@@ -102,9 +113,9 @@ package garbuz.gui
 			instance.windowManager.removeScreen();
 		}
 
-		public static function showDialog(dialog:DialogBase, x:Number = -1, y:Number = -1):void
+		public static function showDialog(dialog:DialogBase, position:Point):void
 		{
-			instance.windowManager.showDialog(dialog, x,  y);
+			instance.windowManager.showDialog(dialog, position);
 		}
 
 		public static function hideDialog(dialog:DialogBase = null):void

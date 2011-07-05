@@ -3,6 +3,7 @@ package garbuz.gui
 	import flash.display.Sprite;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 
 	import garbuz.common.query.from;
 	import garbuz.common.ui.DragController;
@@ -78,13 +79,13 @@ package garbuz.gui
 		//
 		///////////////////////////////////////////////////////////////////////////////////*/
 
-		public function showDialog(dialog:DialogBase, x:Number = -1, y:Number = -1):void
+		public function showDialog(dialog:DialogBase, position:Point = null):void
 		{
 			dialog.closeEvent.addListener(hideDialog);
+			dialog.position = position || getDialogPosition(dialog);
 
 			ArrayUtil.addItemSafe(_dialogs, dialog);
 			attachWindow(dialog);
-			alignDialog(dialog, x, y);
 			createModalFrame();
 			refreshModalFrame();
 
@@ -131,10 +132,11 @@ package garbuz.gui
 			_modalFrame.height = ui.bounds.height;
 		}
 
-		private function alignDialog(dialog:DialogBase, x:Number, y:Number):void
+		private function getDialogPosition(dialog:DialogBase):Point
 		{
-			dialog.x = (x >= 0) ? x : 0.5 * (ui.bounds.width - dialog.width);
-			dialog.y = (y >= 0) ? y : 0.5 * (ui.bounds.height - dialog.height);
+			return new Point(
+					0.5 * (ui.bounds.width - dialog.width),
+					0.5 * (ui.bounds.height - dialog.height));
 		}
 
 		/*///////////////////////////////////////////////////////////////////////////////////
@@ -170,6 +172,22 @@ package garbuz.gui
 			for each (var window:WindowBase in windows)
 			{
 				removeWindow(window);
+			}
+		}
+
+		public function hideAllWindows():void
+		{
+			for each (var window:WindowBase in _windows)
+			{
+				window.visible = false;
+			}
+		}
+
+		public function showAllWindows():void
+		{
+			for each (var window:WindowBase in _windows)
+			{
+				window.visible = true;
 			}
 		}
 
