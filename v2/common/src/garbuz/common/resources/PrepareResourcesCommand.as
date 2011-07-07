@@ -5,10 +5,10 @@ package garbuz.common.resources
 
 	public class PrepareResourcesCommand extends AsincMacroCommand
 	{
-		private var _urls:Array /*of String*/;
+		private var _urls:Vector.<String>;
 		private var _reference:Object;
 
-		public function PrepareResourcesCommand(urls:Array /*of String*/, reference:Object)
+		public function PrepareResourcesCommand(urls:Vector.<String>, reference:Object)
 		{
 			_urls = urls;
 			_reference = reference;
