@@ -199,5 +199,10 @@ package garbuz.gui.controls
 		{
 			return _itemClickEvent;
 		}
+
+		public function get renderers():Array
+		{
+			return _pageContainer.controls;
+		}
 	}
 }
