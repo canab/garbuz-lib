@@ -37,6 +37,11 @@ package garbuz.common.query
 			return this;
 		}
 		
+		public function byId(id:String):Query
+		{
+			return byProperty("id", id);
+		}
+
 		public function byPrefix(prefix:String):Query
 		{
 			_requirement = new PrefixRequirement(prefix);
