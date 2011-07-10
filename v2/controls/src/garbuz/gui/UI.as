@@ -113,7 +113,7 @@ package garbuz.gui
 			instance.windowManager.removeScreen();
 		}
 
-		public static function showDialog(dialog:DialogBase, position:Point):void
+		public static function showDialog(dialog:DialogBase, position:Point = null):void
 		{
 			instance.windowManager.showDialog(dialog, position);
 		}
