@@ -32,7 +32,7 @@ package garbuz.engine.scene.renderers
 
 			_frames = frames;
 			_content.addChild(_bitmap);
-			
+
 			if (_frames)
 				updateFrame();
 		}
