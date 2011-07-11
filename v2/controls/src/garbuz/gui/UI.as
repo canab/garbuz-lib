@@ -68,9 +68,9 @@ package garbuz.gui
 			return instance.windowManager.hasWindow(windowName);
 		}
 
-		public static function activateWindow(window:WindowBase):void
+		public static function bringToFront(window:WindowBase):void
 		{
-			instance.windowManager.activateWindow(window);
+			instance.windowManager.bringWindowToFront(window);
 		}
 
 		public static function showPopup(control:ControlBase, relatedControl:ControlBase):void

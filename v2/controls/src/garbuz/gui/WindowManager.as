@@ -248,5 +248,11 @@ package garbuz.gui
 			else if (_currentScreen)
 				activateWindow(_currentScreen);
 		}
+
+		internal function bringWindowToFront(window:WindowBase):void
+		{
+			activateWindow(window);
+			DisplayUtil.bringToFront(window);
+		}
 	}
 }
