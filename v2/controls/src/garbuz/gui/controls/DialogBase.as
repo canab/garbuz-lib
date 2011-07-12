@@ -3,25 +3,18 @@ package garbuz.gui.controls
 	import flash.events.Event;
 
 	import garbuz.common.commands.DelayCommand;
-	import garbuz.common.events.EventSender;
 
 	public class DialogBase extends WindowBase
 	{
-		private var _closeEvent:EventSender = new EventSender(this);
 		private var _timeout:int = 0;
 
 		public function DialogBase()
 		{
 		}
 
-		protected function closeDialog():void
-		{
-			_closeEvent.dispatch();
-		}
-
 		protected function doDefaultAction():void
 		{
-			closeDialog();
+			closeWindow();
 		}
 
 		public function setTimeout(value:int):void
@@ -47,17 +40,6 @@ package garbuz.gui.controls
 		{
 			if (stage)
 				doDefaultAction();
-		}
-
-		/*///////////////////////////////////////////////////////////////////////////////////
-		//
-		// get/set
-		//
-		///////////////////////////////////////////////////////////////////////////////////*/
-
-		public function get closeEvent():EventSender
-		{
-			return _closeEvent;
 		}
 	}
 }

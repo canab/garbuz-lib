@@ -7,13 +7,13 @@ package garbuz.gui.controls
 
 	import garbuz.common.events.EventManager;
 	import garbuz.common.events.EventSender;
-	import garbuz.gui.UI;
 	import garbuz.gui.ui_internal;
 
 	use namespace ui_internal;
 
 	public class WindowBase extends ControlBase
 	{
+		private var _closeEvent:EventSender = new EventSender(this);
 		private var _events:EventManager;
 		private var _wasActivated:Boolean = false;
 
@@ -59,7 +59,7 @@ package garbuz.gui.controls
 
 		protected function closeWindow():void
 		{
-			UI.removeWindow(this);
+			_closeEvent.dispatch();
 		}
 
 		/*///////////////////////////////////////////////////////////////////////////////////
@@ -130,7 +130,11 @@ package garbuz.gui.controls
 			super.hitArea = value;
 			hitArea.mouseChildren = false;
 			hitArea.buttonMode = true;
-			hitArea.cacheAsBitmap = true;
+		}
+
+		public function get closeEvent():EventSender
+		{
+			return _closeEvent;
 		}
 	}
 }

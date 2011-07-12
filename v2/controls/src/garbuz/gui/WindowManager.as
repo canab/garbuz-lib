@@ -10,7 +10,6 @@ package garbuz.gui
 	import garbuz.common.ui.KeyboardManager;
 	import garbuz.common.utils.ArrayUtil;
 	import garbuz.common.utils.DisplayUtil;
-	import garbuz.gui.controls.DialogBase;
 	import garbuz.gui.controls.WindowBase;
 
 	use namespace ui_internal;
@@ -23,7 +22,6 @@ package garbuz.gui
 		private var _activeWindow:WindowBase;
 
 		private var _modalFrame:Sprite = new Sprite();
-		private var _locked:Boolean = false;
 
 		public function WindowManager()
 		{
@@ -39,6 +37,9 @@ package garbuz.gui
 		//noinspection JSUnusedLocalSymbols
 		private function onKeyPress(sender:KeyboardManager, event:KeyboardEvent):void
 		{
+			if (UI.locked)
+				return;
+
 			if (_activeWindow)
 				_activeWindow.processKey(event);
 		}
@@ -59,7 +60,8 @@ package garbuz.gui
 		{
 			_currentScreen = screen;
 			attachWindow(_currentScreen, 0);
-			if (!_locked && _dialogs.length == 0)
+
+			if (!dialogExists)
 				activateWindow(screen);
 		}
 
@@ -79,29 +81,27 @@ package garbuz.gui
 		//
 		///////////////////////////////////////////////////////////////////////////////////*/
 
-		public function showDialog(dialog:DialogBase, position:Point = null):void
+		public function showDialog(window:WindowBase, position:Point = null):void
 		{
-			dialog.closeEvent.addListener(hideDialog);
-			dialog.position = position || getDialogPosition(dialog);
+			window.closeEvent.addListener(hideDialog);
+			window.position = position || getDialogPosition(window);
 
-			ArrayUtil.addItemSafe(_dialogs, dialog);
-			attachWindow(dialog);
+			ArrayUtil.addItemSafe(_dialogs, window);
+			attachWindow(window);
 			createModalFrame();
 			refreshModalFrame();
-
-			if (!_locked)
-				activateWindow(dialog);
+			activateWindow(window);
 		}
 
-		public function hideDialog(dialog:DialogBase = null):void
+		public function hideDialog(window:WindowBase = null):void
 		{
-			if (!dialog)
-				dialog = ArrayUtil.lastItem(_dialogs) as DialogBase;
+			if (!window)
+				window = WindowBase(ArrayUtil.lastItem(_dialogs));
 
-			deactivateWindow(dialog);
-			detachWindow(dialog);
-			ArrayUtil.removeItemSafe(_dialogs, dialog);
-			dialog.closeEvent.removeListener(hideDialog);
+			deactivateWindow(window);
+			detachWindow(window);
+			ArrayUtil.removeItemSafe(_dialogs, window);
+			window.closeEvent.removeListener(hideDialog);
 
 			refreshModalFrame();
 			tryActivateNext();
@@ -120,10 +120,10 @@ package garbuz.gui
 			if (_modalFrame.parent)
 				DisplayUtil.detachFromDisplay(_modalFrame);
 
-			if (_dialogs.length == 0)
+			if (!dialogExists)
 				return;
 
-			var dialog:DialogBase = ArrayUtil.lastItem(_dialogs) as DialogBase;
+			var dialog:WindowBase = WindowBase(ArrayUtil.lastItem(_dialogs));
 			var depth:int = ui.root.getChildIndex(dialog);
 
 			ui.root.addChildAt(_modalFrame, depth);
@@ -132,11 +132,11 @@ package garbuz.gui
 			_modalFrame.height = ui.bounds.height;
 		}
 
-		private function getDialogPosition(dialog:DialogBase):Point
+		private function getDialogPosition(window:WindowBase):Point
 		{
 			return new Point(
-					0.5 * (ui.bounds.width - dialog.width),
-					0.5 * (ui.bounds.height - dialog.height));
+					0.5 * (ui.bounds.width - window.width),
+					0.5 * (ui.bounds.height - window.height));
 		}
 
 		/*///////////////////////////////////////////////////////////////////////////////////
@@ -150,11 +150,13 @@ package garbuz.gui
 			ArrayUtil.addItemSafe(_windows, window);
 			attachWindow(window);
 			new DragController(window, window.hitArea).bounds = ui.bounds;
+			window.closeEvent.addListener(removeWindow);
 			window.addEventListener(MouseEvent.MOUSE_DOWN, onWindowMouseDown);
 		}
 
 		public function removeWindow(window:WindowBase):void
 		{
+			window.closeEvent.removeListener(removeWindow);
 			ArrayUtil.removeItemSafe(_windows, window);
 			detachWindow(window);
 		}
@@ -219,6 +221,9 @@ package garbuz.gui
 
 		public function activateWindow(window:WindowBase):void
 		{
+			if (UI.locked)
+				return;
+
 			if (window == _activeWindow)
 				return;
 
@@ -229,7 +234,7 @@ package garbuz.gui
 			_activeWindow.activate();
 		}
 
-		private function deactivateWindow(window:WindowBase):void
+		internal function deactivateWindow(window:WindowBase):void
 		{
 			if (window == _activeWindow)
 			{
@@ -240,10 +245,7 @@ package garbuz.gui
 
 		private function tryActivateNext():void
 		{
-			if (!_locked)
-				return;
-
-			if (_dialogs.length > 0)
+			if (dialogExists)
 				activateWindow(ArrayUtil.lastItem(_dialogs) as WindowBase);
 			else if (_currentScreen)
 				activateWindow(_currentScreen);
@@ -253,6 +255,11 @@ package garbuz.gui
 		{
 			activateWindow(window);
 			DisplayUtil.bringToFront(window);
+		}
+
+		internal function get dialogExists():Boolean
+		{
+			return _dialogs.length > 0;
 		}
 	}
 }

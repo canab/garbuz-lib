@@ -11,13 +11,18 @@ package garbuz.gui
 	import garbuz.common.errors.NotInitializedError;
 	import garbuz.common.localization.MessageBundle;
 	import garbuz.gui.controls.ControlBase;
-	import garbuz.gui.controls.DialogBase;
 	import garbuz.gui.controls.WindowBase;
 	import garbuz.gui.interfaces.ITooltip;
 
 	public class UI
 	{
 		private static var _instance:UI;
+
+		/*///////////////////////////////////////////////////////////////////////////////////
+		//
+		// initialization
+		//
+		///////////////////////////////////////////////////////////////////////////////////*/
 
 		public static function initialize(root:Sprite, bounds:Rectangle):void
 		{
@@ -32,6 +37,12 @@ package garbuz.gui
 		{
 			return Boolean(_instance);
 		}
+
+		/*///////////////////////////////////////////////////////////////////////////////////
+		//
+		// windows
+		//
+		///////////////////////////////////////////////////////////////////////////////////*/
 
 		public static function addWindow(window:WindowBase):void
 		{
@@ -73,10 +84,31 @@ package garbuz.gui
 			instance.windowManager.bringWindowToFront(window);
 		}
 
+		public static function showDialog(window:WindowBase, position:Point = null):void
+		{
+			instance.windowManager.showDialog(window, position);
+		}
+
+		public static function hideDialog(window:WindowBase = null):void
+		{
+			instance.windowManager.hideDialog(window);
+		}
+
 		public static function showPopup(control:ControlBase, relatedControl:ControlBase):void
 		{
 			instance.popupManager.showPopup(control, relatedControl);
 		}
+
+		public static function get dialogExists():Boolean
+		{
+			return instance.windowManager.dialogExists;
+		}
+
+		/*///////////////////////////////////////////////////////////////////////////////////
+		//
+		// tooltips
+		//
+		///////////////////////////////////////////////////////////////////////////////////*/
 
 		public static function registerTooltip(target:DisplayObject, message:String, bundle:MessageBundle = null):void
 		{
@@ -86,11 +118,6 @@ package garbuz.gui
 		public static function unregisterTooltip(target:DisplayObject):void
 		{
 			instance.tooltipManager.unregisterObject(target);
-		}
-
-		public static function get stage():Stage
-		{
-			return instance.stage;
 		}
 
 		public static function get tooltipRenderer():ITooltip
@@ -103,6 +130,12 @@ package garbuz.gui
 			instance.tooltipRenderer = value;
 		}
 
+		/*///////////////////////////////////////////////////////////////////////////////////
+		//
+		// screens
+		//
+		///////////////////////////////////////////////////////////////////////////////////*/
+
 		public static function changeScreen(screen:WindowBase):void
 		{
 			instance.windowManager.changeScreen(screen);
@@ -113,14 +146,15 @@ package garbuz.gui
 			instance.windowManager.removeScreen();
 		}
 
-		public static function showDialog(dialog:DialogBase, position:Point = null):void
-		{
-			instance.windowManager.showDialog(dialog, position);
-		}
+		/*///////////////////////////////////////////////////////////////////////////////////
+		//
+		// get/set
+		//
+		///////////////////////////////////////////////////////////////////////////////////*/
 
-		public static function hideDialog(dialog:DialogBase = null):void
+		public static function get stage():Stage
 		{
-			instance.windowManager.hideDialog(dialog);
+			return instance.stage;
 		}
 
 		internal static function get instance():UI
@@ -129,6 +163,16 @@ package garbuz.gui
 				throw new NotInitializedError();
 
 			return _instance;
+		}
+
+		public static function get locked():Boolean
+		{
+			return instance.locked;
+		}
+
+		public static function set locked(value:Boolean):void
+		{
+			instance.locked = value;
 		}
 
 		/*///////////////////////////////////////////////////////////////////////////////////
@@ -143,6 +187,7 @@ package garbuz.gui
 		private var _popupManager:PopupManager;
 		private var _tooltipManager:ToolTipManager;
 		private var _windowManager:WindowManager;
+		private var _locked:Boolean;
 
 		internal var tooltipRenderer:ITooltip;
 
@@ -201,7 +246,36 @@ package garbuz.gui
 
 			return _windowManager;
 		}
+
+		public function get locked():Boolean
+		{
+			return _locked;
+		}
+
+		public function set locked(value:Boolean):void
+		{
+			if (_locked != value)
+			{
+				_locked = value;
+
+				if (_locked)
+					lock();
+				else
+					unlock();
+			}
+		}
+
+		private function lock():void
+		{
+			_root.mouseChildren = false;
+		}
+
+		private function unlock():void
+		{
+			_root.mouseChildren = true;
+		}
 	}
+
 }
 
 internal class PrivateConstructor {}
