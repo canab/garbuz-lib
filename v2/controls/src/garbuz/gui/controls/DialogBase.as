@@ -3,6 +3,7 @@ package garbuz.gui.controls
 	import flash.events.Event;
 
 	import garbuz.common.commands.DelayCommand;
+	import garbuz.gui.UI;
 
 	public class DialogBase extends WindowBase
 	{
@@ -10,6 +11,17 @@ package garbuz.gui.controls
 
 		public function DialogBase()
 		{
+		}
+
+		public function onClose(handler:Function):DialogBase
+		{
+			closeEvent.addListener(handler);
+			return this;
+		}
+
+		public function show():void
+		{
+			UI.showDialog(this);
 		}
 
 		protected function doDefaultAction():void
