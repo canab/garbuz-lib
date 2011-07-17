@@ -2,7 +2,7 @@ package garbuz.gui.controls
 {
 	import flash.events.Event;
 
-	import garbuz.common.commands.DelayCommand;
+	import garbuz.common.commands.CallLaterCommand;
 	import garbuz.gui.UI;
 
 	public class DialogBase extends WindowBase
@@ -45,7 +45,7 @@ package garbuz.gui.controls
 		private function initTimeout(event:Event = null):void
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, initTimeout);
-			new DelayCommand(_timeout, onTimeout).execute();
+			new CallLaterCommand(onTimeout, _timeout).execute();
 		}
 
 		private function onTimeout():void

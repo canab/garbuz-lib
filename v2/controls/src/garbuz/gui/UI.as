@@ -146,6 +146,11 @@ package garbuz.gui
 			instance.windowManager.removeScreen();
 		}
 
+		public static function get currentScreen():WindowBase
+		{
+			return instance.windowManager.currentScreen;
+		}
+
 		/*///////////////////////////////////////////////////////////////////////////////////
 		//
 		// get/set

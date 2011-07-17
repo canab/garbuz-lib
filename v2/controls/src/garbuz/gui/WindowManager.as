@@ -261,5 +261,10 @@ package garbuz.gui
 		{
 			return _dialogs.length > 0;
 		}
+
+		internal function get currentScreen():WindowBase
+		{
+			return _currentScreen;
+		}
 	}
 }
