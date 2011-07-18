@@ -1,5 +1,7 @@
 package garbuz.common.events
 {
+	import garbuz.common.errors.NullPointerError;
+
 	public class EventSender
 	{
 		private var _sender:Object;
@@ -13,7 +15,9 @@ package garbuz.common.events
 		
 		public function addListener(listener:Function):void
 		{
-			if (hasListener(listener))
+			if (listener == null)
+				throw new NullPointerError();
+			else if (hasListener(listener))
 				throw new Error("List already contains such listener");
 			else
 				_listeners.push(listener);
@@ -21,7 +25,9 @@ package garbuz.common.events
 		
 		public function removeListener(listener:Function):void
 		{
-			if (hasListener(listener))
+			if (listener == null)
+				throw new NullPointerError();
+			else if (hasListener(listener))
 				_listeners.splice(_listeners.indexOf(listener), 1);
 			else
 				throw new Error("List doesn't contain such listener");
@@ -48,6 +54,11 @@ package garbuz.common.events
 		public function hasListener(func:Function):Boolean
 		{
 			return _listeners.indexOf(func) >= 0;
+		}
+
+		public function set handler(value:Function):void
+		{
+			addListener(value);
 		}
 	}
 }
