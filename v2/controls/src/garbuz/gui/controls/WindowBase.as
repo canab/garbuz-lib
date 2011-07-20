@@ -20,11 +20,14 @@ package garbuz.gui.controls
 		public function WindowBase(name:String = null)
 		{
 			this.name = name || getQualifiedClassName(this);
+			this.focusRect = false;
 			mouseChildren = true;
 		}
 
 		ui_internal function activate():void
 		{
+			stage.focus = this;
+
 			onActivate();
 
 			if (!_wasActivated)

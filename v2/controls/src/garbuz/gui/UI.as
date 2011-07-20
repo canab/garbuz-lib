@@ -69,6 +69,11 @@ package garbuz.gui
 			instance.windowManager.showAllWindows();
 		}
 
+		public static function get activeWindow():WindowBase
+		{
+			return instance.windowManager.activeWindow;
+		}
+
 		public static function getWindow(windowName:String):WindowBase
 		{
 			return instance.windowManager.getWindow(windowName);

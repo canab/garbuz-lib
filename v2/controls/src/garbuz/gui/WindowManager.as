@@ -266,5 +266,10 @@ package garbuz.gui
 		{
 			return _currentScreen;
 		}
+
+		internal function get activeWindow():WindowBase
+		{
+			return _activeWindow;
+		}
 	}
 }
