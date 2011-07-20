@@ -110,7 +110,7 @@ package garbuz.gui
 		private function createModalFrame():void
 		{
 			_modalFrame.graphics.clear();
-			_modalFrame.graphics.beginFill(DefaultStyle.MODAL_COLOR, DefaultStyle.MODAL_ALPHA);
+			_modalFrame.graphics.beginFill(DefaultStyle.modalColor, DefaultStyle.modalAlpha);
 			_modalFrame.graphics.drawRect(0, 0, 100, 100);
 			_modalFrame.graphics.endFill();
 		}

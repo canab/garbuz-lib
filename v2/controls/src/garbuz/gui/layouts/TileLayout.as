@@ -10,10 +10,10 @@ package garbuz.gui.layouts
 		private var _hGap:int;
 		private var _vGap:int;
 
-		public function TileLayout(hGap:int = DefaultStyle.H_GAP, vGap:int = DefaultStyle.V_GAP)
+		public function TileLayout(hGap:int = -1, vGap:int = -1)
 		{
-			_hGap = hGap;
-			_vGap = vGap;
+			_hGap = (hGap >= 0) ? hGap : DefaultStyle.hGap;
+			_vGap = (vGap >= 0) ? vGap : DefaultStyle.vGap;
 		}
 
 		public function apply(container:Container):void
