@@ -6,18 +6,18 @@ package garbuz.engine.rendering
 	import garbuz.common.commands.ICancelableCommand;
 	import garbuz.common.processing.EnterFrameProcessor;
 
-	public class CacheRenderer extends AsincCommand implements ICancelableCommand
+	public class CachePrerenderer extends AsincCommand implements ICancelableCommand
 	{
 		private var _processor:EnterFrameProcessor = new EnterFrameProcessor();
 		private var _cache:BitmapCache;
 		private var _executed:Boolean;
 
-		public function CacheRenderer(cache:BitmapCache)
+		public function CachePrerenderer(cache:BitmapCache)
 		{
 			_cache = cache;
 		}
 
-		public function addClip(key:Object, clip:MovieClip):CacheRenderer
+		public function addClip(key:Object, clip:MovieClip):CachePrerenderer
 		{
 			var frames:Vector.<BitmapFrame> = _cache.getFrames(key);
 			var renderer:ClipPrerenderer = new ClipPrerenderer(clip, frames);
