@@ -26,7 +26,7 @@ package garbuz.common.processing
 		
 		override public function execute():void
 		{
-			nextTarget();
+			_currentTarget = getNextTarget();
 			_frameDispatcher.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 
@@ -40,7 +40,7 @@ package garbuz.common.processing
 				_currentTarget.process();
 
 				if (_currentTarget.completed)
-					nextTarget();
+					_currentTarget = getNextTarget();
 
 				currentTime = getTimer() - startTime;
 			}
@@ -52,9 +52,9 @@ package garbuz.common.processing
 			}
 		}
 
-		private function nextTarget():void
+		private function getNextTarget():IProcessable
 		{
-			_currentTarget = (_targets.length > 0) ? _targets.shift() : null;
+			return (_targets.length > 0) ? _targets.shift() : null;
 		}
 
 		public function cancel():void
