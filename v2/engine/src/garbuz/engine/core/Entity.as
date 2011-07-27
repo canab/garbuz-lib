@@ -101,6 +101,17 @@ package garbuz.engine.core
 			return null;
 		}
 		
+		public function getComponentsByType(type:Class):Vector.<Component>
+		{
+			var result:Vector.<Component> = new <Component>[];
+			for each (var item:Component in _components)
+			{
+				if (item is type)
+					result.push(item);
+			}
+			return result;
+		}
+
 		public function getComponentByName(name:String):Component
 		{
 			for each (var item:Component in _components) 
