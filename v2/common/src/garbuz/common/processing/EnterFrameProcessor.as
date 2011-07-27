@@ -1,51 +1,63 @@
 package garbuz.common.processing 
 {
-	import flash.display.DisplayObject;
+	import flash.display.Shape;
 	import flash.events.Event;
 	import flash.utils.getTimer;
 
+	import garbuz.common.commands.AsincCommand;
 	import garbuz.common.commands.ICancelableCommand;
-	import garbuz.common.events.EventSender;
 
-	public class EnterFrameProcessor implements ICancelableCommand
+	public class EnterFrameProcessor extends AsincCommand implements ICancelableCommand
 	{
-		private var _completeEvent:EventSender = new EventSender(this);
-		private var _frameDispatcher:DisplayObject;
-		private var _target:IProcessable;
+		private var _frameDispatcher:Shape = new Shape();
+		private var _targets:Vector.<IProcessable> = new <IProcessable>[];
+		private var _currentTarget:IProcessable;
 		private var _timeLimit:int;
-		
-		public function EnterFrameProcessor(target:IProcessable, frameDispatcher:DisplayObject, timeLimit:int = 50) 
+
+		public function EnterFrameProcessor(timeLimit:int = 50)
 		{
-			_target = target;
-			_frameDispatcher = frameDispatcher;
 			_timeLimit = timeLimit;
 		}
-		
-		public function execute():void 
+
+		public function addTarget(target:IProcessable):void
 		{
-			_frameDispatcher.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			_targets.push(target);
 		}
 		
-		private function onEnterFrame(e:Event):void 
+		override public function execute():void
+		{
+			nextTarget();
+			_frameDispatcher.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+		}
+
+		private function onEnterFrame(e:Event):void
 		{
 			var startTime:int = getTimer();
 			var currentTime:int = 0;
-			var completed:Boolean = false;
-			
-			while (!completed && currentTime < _timeLimit)
+
+			while (_currentTarget && currentTime < _timeLimit)
 			{
-				completed = _target.process();
+				_currentTarget.process();
+
+				if (_currentTarget.completed)
+					nextTarget();
+
 				currentTime = getTimer() - startTime;
 			}
 			
-			if (completed)
+			if (!_currentTarget)
 			{
 				stopProcessing();
-				_completeEvent.dispatch();
+				dispatchComplete();
 			}
 		}
-		
-		public function cancel():void 
+
+		private function nextTarget():void
+		{
+			_currentTarget = (_targets.length > 0) ? _targets.shift() : null;
+		}
+
+		public function cancel():void
 		{
 			stopProcessing();
 		}
@@ -53,11 +65,7 @@ package garbuz.common.processing
 		private function stopProcessing():void 
 		{
 			_frameDispatcher.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
-			_frameDispatcher = null;
 		}
-		
-		public function get completeEvent():EventSender { return _completeEvent; }
-		
 	}
 
 }

@@ -1,4 +1,4 @@
-package garbuz.engine.scene.renderers
+package garbuz.engine.rendering
 {
 	import flash.display.BitmapData;
 

@@ -1,4 +1,4 @@
-package garbuz.engine.scene.renderers
+package garbuz.engine.rendering
 {
 	import flash.display.BitmapData;
 	import flash.display.MovieClip;
@@ -7,20 +7,23 @@ package garbuz.engine.scene.renderers
 	import flash.geom.Rectangle;
 
 	import garbuz.common.comparing.AnimationRequirement;
+	import garbuz.common.processing.IProcessable;
 	import garbuz.common.query.fromDisplay;
 	import garbuz.common.utils.BitmapUtil;
 
-	public class ClipPrerenderer
+	public class ClipPrerenderer implements IProcessable
 	{
+		private var _frames:Vector.<BitmapFrame>;
 		private var _content:Sprite;
 		private var _subClips:Array = [];
 		private var _totalFrames:int;
 		private var _currentFrame:int;
 		private var _container:Sprite = new Sprite();
 
-		public function ClipPrerenderer(sprite:Sprite)
+		public function ClipPrerenderer(sprite:Sprite, frames:Vector.<BitmapFrame> = null)
 		{
 			_content = sprite;
+			_frames = frames ? frames : new <BitmapFrame>[];
 			_container.addChild(_content);
 			initialize();
 		}
@@ -51,19 +54,20 @@ package garbuz.engine.scene.renderers
 			}
 		}
 
-		public function getAllFrames():Vector.<BitmapFrame>
+		public function process():void
 		{
-			var result:Vector.<BitmapFrame> = new <BitmapFrame>[];
-
-			while (hasNext)
-			{
-				result.push(getNextFrame());
-			}
-
-			return result;
+			_frames.push(getNextFrame());
 		}
 
-		public function getNextFrame():BitmapFrame
+		public function renderAllFrames():void
+		{
+			while (!completed)
+			{
+				process();
+			}
+		}
+
+		private function getNextFrame():BitmapFrame
 		{
 			var frame:BitmapFrame = null;
 			var bounds:Rectangle = BitmapUtil.calculateIntBounds(_container);
@@ -80,12 +84,12 @@ package garbuz.engine.scene.renderers
 				frame.data.draw(_container, matrix);
 			}
 
-			nextFrame();
+			gotoNextFrame();
 
 			return frame;
 		}
 
-		private function nextFrame():void
+		private function gotoNextFrame():void
 		{
 			_currentFrame++;
 
@@ -98,9 +102,20 @@ package garbuz.engine.scene.renderers
 			}
 		}
 
-		public function get hasNext():Boolean
+		/*///////////////////////////////////////////////////////////////////////////////////
+		//
+		// get/set
+		//
+		///////////////////////////////////////////////////////////////////////////////////*/
+
+		public function get completed():Boolean
 		{
-			return _currentFrame <= _totalFrames;
+			return _frames.length == _totalFrames;
+		}
+
+		public function get frames():Vector.<BitmapFrame>
+		{
+			return _frames;
 		}
 	}
 

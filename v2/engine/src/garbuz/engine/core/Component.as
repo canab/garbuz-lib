@@ -108,6 +108,11 @@ package garbuz.engine.core
 		{
 			engine.removeProcessor(this, method);
 		}
+
+		public function remove():void
+		{
+			parent.removeComponent(this);
+		}
 	}
 
 }

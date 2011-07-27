@@ -3,14 +3,21 @@ package garbuz.engine.scene.renderers
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
 
+	import garbuz.engine.rendering.BitmapFrame;
+
+	import garbuz.engine.rendering.ClipPrerenderer;
+
 	public class BitmapClipRenderer extends ClipRenderer
 	{
 		public static function captureClip(target:Sprite):BitmapClipRenderer
 		{
-			var frames:Vector.<BitmapFrame> = new ClipPrerenderer(target).getAllFrames();
-			var renderer:BitmapClipRenderer = new BitmapClipRenderer(frames);
+			var prerenderer:ClipPrerenderer = new ClipPrerenderer(target);
+			prerenderer.renderAllFrames();
+
+			var renderer:BitmapClipRenderer = new BitmapClipRenderer(prerenderer.frames);
 			renderer.content.x = int(target.x);
 			renderer.content.y = int(target.y);
+
 			return renderer;
 		}
 
