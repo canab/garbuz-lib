@@ -199,6 +199,13 @@ package garbuz.engine.core
 			return null;
 		}
 
+		public function removeEntityByType(type:Class):void
+		{
+			var entity:Entity = getEntityByType(type);
+			if (entity)
+				removeEntity(entity);
+		}
+
 		public function getComponent(fullName:String):Component
 		{
 			var parts:Array = fullName.split(NameManager.SEPARATOR);

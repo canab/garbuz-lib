@@ -4,6 +4,7 @@ package garbuz.engine.core
 	import garbuz.common.errors.AlreadyInitializedError;
 	import garbuz.common.errors.ItemNotFoundError;
 	import garbuz.common.errors.NotInitializedError;
+	import garbuz.common.events.EventSender;
 
 	public class Entity
 	{
@@ -11,16 +12,17 @@ package garbuz.engine.core
 		
 		internal var initialized:Boolean = false;
 		internal var disposed:Boolean = false;
-		
-		private var _engine:Engine;
+		internal var engine:Engine;
+
 		private var _components:Vector.<Component>;
-		
+		private var _disposeEvent:EventSender;
+
 		public function Entity() 
 		{
 			_components = new Vector.<Component>();
 		}
 		
-		public function initialize():void 
+		internal function initialize():void
 		{
 			if (initialized)
 				throw new AlreadyInitializedError();
@@ -33,7 +35,7 @@ package garbuz.engine.core
 			initialized = true;
 		}
 		
-		public function dispose():void 
+		internal function dispose():void
 		{
 			if (!initialized)
 				throw new NotInitializedError();
@@ -47,6 +49,9 @@ package garbuz.engine.core
 			}
 			
 			disposed = true;
+
+			if (_disposeEvent)
+				_disposeEvent.dispatch();
 		}
 		
 		public function addComponent(component:Component, name:String = null):void 
@@ -65,7 +70,7 @@ package garbuz.engine.core
 		
 		private function initializeComponent(component:Component):void 
 		{
-			component.engine = _engine;
+			component.engine = engine;
 			component.parent = this;
 			component.initialize();
 		}
@@ -84,23 +89,23 @@ package garbuz.engine.core
 				_components.splice(index, 1);
 		}
 		
-		public function removeComponentByType(type:Class):void 
-		{
-			var component:Component = getComponentByType(type);
-			if (component)
-				removeComponent(component);
-		}
-		
 		public function getComponentByType(type:Class):Component
 		{
-			for each (var item:Component in _components) 
+			for each (var item:Component in _components)
 			{
 				if (item is type)
 					return item;
 			}
 			return null;
 		}
-		
+
+		public function removeComponentByType(type:Class):void
+		{
+			var component:Component = getComponentByType(type);
+			if (component)
+				removeComponent(component);
+		}
+
 		public function getComponentsByType(type:Class):Vector.<Component>
 		{
 			var result:Vector.<Component> = new <Component>[];
@@ -121,10 +126,13 @@ package garbuz.engine.core
 			}
 			return null;
 		}
-		
-		internal function set engine(value:Engine):void 
+
+		public function get disposeEvent():EventSender
 		{
-			_engine = value;
+			if (!_disposeEvent)
+				_disposeEvent = new EventSender(this);
+
+			return _disposeEvent;
 		}
 	}
 
