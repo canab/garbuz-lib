@@ -27,6 +27,11 @@ package garbuz.engine.scene.renderers
 				addFrameListener(handlePlaying);
 		}
 
+		public function removeOnComplete():void
+		{
+			_playCompleteEvent.addListener(remove)
+		}
+
 		public function play():void
 		{
 			beginPlay(loopHandler);
