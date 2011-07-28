@@ -130,7 +130,7 @@ package garbuz.engine.core
 		 * @param	time
 		 * time in milliseconds
 		 */
-		internal function callAfter(time:int, component:Component, method:Function):void
+		internal function addDelayedCall(time:int, component:Component, method:Function):void
 		{
 			var processor:DelayedProcessor = new DelayedProcessor();
 			processor.component = component;
@@ -145,7 +145,7 @@ package garbuz.engine.core
 		 * @param	time
 		 * time in milliseconds
 		 */
-		internal function createTimer(time:int, component:Component, method:Function):void
+		internal function addTimer(time:int, component:Component, method:Function):void
 		{
 			var processor:TimerProcessor = new TimerProcessor();
 			processor.component = component;

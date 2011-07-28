@@ -80,12 +80,12 @@ package garbuz.engine.core
 		 * @param	time
 		 * time in milliseconds
 		 */
-		protected function callAfter(time:int, method:Function):void
+		protected function addDelayedCall(time:int, method:Function):void
 		{
 			if (!initialized)
 				throw new NotInitializedError();
 
-			engine.callAfter(time, this, method);
+			engine.addDelayedCall(time, this, method);
 		}
 
 		/**
@@ -93,12 +93,12 @@ package garbuz.engine.core
 		 * @param	time
 		 * time in milliseconds
 		 */
-		protected function createTimer(time:int, method:Function):void
+		protected function addTimer(time:int, method:Function):void
 		{
 			if (!initialized)
 				throw new NotInitializedError();
 
-			engine.createTimer(time, this, method);
+			engine.addTimer(time, this, method);
 		}
 
 		/**
