@@ -103,10 +103,16 @@ package garbuz.engine.core
 
 		/**
 		 * Remove previously added timer, delayedCall or frameListener
+		 * Returns true if processor was existing
 		 */
-		protected function removeProcessor(method:Function):void
+		protected function removeProcessor(method:Function):Boolean
 		{
-			engine.removeProcessor(this, method);
+			return engine.removeProcessor(this, method);
+		}
+
+		protected function hasProcessor(method:Function):Boolean
+		{
+			return engine.hasProcessor(this, method);
 		}
 
 		public function remove():void

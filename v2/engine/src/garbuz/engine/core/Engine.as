@@ -158,14 +158,19 @@ package garbuz.engine.core
 		/**
 		 * Remove previously added timer, delayedCall or frameListener
 		 */
-		internal function removeProcessor(component:Component, method:Function):void
+		internal function removeProcessor(component:Component, method:Function):Boolean
 		{
 			var processor:ProcessorBase = _processManager.findProcessor(component, method);
 
 			if (processor)
 				_processManager.removeProcessor(processor);
-			else
-				throw new ItemNotFoundError();
+
+			return Boolean(processor);
+		}
+
+		public function hasProcessor(component:Component, method:Function):Boolean
+		{
+			return Boolean(_processManager.findProcessor(component, method));
 		}
 
 		public function getEntitiesByType(type:Class):Array
@@ -267,6 +272,7 @@ package garbuz.engine.core
 		{
 			return _tweenManager;
 		}
+
 	}
 
 }

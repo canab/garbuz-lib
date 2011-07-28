@@ -17,6 +17,21 @@ package garbuz.engine.rendering
 			_cache = cache;
 		}
 
+		public function addClasses(classes:Array):CachePrerenderer
+		{
+			for each (var classRef:Class in classes)
+			{
+				addClass(classRef);
+			}
+			return this;
+		}
+
+		public function addClass(classRef:Class):CachePrerenderer
+		{
+			addClip(classRef, new classRef());
+			return this;
+		}
+
 		public function addClip(key:Object, clip:MovieClip):CachePrerenderer
 		{
 			var frames:Vector.<BitmapFrame> = _cache.getFrames(key);
