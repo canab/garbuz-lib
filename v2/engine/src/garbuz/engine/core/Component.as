@@ -56,6 +56,11 @@ package garbuz.engine.core
 			return initialized;
 		}
 		
+		public function get isDisposed():Boolean
+		{
+			return disposed;
+		}
+
 		protected virtual function onInitialize():void
 		{
 		}
