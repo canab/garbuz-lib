@@ -37,7 +37,7 @@ package garbuz.engine.rendering
 
 			if (rootClip && rootClip.totalFrames > 1)
 			{
-				rootClip.stop();
+				rootClip.gotoAndStop(1);
 				_subClips.push(rootClip);
 				_totalFrames = rootClip.totalFrames;
 			}
@@ -48,7 +48,7 @@ package garbuz.engine.rendering
 
 			for each (var child:MovieClip in children)
 			{
-				child.stop();
+				child.gotoAndStop(1);
 				_subClips.push(child);
 				_totalFrames = Math.max(_totalFrames, child.totalFrames);
 			}
