@@ -2,6 +2,18 @@ package garbuz.common.utils
 {
 	public class MapUtil
 	{
+		public static function removeValue(map:Object, value:*):void
+		{
+			for (var key:Object in map)
+			{
+				if (map[key] === value)
+				{
+					delete map[key];
+					return;
+				}
+			}
+		}
+
 		public static function getLength(object:Object):int
 		{
 			var length:int = 0;
