@@ -4,10 +4,11 @@
 	import flash.events.Event;
 	import flash.utils.Dictionary;
 
+	import garbuz.common.commands.AsincCommand;
 	import garbuz.common.commands.ICancelableCommand;
-	import garbuz.common.events.EventSender;
+	import garbuz.common.utils.DisplayUtil;
 
-	public class MoviePlayer implements ICancelableCommand
+	public class MoviePlayer extends AsincCommand implements ICancelableCommand
 	{
 		static private const _players:Dictionary = new Dictionary(true);
 		
@@ -15,15 +16,24 @@
 		public var toFrame:int;
 		public var fromFrame:int;
 		
-		private var _completeEvent:EventSender = new EventSender(this);
-		
-		public function MoviePlayer(clip:MovieClip = null, fromFrame:int = 1, toFrame:int = 0) 
+		public function MoviePlayer(clip:MovieClip = null, fromFrame:int = 1, toFrame:int = 0)
 		{
 			this.clip = clip;
 			this.fromFrame = fromFrame;
 			this.toFrame = (toFrame > 0)
 				? toFrame
 				: clip.totalFrames;
+		}
+
+		public function detachOnComplete():MoviePlayer
+		{
+			completeEvent.addListener(detachFromDisplay);
+			return this;
+		}
+
+		private function detachFromDisplay():void
+		{
+			DisplayUtil.detachFromDisplay(clip);
 		}
 		
 		public function play(fromFrame:int = 1, toFrame:int = 0):MoviePlayer
@@ -44,12 +54,12 @@
 			return this;
 		}
 		
-		private function onEnterFrame(e:Event):void 
+		private function onEnterFrame(e:Event):void
 		{
 			if (clip.currentFrame == toFrame)
 			{
 				stopPlaying();
-				_completeEvent.dispatch();
+				dispatchComplete();
 			}
 			else if (clip.currentFrame < toFrame)
 			{
@@ -61,16 +71,12 @@
 			}
 		}
 		
-		public function get completeEvent():EventSender
-		{
-			return _completeEvent;
-		}
-		
-		public function execute():void
+		override public function execute():void
 		{
 			var currentPlayer:MoviePlayer = _players[clip];
 			if (currentPlayer)
 				currentPlayer.cancel();
+			
 			_players[clip] = this;
 			
 			clip.gotoAndStop(fromFrame);
