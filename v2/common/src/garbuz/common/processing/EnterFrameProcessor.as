@@ -9,7 +9,8 @@ package garbuz.common.processing
 
 	public class EnterFrameProcessor extends AsincCommand implements ICancelableCommand
 	{
-		private var _frameDispatcher:Shape = new Shape();
+		private static var _frameDispatcher:Shape = new Shape();
+
 		private var _targets:Vector.<IProcessable> = new <IProcessable>[];
 		private var _currentTarget:IProcessable;
 		private var _timeLimit:int;
