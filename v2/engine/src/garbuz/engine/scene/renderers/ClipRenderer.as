@@ -29,7 +29,7 @@ package garbuz.engine.scene.renderers
 
 		public function removeOnComplete():void
 		{
-			_playCompleteEvent.addListener(remove)
+			_playCompleteEvent.addListener(removeSelf)
 		}
 
 		public function play():void

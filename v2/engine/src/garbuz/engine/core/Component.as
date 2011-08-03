@@ -120,7 +120,7 @@ package garbuz.engine.core
 			return engine.hasProcessor(this, method);
 		}
 
-		public function remove():void
+		public function removeSelf():void
 		{
 			parent.removeComponent(this);
 		}
