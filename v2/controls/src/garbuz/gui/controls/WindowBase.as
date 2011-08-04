@@ -24,6 +24,11 @@ package garbuz.gui.controls
 			mouseChildren = true;
 		}
 
+		override protected function applyEnabled():void
+		{
+			this.mouseChildren = enabled;
+		}
+
 		ui_internal function activate():void
 		{
 			stage.focus = this;
