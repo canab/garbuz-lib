@@ -11,6 +11,16 @@ package garbuz.common.utils
 	{
 		public static function replaceWithBitmap(content:DisplayObject, bounds:Rectangle = null, transparent:Boolean = true):Bitmap
 		{
+			var bitmap:Bitmap = convertToBitmapWithPosition(content, bounds, transparent);
+
+			content.parent.addChildAt(bitmap, content.parent.getChildIndex(content));
+			DisplayUtil.detachFromDisplay(content);
+
+			return bitmap;
+		}
+
+		public static function convertToBitmapWithPosition(content:DisplayObject, bounds:Rectangle = null, transparent:Boolean = true):Bitmap
+		{
 			bounds = bounds || calculateIntBounds(content);
 
 			var bitmap:Bitmap = BitmapUtil.convertToBitmap(content, bounds, transparent);
@@ -18,9 +28,6 @@ package garbuz.common.utils
 			var position:Point = DisplayUtil.transformCoords(bounds.topLeft, content, content.parent);
 			bitmap.x = Math.floor(position.x);
 			bitmap.y = Math.floor(position.y);
-
-			content.parent.addChildAt(bitmap, content.parent.getChildIndex(content));
-			DisplayUtil.detachFromDisplay(content);
 
 			return bitmap;
 		}
