@@ -1,11 +1,11 @@
 package garbuz.common.resources.loaders
 {
+	import garbuz.common.commands.AsincCommand;
 	import garbuz.common.commands.ICancelableCommand;
 	import garbuz.common.errors.NotImplementedError;
-	import garbuz.common.events.EventSender;
 	import garbuz.common.logging.Logger;
 
-	public class LoaderBase implements ICancelableCommand
+	public class LoaderBase extends AsincCommand implements ICancelableCommand
 	{
 		private static var _logger:Logger = new Logger(LoaderBase);
 		private static var _version:String;
@@ -25,8 +25,6 @@ package garbuz.common.resources.loaders
 		// instance
 		//
 		///////////////////////////////////////////////////////////////////////////////////*/
-
-		private var _completeEvent:EventSender = new EventSender(this);
 
 		private var _url:String;
 		private var _maxAttempts:int;
@@ -49,7 +47,7 @@ package garbuz.common.resources.loaders
 				: "?v=" + _version;
 		}
 
-		public function execute():void
+		override public function execute():void
 		{
 			_attemptNum = 1;
 			startLoading();
@@ -75,7 +73,7 @@ package garbuz.common.resources.loaders
 			else
 			{
 				_logger.error("failed: " + url);
-				_completeEvent.dispatch();
+				dispatchComplete();
 			}
 		}
 
@@ -84,7 +82,7 @@ package garbuz.common.resources.loaders
 			removeListeners();
 			_successful = true;
 			_logger.debug("completed: " + url);
-			_completeEvent.dispatch();
+			dispatchComplete();
 		}
 
 		protected virtual function startLoading():void
@@ -107,11 +105,6 @@ package garbuz.common.resources.loaders
 		// get/set
 		//
 		///////////////////////////////////////////////////////////////////////////////////*/
-
-		public function get completeEvent():EventSender
-		{
-			return _completeEvent;
-		}
 
 		public function get url():String
 		{

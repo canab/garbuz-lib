@@ -17,15 +17,15 @@ package garbuz.common.resources.loaders
 		override protected function startLoading():void
 		{
 			_loader = new URLLoader();
-			_loader.addEventListener(Event.COMPLETE, onComplete);
-			_loader.addEventListener(IOErrorEvent.IO_ERROR, onError);
+			_loader.addEventListener(Event.COMPLETE, onLoadComplete);
+			_loader.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 			_loader.load(new URLRequest(url));
 		}
 
 		override protected function removeListeners():void
 		{
-			_loader.removeEventListener(Event.COMPLETE, onComplete);
-			_loader.removeEventListener(IOErrorEvent.IO_ERROR, onError);
+			_loader.removeEventListener(Event.COMPLETE, onLoadComplete);
+			_loader.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 		}
 
 		override protected function stopLoading():void
@@ -39,12 +39,12 @@ package garbuz.common.resources.loaders
 			}
 		}
 
-		private function onComplete(e:Event):void
+		private function onLoadComplete(e:Event):void
 		{
 			processComplete();
 		}
 
-		private function onError(e:Event):void
+		private function onLoadError(e:Event):void
 		{
 			processFail();
 		}
