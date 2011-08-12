@@ -4,37 +4,25 @@ package garbuz.engine.scene
 	import flash.display.Sprite;
 
 	import garbuz.common.errors.ItemNotFoundError;
-	import garbuz.common.utils.DisplayUtil;
 	import garbuz.engine.core.Component;
 
 	public class VectorLayer extends Component
 	{
 		private var _content:Sprite;
-		private var _parent:Sprite;
 		private var _items:Vector.<IVectorRenderer>;
 		private var _enableOrdering:Boolean = false;
 
-		public function VectorLayer(content:Sprite = null, parent:Sprite = null)
+		public function VectorLayer(content:Sprite = null)
 		{
 			_content = content || new Sprite();
-			_parent = parent;
 			_content.mouseEnabled = false;
 			_items = new Vector.<IVectorRenderer>();
 		}
 
 		override protected function onInitialize():void
 		{
-			if (_parent)
-				_parent.addChild(_content);
-
 			if (_enableOrdering)
 				addFrameListener(orderItems);
-		}
-
-		override protected function onDispose():void
-		{
-			if (_parent)
-				_parent.removeChild(_content);
 		}
 
 		public function addItem(item:IVectorRenderer):void
