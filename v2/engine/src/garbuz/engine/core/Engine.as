@@ -1,7 +1,6 @@
 package garbuz.engine.core
 {
-	import flash.display.Sprite;
-
+	import garbuz.common.display.StageReference;
 	import garbuz.common.errors.ItemAlreadyExistsError;
 	import garbuz.common.errors.ItemNotFoundError;
 	import garbuz.common.events.EventSender;
@@ -18,17 +17,15 @@ package garbuz.engine.core
 		private var _startEvent:EventSender = new EventSender(this);
 		private var _stopEvent:EventSender = new EventSender(this);
 
-		private var _root:Sprite;
 		private var _processManager:ProcessManager;
 		private var _tweenManager:TweenManager;
 		private var _entities:Object = {};
 		private var _started:Boolean;
 		private var _initialized:Boolean = false;
 
-		public function Engine(root:Sprite)
+		public function Engine()
 		{
-			_root = root;
-			_processManager = new ProcessManager(this);
+			_processManager = new ProcessManager();
 			_tweenManager = new TweenManager();
 		}
 
@@ -100,9 +97,6 @@ package garbuz.engine.core
 
 		private function initialize():void
 		{
-			if (!_root.stage)
-				throw new Error("Root should be on the stage at this moment");
-
 			for each (var entity:Entity in _entities)
 			{
 				entity.initialize();
@@ -135,7 +129,7 @@ package garbuz.engine.core
 			var processor:DelayedProcessor = new DelayedProcessor();
 			processor.component = component;
 			processor.method = method;
-			processor.frameCount = Math.max(time / 1000.0 * _root.stage.frameRate, 1);
+			processor.frameCount = Math.max(time / 1000.0 * frameRate, 1);
 
 			_processManager.addProcessor(processor);
 		}
@@ -150,7 +144,7 @@ package garbuz.engine.core
 			var processor:TimerProcessor = new TimerProcessor();
 			processor.component = component;
 			processor.method = method;
-			processor.frameCount = Math.max(time / 1000.0 * _root.stage.frameRate, 1);
+			processor.frameCount = Math.max(time / 1000.0 * frameRate, 1);
 
 			_processManager.addProcessor(processor);
 		}
@@ -237,12 +231,7 @@ package garbuz.engine.core
 
 		public function get frameRate():int
 		{
-			return root.stage.frameRate;
-		}
-
-		public function get root():Sprite
-		{
-			return _root;
+			return StageReference.stage.frameRate;
 		}
 
 		public function get started():Boolean

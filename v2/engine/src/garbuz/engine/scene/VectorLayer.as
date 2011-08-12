@@ -10,20 +10,22 @@ package garbuz.engine.scene
 	public class VectorLayer extends Component
 	{
 		private var _content:Sprite;
+		private var _parent:Sprite;
 		private var _items:Vector.<IVectorRenderer>;
 		private var _enableOrdering:Boolean = false;
 
-		public function VectorLayer(content:Sprite = null)
+		public function VectorLayer(content:Sprite = null, parent:Sprite = null)
 		{
 			_content = content || new Sprite();
+			_parent = parent;
 			_content.mouseEnabled = false;
 			_items = new Vector.<IVectorRenderer>();
 		}
 
 		override protected function onInitialize():void
 		{
-			if (!_content.parent)
-				engine.root.addChild(_content);
+			if (_parent)
+				_parent.addChild(_content);
 
 			if (_enableOrdering)
 				addFrameListener(orderItems);
@@ -31,7 +33,8 @@ package garbuz.engine.scene
 
 		override protected function onDispose():void
 		{
-			DisplayUtil.detachFromDisplay(_content);
+			if (_parent)
+				_parent.removeChild(_content);
 		}
 
 		public function addItem(item:IVectorRenderer):void

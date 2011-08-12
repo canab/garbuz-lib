@@ -1,11 +1,14 @@
 package garbuz.engine.components 
 {
+	import flash.display.Shape;
 	import flash.events.Event;
 
 	import garbuz.engine.core.Component;
 
 	public class PauseOnDeactivate extends Component
 	{
+		private var _eventDispatcher:Shape = new Shape();
+
 		public function PauseOnDeactivate()
 		{
 			super();
@@ -13,14 +16,14 @@ package garbuz.engine.components
 		
 		override protected function onInitialize():void 
 		{
-			engine.root.addEventListener(Event.ACTIVATE, onActivate);
-			engine.root.addEventListener(Event.DEACTIVATE, onDeactivate);
+			_eventDispatcher.addEventListener(Event.ACTIVATE, onActivate);
+			_eventDispatcher.addEventListener(Event.DEACTIVATE, onDeactivate);
 		}
 		
 		override protected function onDispose():void 
 		{
-			engine.root.removeEventListener(Event.ACTIVATE, onActivate);
-			engine.root.removeEventListener(Event.DEACTIVATE, onDeactivate);
+			_eventDispatcher.removeEventListener(Event.ACTIVATE, onActivate);
+			_eventDispatcher.removeEventListener(Event.DEACTIVATE, onDeactivate);
 		}
 		
 		private function onDeactivate(e:Event):void 

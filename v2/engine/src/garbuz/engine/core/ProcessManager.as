@@ -1,25 +1,25 @@
 package garbuz.engine.core 
 {
+	import flash.display.Shape;
 	import flash.events.Event;
 
 	internal class ProcessManager
 	{
-		private var _engine:Engine;
 		private var _head:ProcessorBase;
+		private var _frameDispatcher:Shape = new Shape();
 
-		public function ProcessManager(engine:Engine) 
+		public function ProcessManager()
 		{
-			_engine = engine;
 		}
 		
 		internal function start():void 
 		{
-			_engine.root.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			_frameDispatcher.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
 		internal function stop():void 
 		{
-			_engine.root.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			_frameDispatcher.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 
 		private function onEnterFrame(e:Event):void
