@@ -4,6 +4,22 @@
 	{
 		static public const EMPTY_CHARS:String = ' \t\r\n\f' + String.fromCharCode(160);
 
+		public static function endsWith(source:String, suffix:String):Boolean
+		{
+			if (source == null || source.length < suffix.length)
+				return false;
+
+			return source.substr(source.length - suffix.length) == suffix;
+		}
+
+		public static function startsWith(source:String, prefix:String):Boolean
+		{
+			if (source == null || source.length < prefix.length)
+				return false;
+
+			return source.substr(0, prefix.length) == prefix;
+		}
+
 		public static function upperFirstChar(source:String):String
 		{
 			return source.length == 0
