@@ -5,11 +5,24 @@ package garbuz.engine.scene
 
 	public class RandomAnimations extends Component
 	{
-		private var _items:Vector.<IClipRenderer>;
+		private var _items:Vector.<IClipRenderer> = new <IClipRenderer>[];
 
-		public function RandomAnimations(items:Vector.<IClipRenderer>)
+		public function RandomAnimations()
 		{
-			_items = items;
+		}
+
+		public function addItems(renderers:Vector.<IClipRenderer> = null):void
+		{
+			for each (var clipRenderer:IClipRenderer in renderers)
+			{
+				addItem(clipRenderer);
+			}
+		}
+
+		public function addItem(clipRenderer:IClipRenderer):void
+		{
+			_items.push(clipRenderer);
+			clipRenderer.playCompleteEvent.addListener(onPlayComplete);
 		}
 
 		override protected virtual function onInitialize():void
@@ -21,13 +34,11 @@ package garbuz.engine.scene
 		{
 			var clip:IClipRenderer = ArrayUtil.getRandomItem(_items);
 			clip.currentFrame = 1;
-			clip.playCompleteEvent.addListener(onPlayComplete);
 			clip.playForward();
 		}
 
-		private function onPlayComplete(clip:IClipRenderer):void
+		private function onPlayComplete():void
 		{
-			clip.playCompleteEvent.removeListener(onPlayComplete);
 			playNext();
 		}
 	}
