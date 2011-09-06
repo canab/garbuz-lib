@@ -2,6 +2,7 @@ package garbuz.engine.scene.renderers
 {
 	import flash.display.Sprite;
 
+	import garbuz.common.errors.NotImplementedError;
 	import garbuz.common.events.EventSender;
 	import garbuz.common.utils.MathUtil;
 	import garbuz.engine.scene.IClipRenderer;
@@ -128,7 +129,7 @@ package garbuz.engine.scene.renderers
 
 		protected function updateFrame():void
 		{
-			// virtual
+			throw new NotImplementedError();
 		}
 
 		/*///////////////////////////////////////////////////////////////////////////////////

@@ -18,7 +18,7 @@ package garbuz.gui.controls
 		{
 			_line = content[LINE_NAME];
 
-			wrapContent(content);
+			wrapTarget(content);
 			initialize();
 		}
 
