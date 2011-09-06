@@ -4,8 +4,9 @@ package garbuz.engine.scene.renderers
 
 	import garbuz.common.events.EventSender;
 	import garbuz.common.utils.MathUtil;
+	import garbuz.engine.scene.IClipRenderer;
 
-	public class ClipRenderer extends SpriteRenderer
+	public class ClipRenderer extends SpriteRenderer implements IClipRenderer
 	{
 		private var _playCompleteEvent:EventSender = new EventSender(this);
 
