@@ -1,14 +1,17 @@
 package garbuz.engine.scene
 {
+	import garbuz.common.utils.ArrayUtil;
 	import garbuz.engine.core.Component;
 
 	public class RandomAnimations extends Component
 	{
 		private var _items:Vector.<IClipRenderer> = new <IClipRenderer>[];
-		private var _currentIndex:int = 0;
+		private var _nowPlaying:Vector.<IClipRenderer> = new <IClipRenderer>[];
+		private var _period:int;
 
-		public function RandomAnimations()
+		public function RandomAnimations(period:int = 1000)
 		{
+			_period = period;
 		}
 
 		public function addItems(renderers:Vector.<IClipRenderer> = null):void
@@ -28,25 +31,27 @@ package garbuz.engine.scene
 
 		override protected virtual function onInitialize():void
 		{
-			playNext();
+			addDelayedCall(_period, playNext);
 		}
 
 		private function playNext():void
 		{
-//			var clip:IClipRenderer = ArrayUtil.getRandomItem(_items);
+			var clip:IClipRenderer = ArrayUtil.getRandomItem(_items);
 
-			_currentIndex++;
-			if (_currentIndex == _items.length)
-				_currentIndex = 0;
+			if (_nowPlaying.indexOf(clip) == -1)
+			{
+				_nowPlaying.push(clip);
 
-			var clip:IClipRenderer = _items[_currentIndex];
-			clip.currentFrame = 1;
-			clip.playForward();
+				clip.currentFrame = 1;
+				clip.playForward();
+			}
+
+			addDelayedCall(_period, playNext);
 		}
 
-		private function onPlayComplete():void
+		private function onPlayComplete(clip:IClipRenderer):void
 		{
-			playNext();
+			ArrayUtil.removeItem(_nowPlaying, clip);
 		}
 	}
 }

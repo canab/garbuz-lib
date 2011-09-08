@@ -10,24 +10,27 @@ package garbuz.engine.scene.renderers
 	{
 		private var _content:Sprite;
 
-		public function BitmapSpriteRenderer()
+		public function BitmapSpriteRenderer(bitmap:Bitmap)
 		{
 			super(_content = new Sprite());
+			_content.addChild(bitmap);
 		}
 
-		public function captureSprite(target:Sprite):void
+		public static function captureSprite(target:Sprite):BitmapSpriteRenderer
 		{
-			_content.x = int(target.x);
-			_content.y = int(target.y);
-			_content.addChild(target);
+			var container:Sprite = new Sprite();
+			container.addChild(target);
 
-			var bounds:Rectangle = BitmapUtil.calculateIntBounds(_content);
-			var bitmap:Bitmap = BitmapUtil.convertToBitmap(_content, bounds);
+			var bounds:Rectangle = BitmapUtil.calculateIntBounds(container);
+			var bitmap:Bitmap = BitmapUtil.convertToBitmap(container, bounds);
 			bitmap.x = Math.round(bounds.x - target.x);
 			bitmap.y = Math.round(bounds.y - target.y);
 
-			_content.removeChild(target);
-			_content.addChild(bitmap);
+			var renderer:BitmapSpriteRenderer = new BitmapSpriteRenderer(bitmap);
+			renderer.content.x = Math.round(target.x);
+			renderer.content.y = Math.round(target.y);
+
+			return renderer;
 		}
 	}
 }
