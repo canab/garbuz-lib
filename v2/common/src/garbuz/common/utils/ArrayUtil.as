@@ -78,6 +78,17 @@ package garbuz.common.utils
 		{
 			return source[int(Math.random() * source.length)];
 		}
+
+		public static function shuffle(source:Object):void
+		{
+			for (var i:int = 0; i < source.length; i++)
+			{
+				var newIndex:int = MathUtil.randomInt(0, source.length - 1);
+				var value:* = source[i];
+				source.splice(i, 1);
+				source.splice(newIndex, 0, value);
+			}
+		}
 		
 		public static function getRandomItems(source:Object, count:int):Array
 		{
