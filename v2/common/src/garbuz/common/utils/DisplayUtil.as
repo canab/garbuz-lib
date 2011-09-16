@@ -3,6 +3,7 @@ package garbuz.common.utils
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	import flash.display.FrameLabel;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.geom.Matrix;
@@ -232,6 +233,19 @@ package garbuz.common.utils
 			}
 			
 			return point;
+		}
+
+		public static function addFrameScripts(clip:MovieClip, handlers:Object):void
+		{
+			var labels:Array = clip.currentLabels;
+
+			for each (var label:FrameLabel in labels)
+			{
+				var handler:Function = handlers[label.name];
+
+				if (handler != null)
+					clip.addFrameScript(label.frame - 1, handler);
+			}
 		}
 	}
 
