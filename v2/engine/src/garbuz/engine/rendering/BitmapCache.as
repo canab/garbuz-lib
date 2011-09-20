@@ -43,10 +43,8 @@ package garbuz.engine.rendering
 
 			var frames:Vector.<BitmapFrame> = _cache[key];
 			
-			if (frames == null)
-			{
-				_cache[key] = frames = new <BitmapFrame>[];
-			}
+			if (!frames)
+				frames = _cache[key] = new <BitmapFrame>[];
 
 			return frames;
 		}
