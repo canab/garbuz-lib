@@ -185,6 +185,11 @@ package garbuz.gui
 			instance.locked = value;
 		}
 
+		public static function get events():UIEvents
+		{
+			return instance.events;
+		}
+
 		/*///////////////////////////////////////////////////////////////////////////////////
 		//
 		// instance
@@ -193,6 +198,7 @@ package garbuz.gui
 
 		private var _root:Sprite;
 		private var _bounds:Rectangle;
+		private var _events:UIEvents = new UIEvents();
 
 		private var _popupManager:PopupManager;
 		private var _tooltipManager:ToolTipManager;
@@ -283,6 +289,11 @@ package garbuz.gui
 		private function unlock():void
 		{
 			_root.mouseChildren = true;
+		}
+
+		public function get events():UIEvents
+		{
+			return _events;
 		}
 	}
 

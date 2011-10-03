@@ -54,6 +54,7 @@ package garbuz.gui
 		{
 			removeScreen();
 			addScreen(screen);
+			UI.events.screenChanged.dispatch();
 		}
 
 		private function addScreen(screen:WindowBase):void
@@ -211,12 +212,15 @@ package garbuz.gui
 				ui.root.addChildAt(window, depth);
 
 			window.processAdd();
+			
+			UI.events.windowAdded.dispatch(window);
 		}
 
 		private function detachWindow(window:WindowBase):void
 		{
 			window.processRemove();
 			DisplayUtil.detachFromDisplay(window);
+			UI.events.windowRemoved.dispatch(window);
 		}
 
 		public function activateWindow(window:WindowBase):void
