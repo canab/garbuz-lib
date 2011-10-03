@@ -2,6 +2,6 @@ package garbuz.common.logging
 {
 	public interface ILogFormatter
 	{
-		function format(sender:Object, level:String, message:String):String;
+		function format(sender:String, level:String, message:String):String;
 	}
 }
