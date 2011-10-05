@@ -79,26 +79,23 @@ package garbuz.common.logging
 			_defaultLevel = value;
 		}
 
-
 		/*///////////////////////////////////////////////////////////////////////////////////
-		//
-		// instance
-		//
-		///////////////////////////////////////////////////////////////////////////////////*/
+		 //
+		 // instance
+		 //
+		 ///////////////////////////////////////////////////////////////////////////////////*/
 
-		private var _sender:String;
+		private var _sender:Object;
 		private var _adapter:ILogAdapter;
 		private var _formatter:ILogFormatter;
 		private var _level:int = defaultLevel;
 
 		public function Logger(sender:Object)
 		{
-			_sender = String(sender)
-					.replace(/\[object (.+)]$/, "$1")
-					.replace(/\[class (.+)]$/, "$1");
+			_sender = sender;
 		}
 
-		public function debug(... args):void
+		public function debug(...args):void
 		{
 			if (_level <= LogLevels.DEBUG)
 				print(LogLevels.DEBUG, joinArgs(args));
@@ -130,7 +127,7 @@ package garbuz.common.logging
 			{
 				if (text.length > 0)
 					text += " ";
-				
+
 				text += String(item);
 			}
 
@@ -140,15 +137,18 @@ package garbuz.common.logging
 		protected function print(level:int, message:String):void
 		{
 			var levelName:String = LogLevels.getName(level);
-			var text:String = formatter.format(_sender, levelName, message);
-			adapter.print(_sender, level, text);
+			var senderText:String = String(_sender)
+					.replace(/\[object (.+)]$/, "$1")
+					.replace(/\[class (.+)]$/, "$1");
+			var text:String = formatter.format(senderText, levelName, message);
+			adapter.print(senderText, level, text);
 		}
 
 		/*///////////////////////////////////////////////////////////////////////////////////
-		//
-		// get/set
-		//
-		///////////////////////////////////////////////////////////////////////////////////*/
+		 //
+		 // get/set
+		 //
+		 ///////////////////////////////////////////////////////////////////////////////////*/
 
 		public function get adapter():ILogAdapter
 		{
