@@ -54,5 +54,21 @@ package garbuz.common.utils
 			}
 			return true;
 		}
+
+		public static function containsKey(object:Object, key:String):Boolean
+		{
+			return (key in object);
+		}
+
+		public static function containsValue(object:Object, value:*):Boolean
+		{
+			for each (var item:Object in object)
+			{
+				if (item === value)
+					return true;
+			}
+			
+			return false;
+		}
 	}
 }
