@@ -187,6 +187,10 @@ package garbuz.gui.controls
 			return _items;
 		}
 
+		/**
+		 *
+		 * @param value Vector or Array
+		 */
 		public function set items(value:Object):void
 		{
 			_items = value;

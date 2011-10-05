@@ -2,12 +2,11 @@ package garbuz.common.resources
 {
 	import flash.display.Loader;
 	import flash.system.ApplicationDomain;
-	import flash.utils.Dictionary;
 
+	import garbuz.common.collections.WeakObjectMap;
 	import garbuz.common.errors.NullPointerError;
 	import garbuz.common.events.EventSender;
 	import garbuz.common.resources.loaders.SWFLoader;
-	import garbuz.common.utils.MapUtil;
 
 	public class ResourceBundle
 	{
@@ -16,7 +15,7 @@ package garbuz.common.resources
 		private var _swfLoader:SWFLoader;
 		private var _nativeLoader:Loader;
 		private var _url:String;
-		private var _references:Dictionary = new Dictionary(true);
+		private var _references:WeakObjectMap = new WeakObjectMap();
 		private var _manager:LoadingManager;
 
 		public function ResourceBundle(url:String)
@@ -90,12 +89,12 @@ package garbuz.common.resources
 
 		public function get hasReferences():Boolean
 		{
-			return !MapUtil.isEmpty(_references);
+			return !_references.isEmpty();
 		}
 
 		public function toString():String
 		{
-			return "ResourceBundle(" + MapUtil.getLength(_references) + ") " + _url;
+			return "ResourceBundle(" + _references.getLength() + ") " + _url;
 		}
 	}
 }

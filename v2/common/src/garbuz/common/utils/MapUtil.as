@@ -55,7 +55,7 @@ package garbuz.common.utils
 			return true;
 		}
 
-		public static function containsKey(object:Object, key:String):Boolean
+		public static function containsKey(object:Object, key:Object):Boolean
 		{
 			return (key in object);
 		}

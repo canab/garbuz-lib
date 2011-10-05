@@ -2,15 +2,15 @@
 {
 	import flash.display.MovieClip;
 	import flash.events.Event;
-	import flash.utils.Dictionary;
 
+	import garbuz.common.collections.WeakObjectMap;
 	import garbuz.common.commands.AsincCommand;
 	import garbuz.common.commands.ICancelableCommand;
 	import garbuz.common.utils.DisplayUtil;
 
 	public class MoviePlayer extends AsincCommand implements ICancelableCommand
 	{
-		static private const _players:Dictionary = new Dictionary(true);
+		static private const _players:WeakObjectMap = new WeakObjectMap(MovieClip, MoviePlayer);
 		
 		public var clip:MovieClip;
 		public var toFrame:int;
@@ -91,7 +91,7 @@
 		private function stopPlaying():void 
 		{
 			clip.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
-			delete _players[clip];
+			_players.removeKey(clip);
 		}
 		
 	}

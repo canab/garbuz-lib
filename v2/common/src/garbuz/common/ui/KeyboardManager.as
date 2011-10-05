@@ -3,8 +3,8 @@ package garbuz.common.ui
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
-	import flash.utils.Dictionary;
 
+	import garbuz.common.collections.ObjectMap;
 	import garbuz.common.display.StageReference;
 	import garbuz.common.events.EventSender;
 
@@ -28,7 +28,7 @@ package garbuz.common.ui
 		
 		private var _pressEvent:EventSender = new EventSender(this);
 		private var _releaseEvent:EventSender = new EventSender(this);
-		private var _pressedKeys:Dictionary = new Dictionary();
+		private var _pressedKeys:ObjectMap = new ObjectMap(int, Boolean);
 
 		//noinspection JSUnusedLocalSymbols
 		public function KeyboardManager(param:PrivateConstructor)
@@ -46,7 +46,7 @@ package garbuz.common.ui
 		
 		public function clearKeys(e:Event = null):void
 		{
-			_pressedKeys = new Dictionary();
+			_pressedKeys = new ObjectMap();
 		}
 		
 		private function onKeyDown(e:KeyboardEvent):void
@@ -57,13 +57,13 @@ package garbuz.common.ui
 
 		private function onKeyUp(e:KeyboardEvent):void
 		{
-			delete _pressedKeys[e.keyCode];
+			_pressedKeys.removeKey(e.keyCode);
 			_releaseEvent.dispatch(e);
 		}
 		
 		public function isKeyPressed(keyCode:int):Boolean
 		{
-			return (keyCode in _pressedKeys);
+			return _pressedKeys.containsKey(keyCode);
 		}
 		
 		public function get pressedKeys():Array

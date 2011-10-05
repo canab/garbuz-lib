@@ -22,6 +22,7 @@ package garbuz.engine.core
 		private var _entities:Object = {};
 		private var _started:Boolean;
 		private var _initialized:Boolean = false;
+		private var _context:Object;
 
 		public function Engine()
 		{
@@ -262,6 +263,15 @@ package garbuz.engine.core
 			return _tweenManager;
 		}
 
+		public function get context():Object
+		{
+			return _context;
+		}
+
+		public function set context(value:Object):void
+		{
+			_context = value;
+		}
 	}
 
 }

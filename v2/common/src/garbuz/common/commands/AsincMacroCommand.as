@@ -1,13 +1,11 @@
 package garbuz.common.commands
 {
-	import flash.utils.Dictionary;
-
+	import garbuz.common.collections.ObjectMap;
 	import garbuz.common.errors.NullPointerError;
-	import garbuz.common.utils.MapUtil;
 
 	public class AsincMacroCommand extends AsincCommand implements ICancelableCommand
 	{
-		private var _commands:Dictionary = new Dictionary();
+		private var _commands:ObjectMap = new ObjectMap(IAsincCommand, Boolean);
 
 		private var _started:Boolean = false;
 		private var _canceled:Boolean = false;
@@ -45,7 +43,7 @@ package garbuz.common.commands
 
 			_started = true;
 
-			if (MapUtil.isEmpty(_commands))
+			if (_commands.isEmpty())
 				add(new CallLaterCommand());
 
 			for (var command:Object in _commands)
@@ -97,7 +95,7 @@ package garbuz.common.commands
 		//
 		///////////////////////////////////////////////////////////////////////////////////*/
 
-		public function get commands():Dictionary
+		public function get commands():ObjectMap
 		{
 			return _commands;
 		}

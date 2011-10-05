@@ -1,15 +1,18 @@
 package garbuz.common.collections
 {
+	import flash.utils.Dictionary;
+
 	import garbuz.common.utils.MapUtil;
 
-	public dynamic class StringMap
+	public dynamic class ObjectMap extends Dictionary
 	{
 		//noinspection JSUnusedLocalSymbols
-		public function StringMap(itemType:Class = null)
+		public function ObjectMap(keyType:Class = null, valueType:Class = null, weakKeys:Boolean = false)
 		{
+			super(weakKeys);
 		}
 
-		public function removeKey(key:String):void
+		public function removeKey(key:Object):void
 		{
 			delete this[key];
 		}
@@ -39,7 +42,7 @@ package garbuz.common.collections
 			return MapUtil.isEmpty(this);
 		}
 
-		public function containsKey(key:String):Boolean
+		public function containsKey(key:Object):Boolean
 		{
 			return MapUtil.containsKey(this, key);
 		}

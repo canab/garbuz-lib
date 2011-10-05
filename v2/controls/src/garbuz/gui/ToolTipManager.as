@@ -3,8 +3,8 @@ package garbuz.gui
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.utils.Dictionary;
 
+	import garbuz.common.collections.WeakObjectMap;
 	import garbuz.common.localization.MessageBundle;
 	import garbuz.common.utils.DisplayUtil;
 	import garbuz.gui.interfaces.ITooltip;
@@ -16,7 +16,7 @@ package garbuz.gui
 		private static const SHOW_DURATION:int = 100;
 		private static const SHOW_DELAY:int = 400;
 
-		private var _targets:Dictionary = new Dictionary(true);
+		private var _targets:WeakObjectMap = new WeakObjectMap(DisplayObject, TargetData);
 
 		public function ToolTipManager()
 		{
@@ -33,8 +33,8 @@ package garbuz.gui
 		{
 			if (_targets[target])
 			{
+				_targets.removeKey(target);
 				removeListeners(target);
-				delete _targets[target];
 				hideTooltip();
 			}
 		}

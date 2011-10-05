@@ -7,8 +7,8 @@ package garbuz.common.ui
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.ui.Mouse;
-	import flash.utils.Dictionary;
 
+	import garbuz.common.collections.WeakObjectMap;
 	import garbuz.common.errors.AlreadyInitializedError;
 	import garbuz.common.errors.NotInitializedError;
 	import garbuz.common.utils.DisplayUtil;
@@ -47,7 +47,7 @@ package garbuz.common.ui
 		
 		private var _root:Sprite;
 		private var _pointer:DisplayObject; 
-		private var _targets:Dictionary = new Dictionary(true);
+		private var _targets:WeakObjectMap = new WeakObjectMap(DisplayObject, PointerInfo);
 
 		//noinspection JSUnusedLocalSymbols
 		public function MouseManager(param:PrivateConstructor)
@@ -107,7 +107,7 @@ package garbuz.common.ui
 		public function unRegisterObject(target:DisplayObject):void
 		{
 			removeListeners(target);
-			delete _targets[target];
+			_targets.removeKey(target);
 		}
 
 		private function addListeners(target:DisplayObject):void
