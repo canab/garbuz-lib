@@ -80,22 +80,23 @@ package garbuz.common.resources
 		public function getVerboseStats():String
 		{
 			var references:Array = getReferences();
-			var refCount:StringMap = new StringMap(int);
+			var refMap:StringMap = new StringMap(int);
 
-			for each (var reference:Object in references)
+			for each (var object:Object in references)
 			{
-				var displayName:String = String(reference);
-				if (refCount.containsKey(displayName))
-					refCount[displayName] = refCount[displayName] + 1;
+				var objectName:String = String(object);
+
+				if (refMap.containsKey(objectName))
+					refMap[objectName] = refMap[objectName] + 1;
 				else
-					refCount[displayName] = 1;
+					refMap[objectName] = 1;
 			}
 
 			var result:String = "(total: " + _references.getLength() + ") " + _url;
 
-			for (var key:String in refCount)
+			for (var key:String in refMap)
 			{
-				result += "\n\t(" + refCount[key] + ") " + key;
+				result += "\n\t(" + refMap[key] + ") " + key;
 			}
 
 			return result;

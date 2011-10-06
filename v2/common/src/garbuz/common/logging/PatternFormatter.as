@@ -2,7 +2,7 @@ package garbuz.common.logging
 {
 	public class PatternFormatter implements ILogFormatter
 	{
-		public static const DEFAULT_PATTERN:String = "{level}: [{sender}] {message}";
+		public static const DEFAULT_PATTERN:String = "{level}: {sender} - {message}";
 
 		private var _pattern:String;
 
