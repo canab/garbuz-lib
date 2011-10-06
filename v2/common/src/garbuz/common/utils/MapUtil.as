@@ -2,6 +2,15 @@ package garbuz.common.utils
 {
 	public class MapUtil
 	{
+		public static function copyProperties(target:Object, source:Object):Object
+		{
+			for (var key:String in source)
+			{
+				target[key] = source[key];
+			}
+			return source;
+		}
+
 		public static function removeValue(map:Object, value:*):void
 		{
 			for (var key:Object in map)

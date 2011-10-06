@@ -6,6 +6,13 @@ package garbuz.common.collections
 
 	public dynamic class ObjectMap extends Dictionary
 	{
+		public static function copyOf(source:Object):ObjectMap
+		{
+			var result:ObjectMap = new ObjectMap();
+			MapUtil.copyProperties(result, source);
+			return result;
+		}
+
 		//noinspection JSUnusedLocalSymbols
 		public function ObjectMap(keyType:Class = null, valueType:Class = null, weakKeys:Boolean = false)
 		{

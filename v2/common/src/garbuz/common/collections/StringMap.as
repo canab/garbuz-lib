@@ -4,6 +4,13 @@ package garbuz.common.collections
 
 	public dynamic class StringMap
 	{
+		public static function copyOf(source:Object):StringMap
+		{
+			var result:StringMap = new StringMap();
+			MapUtil.copyProperties(result, source);
+			return result;
+		}
+
 		//noinspection JSUnusedLocalSymbols
 		public function StringMap(itemType:Class = null)
 		{

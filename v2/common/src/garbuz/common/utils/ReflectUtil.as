@@ -40,6 +40,11 @@ package garbuz.common.utils
 				return getDefinitionByName(getQualifiedClassName(instance)) as Class;
 		}
 		
+		public static function getFullName(object:Object):String
+		{
+			return getQualifiedClassName(object).replace("::", ".");
+		}
+
 		public static function getClassName(object:Object):String
 		{
 			var fullName:String = getQualifiedClassName(object);

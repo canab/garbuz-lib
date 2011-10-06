@@ -1,11 +1,14 @@
 package garbuz.common.logging
 {
+	import garbuz.common.utils.ReflectUtil;
+
 	public class Logger
 	{
 		private static var _defaultAdapter:ILogAdapter;
 		private static var _defaultFormatter:ILogFormatter;
 		private static var _defaultLevel:int = LogLevels.DEBUG;
 		private static var _defaultLogger:Logger;
+		private static var _config:LoggerConfig = new LoggerConfig();
 
 		public static function debug(...args):void
 		{
@@ -25,6 +28,11 @@ package garbuz.common.logging
 		public static function error(...args):void
 		{
 			defaultLogger.debug.apply(null, args);
+		}
+
+		public static function setProperties(properties:Object):void
+		{
+			_config.setProperties(properties);
 		}
 
 		public static function get defaultAdapter():ILogAdapter
@@ -85,6 +93,7 @@ package garbuz.common.logging
 		 //
 		 ///////////////////////////////////////////////////////////////////////////////////*/
 
+		private var _name:String;
 		private var _sender:Object;
 		private var _adapter:ILogAdapter;
 		private var _formatter:ILogFormatter;
@@ -93,6 +102,12 @@ package garbuz.common.logging
 		public function Logger(sender:Object)
 		{
 			_sender = sender;
+
+			_name = (sender is String)
+					? String(sender)
+					: ReflectUtil.getFullName(sender);
+
+			_level = _config.getLevel(_name);
 		}
 
 		public function debug(...args):void
@@ -137,11 +152,12 @@ package garbuz.common.logging
 		protected function print(level:int, message:String):void
 		{
 			var levelName:String = LogLevels.getName(level);
-			var senderText:String = String(_sender)
+			var senderName:String = String(_sender)
 					.replace(/\[object (.+)]$/, "$1")
 					.replace(/\[class (.+)]$/, "$1");
-			var text:String = formatter.format(senderText, levelName, message);
-			adapter.print(senderText, level, text);
+
+			var text:String = formatter.format(senderName, levelName, message);
+			adapter.print(_sender, level, text);
 		}
 
 		/*///////////////////////////////////////////////////////////////////////////////////

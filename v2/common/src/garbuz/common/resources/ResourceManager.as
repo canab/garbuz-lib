@@ -99,19 +99,22 @@ package garbuz.common.resources
 			}
 		}
 
-		public function printStats():void
+		public function printStats(verbose:Boolean = false):void
 		{
 			var length:int = 0;
 			
 			for each (var bundle:ResourceBundle in _bundles)
 			{
-				_logger.info(bundle);
+				if (verbose)
+					_logger.info(bundle.getVerboseStats());
+				else
+					_logger.info(bundle.getStats());
+
 				length++;
 			}
 
 			_logger.info("total: " + length);
 		}
-
 	}
 
 }

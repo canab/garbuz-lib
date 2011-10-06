@@ -3,6 +3,7 @@ package garbuz.common.resources
 	import flash.display.Loader;
 	import flash.system.ApplicationDomain;
 
+	import garbuz.common.collections.StringMap;
 	import garbuz.common.collections.WeakObjectMap;
 	import garbuz.common.errors.NullPointerError;
 	import garbuz.common.events.EventSender;
@@ -28,7 +29,7 @@ package garbuz.common.resources
 			if (!reference)
 				throw new NullPointerError();
 
-			_references[reference] = reference;
+			_references[reference] = true;
 		}
 
 		public function load(manager:LoadingManager):void
@@ -66,6 +67,40 @@ package garbuz.common.resources
 			return new classRef();
 		}
 
+		public function getReferences():Array
+		{
+			return _references.getKeys();
+		}
+
+		public function getStats():String
+		{
+			return "(total: " + _references.getLength() + ") " + _url;
+		}
+
+		public function getVerboseStats():String
+		{
+			var references:Array = getReferences();
+			var refCount:StringMap = new StringMap(int);
+
+			for each (var reference:Object in references)
+			{
+				var displayName:String = String(reference);
+				if (refCount.containsKey(displayName))
+					refCount[displayName] = refCount[displayName] + 1;
+				else
+					refCount[displayName] = 1;
+			}
+
+			var result:String = "(total: " + _references.getLength() + ") " + _url;
+
+			for (var key:String in refCount)
+			{
+				result += "\n\t(" + refCount[key] + ") " + key;
+			}
+
+			return result;
+		}
+
 		/*///////////////////////////////////////////////////////////////////////////////////
 		//
 		// get/set
@@ -90,11 +125,6 @@ package garbuz.common.resources
 		public function get hasReferences():Boolean
 		{
 			return !_references.isEmpty();
-		}
-
-		public function toString():String
-		{
-			return "ResourceBundle(" + _references.getLength() + ") " + _url;
 		}
 	}
 }
