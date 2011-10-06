@@ -136,17 +136,7 @@ package garbuz.common.logging
 
 		private function joinArgs(args:Array):String
 		{
-			var text:String = "";
-
-			for each (var item:Object in args)
-			{
-				if (text.length > 0)
-					text += " ";
-
-				text += String(item);
-			}
-
-			return text;
+			return args.join(" ");
 		}
 
 		protected function print(level:int, message:String):void
