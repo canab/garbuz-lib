@@ -82,7 +82,7 @@ package garbuz.common.query
 			return result;			
 		}
 		
-		public function getUniqueItems():Array
+		public function findUnique():Array
 		{
 			var result:Array = [];
 			for each (var item:Object in _source)
@@ -144,10 +144,6 @@ package garbuz.common.query
 		 * function(source:Object):Object
 		 * @return
 		 */
-		public function convertByFunction(func:Function):Array
-		{
-			return convert(new FunctionConverter(func));
-		}
 
 		public function selectProperty(property:String):Array
 		{
