@@ -35,6 +35,11 @@ package garbuz.common.logging
 			_config.setProperties(properties);
 		}
 
+		public static function setLevel(loggerName:String, level:int):void
+		{
+			_config.setLevel(loggerName, level);
+		}
+
 		public static function get defaultAdapter():ILogAdapter
 		{
 			if (!_defaultAdapter)

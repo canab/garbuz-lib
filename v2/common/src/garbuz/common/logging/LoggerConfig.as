@@ -9,6 +9,11 @@ package garbuz.common.logging
 			_properties = properties || {};
 		}
 
+		public function setLevel(loggerName:String, level:int):void
+		{
+			_properties[loggerName] = LogLevels.getName(level);
+		}
+
 		public function getLevel(loggerName:String):int
 		{
 			var maxLength:int = 0;
