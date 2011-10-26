@@ -1,4 +1,4 @@
-﻿<project name="as3-common-lib" basedir="." default="build">
+﻿<project name="as3-common-lib" basedir="." default="buildAll">
 
     <property file="local.properties"/>
     <property name="output.dir" value="../bin"/>
@@ -27,10 +27,10 @@
         <echo message="build.number: ${build.number}"/>
     </target>
 
-    <target name="build"
-            depends="clean, buildNumber, buildMotion, buildCommon, buildEngine, buildControls, buildAll"/>
+    <target name="buildAll"
+            depends="clean, buildNumber, buildMotion, buildCommon, buildEngine, buildControls"/>
 
-    <target name="buildAll" depends="buildNumber">
+    <target name="buildCumulative" depends="clean, buildNumber">
         <compileSWC swcName="garbuz-lib"
                     srcPath="../common/src,../controls/src,../engine/src,../motion/src">
         </compileSWC>
