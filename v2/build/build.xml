@@ -1,44 +1,90 @@
 ﻿<project name="as3-common-lib" basedir="." default="build">
-	
-	<property file="local.properties"/>
-	<property name="source.dir" value="../src"/>
-	<property name="output.dir" value=".."/>
-	<property name="swc.name" value="garbuz"/>
-	
-	<taskdef name="svn" classname="org.tigris.subversion.svnant.SvnTask">
-		<classpath>
-			<pathelement location="lib/svnant.jar"/>
-			<pathelement location="lib/svnClientAdapter.jar"/>
-			<pathelement location="lib/svnjavahl.jar"/>
-			<pathelement location="lib/svnkit.jar"/>
-		</classpath>
-	</taskdef>
-	
-	<target name="clean">
-		<delete>
-			<fileset dir="${output.dir}" includes="**/*.swc"/>
-		</delete>
-	</target>
-	
-	<target name="svnUpdate">
-		<svn username="${svn.username}" password="${svn.password}">
-			<update dir="${source.dir}"/>
-		</svn>
-	</target>
-	
-	<target name="buildNumber">
-		<svn>
-			<status path="${source.dir}" revisionProperty="build.number"/>
-		</svn>
-		<echo>revision #${build.number}</echo>
-	</target>
-	
-	<target name="build" depends="clean, svnUpdate, buildNumber">
-		<exec executable="${flex.sdk.dir}/bin/${flex.compiler}" failonerror="true">
-			<arg line="-debug=true"/>
-			<arg line="-source-path+=${source.dir}"/>
-			<arg line="-include-sources+=${source.dir}"/>
-			<arg line="-output=${output.dir}/${swc.name}-r${build.number}.swc"/>
-		</exec>
-	</target>
+
+    <property file="local.properties"/>
+    <property name="output.dir" value="../bin"/>
+
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+   		<classpath>
+   			<fileset dir="lib" includes="ant-contrib-*.jar"/>
+   		</classpath>
+   	</taskdef>
+
+    <if>
+        <os family="windows"/>
+        <then><property name="compc.compiler" value="compc.exe"/></then>
+        <else> <property name="compc.compiler" value="compc"/></else>
+    </if>
+
+    <target name="clean">
+        <delete dir="${output.dir}"/>
+        <mkdir dir="${output.dir}"/>
+    </target>
+
+    <target name="buildNumber">
+        <tstamp>
+            <format property="build.number" pattern="dd.MM.yy"/>
+        </tstamp>
+        <echo message="build.number: ${build.number}"/>
+    </target>
+
+    <target name="build"
+            depends="clean, buildNumber, buildMotion, buildCommon, buildEngine, buildControls, buildAll"/>
+
+    <target name="buildAll" depends="buildNumber">
+        <compileSWC swcName="garbuz-lib"
+                    srcPath="../common/src,../controls/src,../engine/src,../motion/src">
+        </compileSWC>
+    </target>
+
+    <target name="buildCommon" depends="buildNumber">
+        <compileSWC swcName="common"
+                    srcPath="../common/src"
+                    externalPath="${output.dir}">
+        </compileSWC>
+    </target>
+
+    <target name="buildMotion" depends="buildNumber">
+        <compileSWC swcName="motion"
+                    srcPath="../motion/src"
+                    externalPath="${output.dir}">
+        </compileSWC>
+    </target>
+
+    <target name="buildEngine" depends="buildNumber">
+        <compileSWC swcName="engine"
+                    srcPath="../engine/src"
+                    externalPath="${output.dir}">
+        </compileSWC>
+    </target>
+
+    <target name="buildControls" depends="buildNumber">
+        <compileSWC swcName="controls"
+                    srcPath="../controls/src"
+                    externalPath="${output.dir}">
+        </compileSWC>
+    </target>
+
+    <macrodef name="compileSWC">
+        <attribute name="swcName"/>
+        <attribute name="srcPath"/>
+        <attribute name="externalPath" default="."/>
+        <sequential>
+            <delete>
+                <fileset dir="${output.dir}" includes="@{swcName}*.swc"/>
+            </delete>
+
+            <!--suppress AntResolveInspection -->
+            <var name="output.file" value="${output.dir}/@{swcName}-${build.number}.swc"/>
+
+            <exec executable="${flex.sdk.dir}/bin/${compc.compiler}" failonerror="true">
+                <arg line="-debug=true"/>
+                <arg line="-source-path+=@{srcPath}"/>
+                <arg line="-include-sources+=@{srcPath}"/>
+                <arg line="-external-library-path+=@{externalPath}"/>
+                <!--suppress AntResolveInspection -->
+                <arg line="-output=${output.file}"/>
+            </exec>
+        </sequential>
+    </macrodef>
+
 </project>
