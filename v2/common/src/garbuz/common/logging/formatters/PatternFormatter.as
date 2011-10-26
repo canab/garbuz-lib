@@ -1,5 +1,7 @@
-package garbuz.common.logging
+package garbuz.common.logging.formatters
 {
+	import garbuz.common.logging.ILogFormatter;
+
 	public class PatternFormatter implements ILogFormatter
 	{
 		public static const DEFAULT_PATTERN:String = "{level}: {sender} - {message}";

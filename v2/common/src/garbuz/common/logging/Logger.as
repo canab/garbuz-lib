@@ -1,6 +1,8 @@
 package garbuz.common.logging
 {
-	import garbuz.common.utils.ReflectUtil;
+import garbuz.common.logging.adapters.TraceLogAdapter;
+import garbuz.common.logging.formatters.PatternFormatter;
+import garbuz.common.utils.ReflectUtil;
 
 	public class Logger
 	{
