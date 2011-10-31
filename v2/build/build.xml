@@ -1,4 +1,4 @@
-﻿<project name="as3-common-lib" basedir="." default="buildAll">
+﻿<project name="garbuz-lib" basedir="." default="buildAll">
 
     <property file="local.properties"/>
     <property name="output.dir" value="../bin"/>
