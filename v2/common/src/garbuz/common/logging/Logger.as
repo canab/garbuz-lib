@@ -153,6 +153,8 @@ import garbuz.common.utils.ReflectUtil;
 					.replace(/\[object (.+)]$/, "$1")
 					.replace(/\[class (.+)]$/, "$1");
 
+			message = message.replace(/\r\n/g, "\n");
+
 			var text:String = formatter.format(senderName, levelName, message);
 			adapter.print(_sender, level, text);
 		}
