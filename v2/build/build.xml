@@ -16,6 +16,7 @@
     </if>
 
     <target name="clean">
+	    <echo message="clean"/>
         <delete dir="${output.dir}"/>
         <mkdir dir="${output.dir}"/>
     </target>
@@ -31,12 +32,14 @@
             depends="clean, buildNumber, buildMotion, buildCommon, buildEngine, buildControls"/>
 
     <target name="buildCumulative" depends="clean, buildNumber">
+	    <echo message="build..."/>
         <compileSWC swcName="garbuz-lib"
                     srcPath="../common/src,../controls/src,../engine/src,../motion/src">
         </compileSWC>
     </target>
 
     <target name="buildCommon" depends="buildNumber">
+	    <echo message="build common..."/>
         <compileSWC swcName="common"
                     srcPath="../common/src"
                     externalPath="${output.dir}">
@@ -44,6 +47,7 @@
     </target>
 
     <target name="buildMotion" depends="buildNumber">
+	    <echo message="build motion..."/>
         <compileSWC swcName="motion"
                     srcPath="../motion/src"
                     externalPath="${output.dir}">
@@ -51,6 +55,7 @@
     </target>
 
     <target name="buildEngine" depends="buildNumber">
+	    <echo message="build engine..."/>
         <compileSWC swcName="engine"
                     srcPath="../engine/src"
                     externalPath="${output.dir}">
@@ -58,6 +63,7 @@
     </target>
 
     <target name="buildControls" depends="buildNumber">
+	    <echo message="build controls..."/>
         <compileSWC swcName="controls"
                     srcPath="../controls/src"
                     externalPath="${output.dir}">

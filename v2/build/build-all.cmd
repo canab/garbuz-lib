@@ -1,2 +1,2 @@
-call ant buildAll
+call ant -q buildAll
 pause

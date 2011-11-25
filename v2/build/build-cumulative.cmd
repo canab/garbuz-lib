@@ -1,2 +1,2 @@
-call ant buildCumulative
+call ant -q buildCumulative
 pause
