@@ -23,7 +23,15 @@ package garbuz.common.utils
 			}
 			return false;
 		}
-		
+
+		/**
+		 * Removes items from the array or vector.
+		 * If array/vector does not contains this item, exception is thrown.
+		 * @param source
+		 * Vector or Array
+		 * @param items
+		 * array or vector with items to remove
+		 */
 		public static function removeItems(source:Object, items:Array):int
 		{
 			var i:int = 0;
