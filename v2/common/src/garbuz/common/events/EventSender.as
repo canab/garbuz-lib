@@ -6,8 +6,6 @@ package garbuz.common.events
 	{
 		private var _sender:Object;
 		private var _listeners:Vector.<Function>;
-		private var _listenersCopy:Vector.<Function>;
-		private var _listenersCopyValid:Boolean = false;
 
 		public function EventSender(sender:Object)
 		{
@@ -23,8 +21,6 @@ package garbuz.common.events
 				throw new Error("List already contains such listener");
 			else
 				_listeners.push(listener);
-
-			_listenersCopyValid = false;
 		}
 		
 		public function removeListener(listener:Function):void
@@ -35,19 +31,15 @@ package garbuz.common.events
 				_listeners.splice(_listeners.indexOf(listener), 1);
 			else
 				throw new Error("List doesn't contain such listener");
-
-			_listenersCopyValid = false;
 		}
 		
 		public function dispatch(argument:* = null):void
 		{
-			if (!_listenersCopyValid)
-			{
-				_listenersCopy = _listeners.slice();
-				_listenersCopyValid = true;
-			}
+			var listenersCopy:Vector.<Function> = (_listeners.length > 1)
+						? _listeners.slice()
+						: _listeners;
 
-			for each (var handler:Function in _listenersCopy)
+			for each (var handler:Function in listenersCopy)
 			{
 				if (handler.length == 0)
 					handler();
