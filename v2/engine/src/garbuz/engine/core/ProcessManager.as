@@ -6,13 +6,10 @@ package garbuz.engine.core
 	internal class ProcessManager
 	{
 		private var _head:ProcessorBase;
+		private var _tail:ProcessorBase;
 		private var _frameDispatcher:Shape = new Shape();
 
-		public function ProcessManager()
-		{
-		}
-		
-		internal function start():void 
+		internal function start():void
 		{
 			_frameDispatcher.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
@@ -63,13 +60,14 @@ package garbuz.engine.core
 
 		private function addToList(processor:ProcessorBase):void
 		{
-			processor.next = _head;
-			processor.prev = null;
 
-			if (_head)
-				_head.prev = processor;
+			processor.next = null;
+			processor.prev = _tail;
 
-			_head = processor;
+			if (_tail)
+				_tail = _tail.next = processor;
+			else
+				_tail = _head = processor;
 		}
 
 		private function removeFromList(processor:ProcessorBase):void
@@ -85,6 +83,9 @@ package garbuz.engine.core
 
 			if (processor == _head)
 				_head = nextProcessor;
+
+			if (processor == _tail)
+				_tail = prevProcessor;
 		}
 
 	}
