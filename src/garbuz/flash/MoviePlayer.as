@@ -5,6 +5,8 @@
 	import flash.utils.Dictionary;
 	import garbuz.common.commands.ICancelableCommand;
 	import garbuz.common.events.EventSender;
+	import garbuz.common.utils.ArrayUtil;
+
 	/**
 	 * ...
 	 * @author Canab
@@ -12,6 +14,15 @@
 	public class MoviePlayer implements ICancelableCommand
 	{
 		static private const _players:Dictionary = new Dictionary(true);
+		
+		static public function disposeAllClips():void
+		{
+			var keys:Array = ArrayUtil.getKeys(_players);
+			for each (var key:MovieClip in keys)
+			{
+				MoviePlayer(_players[key]).stopPlaying();
+			}
+		}
 		
 		public var clip:MovieClip;
 		public var toFrame:int;
