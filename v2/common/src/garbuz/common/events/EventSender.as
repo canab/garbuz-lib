@@ -5,12 +5,11 @@ package garbuz.common.events
 	public class EventSender
 	{
 		private var _sender:Object;
-		private var _listeners:Vector.<Function>;
+		private var _listeners:Array = [];
 
 		public function EventSender(sender:Object)
 		{
 			_sender = sender;
-			_listeners = new Vector.<Function>();
 		}
 		
 		public function addListener(listener:Function):void
@@ -35,17 +34,43 @@ package garbuz.common.events
 		
 		public function dispatch(argument:* = null):void
 		{
-			var listenersCopy:Vector.<Function> = (_listeners.length > 1)
-						? _listeners.slice()
-						: _listeners;
+			// complexity of this method
+			// is result of performance optimization
 
-			for each (var handler:Function in listenersCopy)
+			if (_listeners.length == 0)
+				return;
+
+			var handler:Function;
+			var numArgs:int;
+
+			if (_listeners.length == 1)
 			{
-				if (handler.length == 0)
+				handler = _listeners[0];
+				numArgs = handler.length;
+
+				if (numArgs == 0)
 					handler();
-				else if (handler.length == 1)
+				else if (numArgs == 1)
 					handler(_sender);
-				else if (handler.length == 2)
+				else if (numArgs == 2)
+					handler(_sender, argument);
+				else
+					throw new ArgumentError();
+
+				return;
+			}
+
+			var	_listenersCopy:Array = _listeners.slice();
+
+			for each (handler in _listenersCopy)
+			{
+				numArgs = handler.length;
+
+				if (numArgs == 0)
+					handler();
+				else if (numArgs == 1)
+					handler(_sender);
+				else if (numArgs == 2)
 					handler(_sender, argument);
 				else
 					throw new ArgumentError();
@@ -57,7 +82,7 @@ package garbuz.common.events
 			return _listeners.indexOf(func) >= 0;
 		}
 
-		public function set handler(value:Function):void
+		public function set listener(value:Function):void
 		{
 			addListener(value);
 		}
