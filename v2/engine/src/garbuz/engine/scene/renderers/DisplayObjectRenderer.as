@@ -29,6 +29,12 @@ package garbuz.engine.scene.renderers
 				
 			_content = content;
 		}
+
+		override protected function onInitialize():void
+		{
+			if (_renderOnFrame)
+				updateRenderOnFrameState();
+		}
 		
 		override protected function onDispose():void 
 		{
@@ -123,15 +129,21 @@ package garbuz.engine.scene.renderers
 			{
 				_renderOnFrame = value;
 
-				if (_renderOnFrame)
-				{
-					addFrameListener(render);
-					render();
-				}
-				else
-				{
-					removeProcessor(render);
-				}
+				if (isInitialized)
+					updateRenderOnFrameState();
+			}
+		}
+
+		private function updateRenderOnFrameState():void
+		{
+			if (_renderOnFrame)
+			{
+				addFrameListener(render);
+				render();
+			}
+			else
+			{
+				removeProcessor(render);
 			}
 		}
 	}
