@@ -12,6 +12,32 @@
 	{
 		static private const _players:WeakObjectMap = new WeakObjectMap(MovieClip, MoviePlayer);
 		
+		static public function disposeAllClips():void
+		{
+			for each (var player:MoviePlayer in _players.getValues())
+			{
+				player.cancel();
+			}
+		}
+
+		static public function disposeClip(clip:MovieClip):void
+		{
+			var player:MoviePlayer = _players[clip];
+			if (player)
+				player.cancel();
+		}
+
+		static public function getPlayer(clip:MovieClip):MovieClip
+		{
+			return _players[clip];
+		}
+
+		/////////////////////////////////////////////////////////////////////////////////////
+		//
+		// instance
+		//
+		/////////////////////////////////////////////////////////////////////////////////////
+
 		public var clip:MovieClip;
 		public var toFrame:int;
 		public var fromFrame:int;
@@ -20,9 +46,7 @@
 		{
 			this.clip = clip;
 			this.fromFrame = fromFrame;
-			this.toFrame = (toFrame > 0)
-				? toFrame
-				: clip.totalFrames;
+			this.toFrame = (toFrame > 0) ? toFrame : clip.totalFrames;
 		}
 
 		public function detachOnComplete():MoviePlayer
@@ -39,9 +63,7 @@
 		public function play(fromFrame:int = 1, toFrame:int = 0):MoviePlayer
 		{
 			this.fromFrame = fromFrame;
-			this.toFrame = (toFrame > 0)
-				? toFrame
-				: clip.totalFrames;
+			this.toFrame = (toFrame > 0) ? toFrame : clip.totalFrames;
 			
 			execute();
 			
@@ -58,7 +80,7 @@
 		{
 			if (clip.currentFrame == toFrame)
 			{
-				stopPlaying();
+				stop();
 				dispatchComplete();
 			}
 			else if (clip.currentFrame < toFrame)
@@ -74,6 +96,7 @@
 		override public function execute():void
 		{
 			var currentPlayer:MoviePlayer = _players[clip];
+
 			if (currentPlayer)
 				currentPlayer.cancel();
 			
@@ -85,13 +108,13 @@
 		
 		public function cancel():void
 		{
-			stopPlaying();
-		}
-		
-		private function stopPlaying():void 
-		{
 			clip.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 			_players.removeKey(clip);
+		}
+		
+		public function stop():void
+		{
+			cancel();
 		}
 		
 	}
