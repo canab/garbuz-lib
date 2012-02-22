@@ -8,6 +8,7 @@ package garbuz.motion
 	import garbuz.motion.easing.Quad;
 	import garbuz.motion.filter.FilterProperty;
 	import garbuz.motion.properties.ScaleProperty;
+	import garbuz.motion.properties.VolumeProperty;
 
 	use namespace motion_internal;
 
@@ -41,6 +42,7 @@ package garbuz.motion
 
 		registerSpecialProperty("$scale", ScaleProperty);
 		registerSpecialProperty("$filter", FilterProperty);
+		registerSpecialProperty("$volume", VolumeProperty);
 
 		/*///////////////////////////////////////////////////////////////////////////////////
 		//
